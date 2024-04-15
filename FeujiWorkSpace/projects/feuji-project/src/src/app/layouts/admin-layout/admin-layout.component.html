@@ -1,0 +1,73 @@
+<div>
+  <div>
+    <app-navbar></app-navbar>
+  </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-2">
+        <ul class="nav nav-pills flex-column mt-4">
+          <li class="nav-item">
+
+            <button class="nav-link submenu-toggle"
+            routerLink="admindashboard"
+            aria-current="page" (click)="toggleSubmenu('submenu1')">
+              <span class="ms-2 d-none d-sm-inline">
+                <i class="bi bi-person"></i>
+                Dashboard
+              </span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <span class="subitems" (click)="toggleSubmenu('submenu5'); rotateArrow('isArrowRotated1')">
+              <button class="nav-link submenu-toggle" aria-current="page">
+                <span class="ms-2 d-none d-sm-inline">
+                  <i class="bi bi-calendar-check"></i>
+                  Timesheet
+                </span>
+              </button>
+              <span class="fas fa-angle-right" [class.rotate]="isArrowRotated1"></span>
+            </span>
+            <ul class="submenu submenu5">
+              <li class="nav-subitem" routerLink="timesheethome">
+                <a class="nav-link" aria-current="page"><span class="ms-2 d-none d-sm-inline">Timesheet</span></a>
+              </li>
+              <li class="nav-subitem" routerLink="timesheethistory">
+                <a class="nav-link" aria-current="page"><span class="ms-2 d-none d-sm-inline">submenu 2</span></a>
+              </li>
+              <li class="nav-subitem" routerLink="timesheetaproval">
+                <a class="nav-link" aria-current="page"><span class="ms-2 d-none d-sm-inline">timesheet for
+                    approval</span></a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item" >
+            <span class="subitems" (click)="toggleSubmenu('submenu6'); rotateArrow('isArrowRotated2')">
+              <button class="nav-link submenu-toggle" aria-current="page">
+                <span class="ms-2 d-none d-sm-inline">
+                  <i class="bi bi-journal-text"></i>
+                  Skill Gap
+                </span>
+              </button>
+              <span class="fas fa-angle-right" [class.rotate]="isArrowRotated2"></span>
+
+            </span>
+            <ul class="submenu submenu6">
+              <li class="nav-subitem" routerLink="addSkills"  >
+                <i class="material-icons">playlist_add</i>
+                <a class="nav-link" aria-current="page" >
+                <span class="ms-2 d-none d-sm-inline"
+                
+                >Add Skills</span></a>
+              </li>
+            </ul>
+            
+          </li>
+        </ul>
+      </div>
+      <div class="col">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>

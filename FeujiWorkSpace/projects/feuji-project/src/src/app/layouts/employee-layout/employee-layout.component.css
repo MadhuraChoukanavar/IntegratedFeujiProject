@@ -1,0 +1,126 @@
+.container-fluid{
+  padding-top: 4rem;
+}
+
+.ms-2{
+  font-size: 1.2rem !important;
+  color: rgb(2, 2, 2);
+}
+.nav-subitem{
+  display: flex;
+  align-items: center;
+  /* padding-left: .5rem; */
+}
+.subitems{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.material-icons{
+  padding-left: 1rem;
+}
+
+.nav-item:hover {
+  background-color:  rgb(219, 224, 224);
+}
+
+.fas{
+  font-size: 1.1rem !important;
+  color: black;
+}
+
+
+.col-2{
+  background-color: #ecf0f4;
+height: 100%;
+position: fixed;
+}
+.col{
+  margin-left: 18%;
+}
+.nav-subitem a span{
+  font-size: 1rem !important;
+}
+
+.nav-item.active {
+  background-color: rgb(219, 224, 224); 
+  width: auto;
+}
+
+.subs{
+  padding-left: .5rem;
+font-size: 1.1rem !important;
+}
+
+.rotate {
+  transition: transform 0.3s ease;
+  transform: rotate(90deg);
+}
+
+
+.router-outlet {
+  position: relative;
+  overflow-y: auto;
+}
+
+/* Media query for responsiveness */
+@media (max-width: 768px) {
+  .side-menu {
+    flex: 0 0 100%; /* Side menu takes up full width on smaller screens */
+    height: auto; /* Allow height to adjust based on content */
+  }
+}
+
+
+.submenu ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+
+.submenu {
+  display: none;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.submenu :hover {
+  background-color: #f2f2f2;
+}
+
+
+
+.submenu.show {
+  display: block;
+}
+
+#welcomeCard{
+  width:140%;
+  background-color: white;
+  margin-left: 32%;
+  /* margin-top: 0.2%; */
+  height: 380px;
+  box-shadow: 1px 1px 3px black;
+}
+#helloText{
+  margin-top: 50px;
+  font-size: 4rem;
+ padding-top: 4rem;
+ font-family: Arial, Helvetica, sans-serif;
+ padding-left: 30px;
+
+}
+.welcomeText{
+  font-family: Arial, Helvetica, sans-serif;
+  padding-top:40px;
+  padding-left: 30px;
+  font-size: 1.1rem;
+  text-align: left;
+  padding-right: 30px;
+}

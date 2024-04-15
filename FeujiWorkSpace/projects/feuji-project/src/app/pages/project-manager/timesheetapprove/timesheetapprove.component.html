@@ -1,0 +1,57 @@
+<div class="container-fluid">
+
+  <div class="row " style="height: 90px;">
+
+    <div class="input-group mt-5 justify-content-end">
+      <div class="input-group-append" style="display: flex">
+        <select [(ngModel)]="selectedAccount" id="accountName" name="accountName"
+          (change)="OnSelectAccountByAccountId($event)" class="form-control">
+          <option value="0" show>Select Account</option>
+          <option *ngFor="let acc of accounts" [value]="acc.accountId">{{acc.accountName}}</option>
+        </select>
+
+        <select [(ngModel)]="selectedMonth" id="month" name="month" (change)="OnSelectAccountByMonth($event)"
+          class="form-control">
+          <option value="1">Select Month</option>
+          <option *ngFor="let month of months" [value]="month">{{ month }}</option>
+        </select>
+
+        <input type="number" [(ngModel)]="employeeId" placeholder="Search by employeeId" class="form-control">
+        <div class="searchicon">
+          <button class="search" (click)="OnSelectAccount($event)"
+            style="position: relative; z-index: 1;top: 0px; right: 0px;">
+            <i class="fa-sharp fa-solid fa-magnifying-glass"></i>
+          </button>
+        </div>
+
+      </div>
+    </div>
+    <table class="table mt-5">
+      <thead>
+        <tr class="table-dark">
+          <th class="text-center">Employee Code</th>
+          <th class="text-center">Employee Name</th>
+          <th class="text-center">Project</th>
+          <th class="text-center">Billing Hour</th>
+          <th class="text-center">Non Billing Hour</th>
+          <th class="text-center">leaves</th>
+          <th class="text-center">status</th>
+          <th class="text-center">view Timesheet</th>
+        </tr>
+      </thead>
+      <tbody class="tbody">
+        <tr *ngFor="let c of weekTimeSheet ">
+          <td>{{c.empCode}}</td>
+          <td>{{c.fullName}}</td>
+          <td>{{c.projectName}}</td>
+          <td>{{c.billingHours}}</td>
+          <td>{{c.nonBillinghours}}</td>
+          <td>{{c.leaveDays}}</td>
+          <td class="{{c.timesheetStatus}}">{{ c.timesheetStatus}}</td>
+          <td>
+            <button class="btn" (click)="goToView(c)">View</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
