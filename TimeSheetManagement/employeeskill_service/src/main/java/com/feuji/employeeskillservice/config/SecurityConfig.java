@@ -48,9 +48,7 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable().authorizeHttpRequests().
-//				requestMatchers("/employeeskill/getAll/**").permitAll()
-//				.and()
-//                .authorizeHttpRequests()
+
                 requestMatchers("/employeeskill/getBySkillId/{skillId}","/employeeskill/getAll/**")
 				.hasAnyAuthority("Software Engineer","Manager")
                 .requestMatchers("/employeeskill/update/{employeeSkillId}","/employeeskill/saverecord"

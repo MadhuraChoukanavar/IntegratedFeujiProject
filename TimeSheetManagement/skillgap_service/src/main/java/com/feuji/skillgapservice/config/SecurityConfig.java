@@ -61,7 +61,7 @@ public class SecurityConfig {
 				.hasAnyAuthority("Software Engineer", "Manager","Admin")
 				
 				
-				.requestMatchers("/skill/getAll/{categoryId}","/skill/updateStatus")
+				.requestMatchers("/skill/updateStatus")
 				.hasAnyAuthority("Admin")
 				
 				.requestMatchers("/getRoles/{technicalCatId}",
@@ -69,9 +69,7 @@ public class SecurityConfig {
 						"/skill/getSkillNames/{skillIds}",
 						"/fetchallemployees/{skillIds}")
 				.hasAnyAuthority("Manager")
-//				
-				
-				.anyRequest().authenticated()// // Allow access to all other requests
+				.anyRequest().authenticated()
                 .and()
                 .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

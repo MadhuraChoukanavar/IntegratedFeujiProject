@@ -31,23 +31,6 @@ public class SecurityConfig {
 		return new UserInfoUserDetailsService();
 	}
 
-//    @Bean
-//     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        return http.csrf().disable()
-//                .authorizeHttpRequests()
-//                .requestMatchers("/users/login").permitAll()
-//                .and()
-//                .authorizeHttpRequests().requestMatchers("/employee/**").hasAnyAuthority("**").anyRequest()
-//                .authenticated().and()
-//                .sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-//                .authenticationProvider(authenticationProvider())
-//                .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
-//                .build();
-//    }
-	
-//	referencedetails/getById
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http.csrf().disable().authorizeHttpRequests()
@@ -62,10 +45,7 @@ public class SecurityConfig {
 						"/referencetype/save")
 				.hasAnyAuthority("Admin")
 				
-				.requestMatchers("/referencedetails/getreference/{typeName}")
-				.hasAnyAuthority("Manager")
-				
-				.anyRequest().authenticated()// Allow access to all other requests
+				.anyRequest().authenticated()
 				.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 				.authenticationProvider(authenticationProvider())
 				.addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class).build();

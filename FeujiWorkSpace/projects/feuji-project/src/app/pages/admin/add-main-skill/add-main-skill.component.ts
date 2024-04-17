@@ -44,8 +44,6 @@ export class AddMainSkillComponent implements OnInit {
     this.loadSkillCategories();
   }
 
-  
-
   loadSkillCategories() {
     this.employeeSkillService.getSkillCategories('Skill Category').subscribe((data: any[]) => {
       this.accordionData = data;
