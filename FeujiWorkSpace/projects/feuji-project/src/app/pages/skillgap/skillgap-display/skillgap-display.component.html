@@ -69,7 +69,7 @@
           </tr>
           </th>
           <th *ngFor="let id of skillNames" class="skillNamesdisplay">
-            {{ id.skillName }}
+            {{ id }}
           </th>
           </tr>
           <tr>
@@ -78,7 +78,7 @@
             <th>Employee Code</th>
             <th>Designation</th>
             <th>Email</th>
-            <th *ngFor="let id of skillNames" id="displaytype">{{id.skillType}}</th>
+            <th *ngFor="let id of skillType" id="displaytype">{{id.skillType}}</th>
           </tr>
         </thead>
         <tbody>
@@ -90,7 +90,7 @@
             <td>{{ e.email }}</td>
             <td *ngFor="let name of skillNames">
               <ng-container *ngFor="let skills of e.skillLists">
-                <ng-container *ngIf="skills.skillName === name.skillName">
+                <ng-container *ngIf="skills.skillName === name">
                   <img [src]="generateResult(skills.expectedCompetency,skills.actualCompetency)" alt="text"
                     [title]="getCompetencyText(skills)">
                     <!-- getBackgroundColor1(skills.skillName, skills, skills.competencyLevelId) -->

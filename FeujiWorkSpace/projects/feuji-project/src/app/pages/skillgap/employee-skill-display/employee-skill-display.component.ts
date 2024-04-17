@@ -96,6 +96,8 @@ export class EmployeeSkillDisplayComponent implements OnInit {
     this.isEditModeActive = !this.isEditModeActive;
 
   }
+
+  public user:any=null;
   /**
    *  Retrieves the email of the logged-in user from localStorage
    *  Fetches all skills associated with the logged-in employee
@@ -105,10 +107,16 @@ export class EmployeeSkillDisplayComponent implements OnInit {
 ngOnInit() {
 
   this.isLoading = true;
-  const email = localStorage.getItem("Email");
-  if (email) {
-    this.empMail = JSON.parse(email);
-  }
+  
+   var temp = localStorage.getItem("user");
+   if(temp!=null && temp!=undefined){
+    this.user = JSON.parse(temp);
+   }
+  this.empMail = this.user.email;
+  console.log(this.user.email)
+  // if (email) {
+  //   this.empMail = JSON.parse(email);
+  // }
   console.log(this.empMail)
   // setTimeout(()=>{
   this.getAllEmployeeSkills(this.empMail);

@@ -10,6 +10,7 @@ import { EmployeeSkillObject } from '../../../../models/EmployeeSkillObject.mode
   styleUrl: './training-recommendation.component.css'
 })
 export class TrainingRecommendationComponent implements OnInit {
+  public user: any=null;
   
 
   constructor(private http: HttpClient, private empskillService: EmployeeSkillService) { }
@@ -25,19 +26,20 @@ export class TrainingRecommendationComponent implements OnInit {
   public skillGapMessage:number=0;
 
   ngOnInit(): void {
-    const email = localStorage.getItem("Email");
-    if (email) {
-      this.empMail = JSON.parse(email);
+    var temp = localStorage.getItem("user");
+
+    if(temp!=null && temp!=undefined){
+     this.user = JSON.parse(temp);
     }
+    this.empMail = this.user.email;
      this.getEmployeeSkillsByEmail(this.empMail);
+
   }
 
   getEmployeeSkillsByEmail(empMail:string){
-    console.log(empMail);
     this.empskillService.getSkillsByEmployeeId(empMail).subscribe(
       (resp) => {
         this.empSkills = resp ;
-        console.log(this.empSkills);
         this.empSkills.map(skill => {
          const result=this.generateResult(skill.exReferenceDetailsValues,skill.acReferenceDetailsValues)
          if(result>1){

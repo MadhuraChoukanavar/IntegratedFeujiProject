@@ -20,7 +20,7 @@ public interface SkillCompetencyService {
 
 	public List<SkillCompetencyBean> findSkillCompetencyByTechId(int technicalCatId) throws RecordNotFoundException;
 
-	public PaginationDto getAllEmployeeSkillsBySkillIds(int[] skillId, int page, int size) throws RecordNotFoundException;
+	public PaginationDto getAllEmployeeSkillsBySkillIds(int[] skillId, int page, int size,String roleName) throws RecordNotFoundException;
 
 	public List<TrainigRecommendedEmployeesDto> getAllTrainingRecommendedEmp(int[] skillIds);
 

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../../models/user.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../../../models/AuthService';
 
 @Component({
   selector: 'app-login-layout',
@@ -22,7 +23,8 @@ export class LoginLayoutComponent {
     email: string='';
     password: string='';
 
-  constructor( private userService:UserService , private router: Router,private fb: FormBuilder) {
+  constructor( private userService:UserService , private router: Router,
+    private fb: FormBuilder,private authService:AuthService) {
       this.formData = this.fb.group({
         email: ['', [Validators.required, Validators.email]],
         password: ['', [Validators.required, Validators.minLength(4)]]
@@ -41,6 +43,13 @@ export class LoginLayoutComponent {
       const data = { email, password };
 
       this.userService.login( email,password).subscribe((user: any) => {
+        const token=user.accessToken;
+            console.log(token);
+            
+            this.authService.setAccessToken(token)
+            this.authService.setRole(user.userEntity.designation);
+            this.authService.setUser(JSON.stringify(user.userEntity))
+
         this.userService.getEmployeeByid(user.userEntity.userEmpId).subscribe(
           (result: any) => {
             console.log('Employee Details:', result);
@@ -48,15 +57,18 @@ export class LoginLayoutComponent {
             console.log("this.empId DATA", this.empDataById);
             localStorage.setItem('user', JSON.stringify(this.empDataById));
             this.isLoggedIn = true;
+            
 
           },
           (error) => {
             console.error('Error fetching employee details', error);
           }
         );
-
+        
         const designation = user.userEntity.designation;
         console.log('User designation:', designation);
+       
+
         switch (designation) {
           case 'Admin':
             console.log("Navigated to admin page");

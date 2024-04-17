@@ -38,9 +38,9 @@ export class EmployeeSkillService
    return this.http.get<SkillCompetency[]>(`${environment.SkillService}${Paths.FetchRoles}${selectedTechnicalCate}`)
   }
   
-  getEmployeSkillsBySkillId(selectedSkillId: number[] ,page:number, size:number):Observable<any>
+  getEmployeSkillsBySkillId(selectedSkillId: number[] ,page:number, size:number,roleName:string):Observable<any>
   {
-    return this.http.get<any>(`${environment.SkillService}${Paths.FetchEmployeeSkills}${selectedSkillId}/${page}/${size}`)
+    return this.http.get<any>(`${environment.SkillService}${Paths.FetchEmployeeSkills}${selectedSkillId}/${page}/${size}/${roleName}`)
   }
 
   public getAllEmployeeSkills(empMail:string):Observable<any[]>

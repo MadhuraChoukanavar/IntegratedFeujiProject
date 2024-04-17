@@ -25,6 +25,7 @@ import com.feuji.employeeservice.dto.SaveEmployeeDto;
 import com.feuji.employeeservice.dto.SaveEmployeeUserDto;
 import com.feuji.employeeservice.dto.UpadteEmployeeDto;
 import com.feuji.employeeservice.entity.EmployeeEntity;
+import com.feuji.employeeservice.exception.RecordsNotFoundException;
 import com.feuji.employeeservice.service.EmployeeService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -81,21 +82,22 @@ public class EmployeeController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 	}
+
 	@GetMapping("/checkEmail")
-    public ResponseEntity<?> checkEmailUnique(@RequestParam String email) {
-        log.info("Checking if email is unique: {}", email);
+	public ResponseEntity<?> checkEmailUnique(@RequestParam String email) {
+		log.info("Checking if email is unique: {}", email);
 
-        // Check if the email is unique
-        boolean isUnique = employeeService.isEmailUnique(email);
+		// Check if the email is unique
+		boolean isUnique = employeeService.isEmailUnique(email);
 
-        if (isUnique) {
-            log.info("Email is unique: {}", email);
-            return ResponseEntity.ok("true");
-        } else {
-            log.warn("Email already exists: {}", email);
-            return ResponseEntity.badRequest().body("false");
-        }
-    }
+		if (isUnique) {
+			log.info("Email is unique: {}", email);
+			return ResponseEntity.ok("true");
+		} else {
+			log.warn("Email already exists: {}", email);
+			return ResponseEntity.badRequest().body("false");
+		}
+	}
 
 	@GetMapping("/getReportingMngIdByEmpId/{id}")
 	public ResponseEntity<EmployeeBean> getReportingMngIdByEmpId(@PathVariable Integer id) {
@@ -225,6 +227,20 @@ public class EmployeeController {
 		} catch (Exception e) {
 			log.error("An error occurred while deleting employee with ID {}: {}", employeeId, e.getMessage());
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
+	}
+
+	@GetMapping("/getByEmail/{employeeEmail}")
+	public ResponseEntity<EmployeeBean> getByEmail(@PathVariable String employeeEmail) {
+		log.info("GetByEmail Start:Fetching employee Details" + employeeEmail);
+		EmployeeBean employeebean = null;
+		try {
+			employeebean = employeeService.findByEmail(employeeEmail);
+			log.info("GetByEmail End:Fetching employee Details");
+			return new ResponseEntity<EmployeeBean>(employeebean, HttpStatus.OK);
+		} catch (RecordsNotFoundException e) {
+			log.info("No records found for email: " + e.getMessage());
+			return new ResponseEntity<EmployeeBean>(employeebean, HttpStatus.NOT_FOUND);
 		}
 	}
 

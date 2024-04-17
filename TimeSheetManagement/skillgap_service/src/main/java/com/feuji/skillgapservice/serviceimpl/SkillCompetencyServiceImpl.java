@@ -184,9 +184,8 @@ public class SkillCompetencyServiceImpl implements SkillCompetencyService {
 		}
 
 	}
-
 	@Override
-	public PaginationDto getAllEmployeeSkillsBySkillIds(int[] skillId, int page, int size)
+	public PaginationDto getAllEmployeeSkillsBySkillIds(int[] skillId, int page, int size, String roleName)
 			throws RecordNotFoundException {
 		log.info("getAllEmployeeSkillsBySkillIds() started");
 		Pageable pageable = PageRequest.of(page, size);
@@ -197,7 +196,7 @@ public class SkillCompetencyServiceImpl implements SkillCompetencyService {
 		if (findEmployeesBySkillId != null) {
 			for (EmployeeEntityDto employee : findEmployeesBySkillId.getContent()) {
 				List<SkillsBean> findSkillsByEmployeeId = competencyRepository
-						.findSkillsByEmployeeId(employee.getEmployeeId(), skillId);
+						.findSkillsByEmployeeId(employee.getEmployeeId(), skillId,roleName);
 				EmployeesSkillsListDto dto = new EmployeesSkillsListDto();
 				dto.setEmployeeName(
 						employee.getFirstName() + " " + employee.getMiddleName() + " " + employee.getLastName());
@@ -221,6 +220,7 @@ public class SkillCompetencyServiceImpl implements SkillCompetencyService {
 		}
 
 	}
+
 
 	@Override
 	public List<TrainigRecommendedEmployeesDto> getAllTrainingRecommendedEmp(int[] skillIds) {

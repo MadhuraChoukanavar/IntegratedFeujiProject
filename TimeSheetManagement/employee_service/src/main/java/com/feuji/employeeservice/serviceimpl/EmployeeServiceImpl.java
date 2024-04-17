@@ -17,13 +17,13 @@ import com.feuji.employeeservice.dto.SaveEmployeeUserDto;
 import com.feuji.employeeservice.dto.UpadteEmployeeDto;
 import com.feuji.employeeservice.entity.EmployeeEntity;
 import com.feuji.employeeservice.entity.UserLoginEntity;
+import com.feuji.employeeservice.exception.RecordsNotFoundException;
 import com.feuji.employeeservice.repository.EmployeeRepository;
 import com.feuji.employeeservice.repository.UserLoginRepo;
 import com.feuji.employeeservice.service.EmployeeService;
 import com.feuji.employeeservice.util.EmailSender;
 
 import lombok.extern.slf4j.Slf4j;
-
 
 @Service
 @Slf4j
@@ -33,15 +33,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Autowired
 	private ModelMapper modelMapper;
-	
+
 	@Autowired
 	private EmailSender emailSender;
-	  @Autowired
-	    private PasswordEncoder passwordEncoder;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
-	
 	@Autowired
 	private UserLoginRepo userLoginRepo;
+
 	@Override
 	public EmployeeEntity saveEmployeeAndUser(SaveEmployeeUserDto employeeUserDTO) {
 
@@ -67,7 +67,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		UserLoginEntity userLoginEntity = new UserLoginEntity();
 		userLoginEntity.setUserEmpId(employeeEntity.getEmployeeId());
 		userLoginEntity.setUserName(employeeUserDTO.getFirstName());
-		userLoginEntity.setUserPassword(passwordEncoder.encode(password) );
+		userLoginEntity.setUserPassword(passwordEncoder.encode(password));
 		userLoginEntity.setUserEmail(employeeUserDTO.getEmail());
 		userLoginEntity.setDesignation(employeeUserDTO.getDesignation());
 		userLoginEntity.setEmployeeStatus(employeeUserDTO.getStatus());
@@ -90,17 +90,19 @@ public class EmployeeServiceImpl implements EmployeeService {
 		}
 		return employeeEntity;
 	}
+
 	private String generatePassword(String firstName, String employeeCode) {
-		String password = employeeCode+ "@123";
+		String password = employeeCode + "@123";
 		return password;
 	}
+
 	@Override
-    public boolean isEmailUnique(String email) {
-        Optional<EmployeeEntity> employee = employeeRepository.findByEmail(email);
-        return employee.isEmpty();
-    }
+	public boolean isEmailUnique(String email) {
+		Optional<EmployeeEntity> employee = employeeRepository.findByEmail(email);
+		return employee.isEmpty();
+	}
 	// SAVE
-	//@Override
+	// @Override
 
 //	public EmployeeEntity saveEmployee(EmployeeBean employeeBean) {
 //		// Convert EmployeeBean to EmployeeEntity
@@ -117,10 +119,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public List<EmployeeEntity> getAllEmployees() {
 		return employeeRepository.findAll();
 	}
-	
+
 	@Override
 	public List<SaveEmployeeDto> getByReferenceTypeId(Integer referenceTypeId) {
-		
+
 		return employeeRepository.getByReferenceTypeId(referenceTypeId);
 	}
 
@@ -146,7 +148,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return !employeeRepository.existsByEmployeeCode(empCode);
 	}
 
-	
 	@Override
 	public EmployeeBean getReportingMngIdByEmpId(Integer employeeId) {
 		EmployeeEntity entity = employeeRepository.findById(employeeId).orElseThrow();
@@ -154,18 +155,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	public List<AddEmployee> getAllReportingManager() {
-		
 
 		List<AddEmployee> employees = employeeRepository.findDesignationsContainingManager();
 		return employees;
 	}
-	
+
 	@Override
 	public List<EmployeeEntity> searchEmployeesByFirstName(String firstName) {
-		 return employeeRepository.findByFirstNameContainingIgnoreCase(firstName);
+		return employeeRepository.findByFirstNameContainingIgnoreCase(firstName);
 	}
-
-
 
 	public EmployeeBean entityToBean(EmployeeEntity entity) {
 		EmployeeBean employeeBean = new EmployeeBean();
@@ -195,9 +193,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 		return employeeBean;
 	}
-	
-	
-
 
 	public EmployeeEntity beanToEntity(EmployeeBean employeeBean) {
 		EmployeeEntity entity = new EmployeeEntity();
@@ -228,56 +223,48 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return entity;
 	}
 
+	@Override
+	public void updateEmployeeDetails(EmployeeEntity updateEmployee, Integer id) throws Throwable {
+		EmployeeEntity existingEmployee = employeeRepository.findById(id)
+				.orElseThrow(() -> new Exception("Employee not found with id: " + id));
 
+		existingEmployee.setFirstName(updateEmployee.getFirstName());
+		existingEmployee.setMiddleName(updateEmployee.getMiddleName());
+		existingEmployee.setLastName(updateEmployee.getLastName());
+		existingEmployee.setDesignation(updateEmployee.getDesignation());
+		existingEmployee.setEmail(updateEmployee.getEmail());
+		existingEmployee.setGender(updateEmployee.getGender());
+		existingEmployee.setDateOfJoining(updateEmployee.getDateOfJoining());
+		existingEmployee.setReportingManagerId(updateEmployee.getReportingManagerId());
+		existingEmployee.setEmploymentType(updateEmployee.getEmploymentType());
+		existingEmployee.setStatus(updateEmployee.getStatus());
+		existingEmployee.setDeliveryUnitId(updateEmployee.getDeliveryUnitId());
+		existingEmployee.setBusinessUnitId(updateEmployee.getBusinessUnitId());
+		existingEmployee.setExitDate(updateEmployee.getExitDate());
+		existingEmployee.setExitRemarks(updateEmployee.getExitRemarks());
+		existingEmployee.setIsDeleted(updateEmployee.getIsDeleted());
+		existingEmployee.setUuid(updateEmployee.getUuid());
+		existingEmployee.setCreatedBy(updateEmployee.getCreatedBy());
+		existingEmployee.setCreatedOn(updateEmployee.getCreatedOn());
+		existingEmployee.setModifiedBy(updateEmployee.getModifiedBy());
+		existingEmployee.setModifiedOn(updateEmployee.getModifiedOn());
 
+		employeeRepository.save(existingEmployee);
+	}
 
-		@Override
-		public void updateEmployeeDetails(EmployeeEntity updateEmployee, Integer id) throws Throwable {
-			EmployeeEntity existingEmployee = employeeRepository.findById(id)
-					.orElseThrow(() -> new Exception("Employee not found with id: " + id));
+	@Override
+	public List<EmployeeDisplayDto> getEmployeeDetails() {
+		try {
 
-			existingEmployee.setFirstName(updateEmployee.getFirstName());
-			existingEmployee.setMiddleName(updateEmployee.getMiddleName());
-			existingEmployee.setLastName(updateEmployee.getLastName());
-			existingEmployee.setDesignation(updateEmployee.getDesignation());
-			existingEmployee.setEmail(updateEmployee.getEmail());
-			existingEmployee.setGender(updateEmployee.getGender());
-			existingEmployee.setDateOfJoining(updateEmployee.getDateOfJoining());
-			existingEmployee.setReportingManagerId(updateEmployee.getReportingManagerId());
-			existingEmployee.setEmploymentType(updateEmployee.getEmploymentType());
-			existingEmployee.setStatus(updateEmployee.getStatus());
-			existingEmployee.setDeliveryUnitId(updateEmployee.getDeliveryUnitId());
-			existingEmployee.setBusinessUnitId(updateEmployee.getBusinessUnitId());
-			existingEmployee.setExitDate(updateEmployee.getExitDate());
-			existingEmployee.setExitRemarks(updateEmployee.getExitRemarks());
-			existingEmployee.setIsDeleted(updateEmployee.getIsDeleted());
-			existingEmployee.setUuid(updateEmployee.getUuid());
-			existingEmployee.setCreatedBy(updateEmployee.getCreatedBy());
-			existingEmployee.setCreatedOn(updateEmployee.getCreatedOn());
-			existingEmployee.setModifiedBy(updateEmployee.getModifiedBy());
-			existingEmployee.setModifiedOn(updateEmployee.getModifiedOn());
+			List<EmployeeDisplayDto> empdetails = employeeRepository.getEmployeeDetails();
+			System.out.println();
+			return empdetails;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 
-			employeeRepository.save(existingEmployee);
 		}
-		@Override
-		public List<EmployeeDisplayDto> getEmployeeDetails(){
-				try
-				{
-				
-				List<EmployeeDisplayDto>   empdetails=employeeRepository.getEmployeeDetails();
-				System.out.println();
-				return  empdetails;
-				}
-				catch (Exception e) {
-					System.out.println(e.getMessage());
-					
-				}
-				return null;
-		}
-
-
-
-
+		return null;
+	}
 
 	@Override
 	public List<UpadteEmployeeDto> getEmployeeDetailByUUiD(String uuid) {
@@ -305,8 +292,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	}
 
-
-
 	@Override
 	public EmployeeEntity delete(Integer employeeId) {
 		log.info("service method{}", employeeId);
@@ -315,12 +300,23 @@ public class EmployeeServiceImpl implements EmployeeService {
 		optional.setIsDeleted(true);
 		EmployeeBean entityToBean = entityToBean(optional);
 		EmployeeEntity deletedEmployee = updateEmployee(entityToBean);
-		
+
 		return deletedEmployee;
 
-
-		
 	}
-	
-}
 
+	@Override
+	public EmployeeBean findByEmail(String employeeEmail) throws RecordsNotFoundException {
+		log.info("Service findByEmail Method Start");
+
+		Optional<EmployeeEntity> optionalEntity = employeeRepository.findByEmail(employeeEmail);
+		if (optionalEntity.isPresent()) {
+			EmployeeEntity entity = optionalEntity.get();
+			log.info("Service findByEmail Method End");
+			return entityToBean(entity);
+		} else {
+			throw new RecordsNotFoundException("employee not found with this email :" + employeeEmail);
+		}
+	}
+
+}

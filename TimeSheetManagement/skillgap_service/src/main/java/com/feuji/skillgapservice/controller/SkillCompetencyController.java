@@ -165,13 +165,13 @@ public class SkillCompetencyController {
 	 *         provided skill IDs.
 	 * @return NullPointerException if skillId is null
 	 */
-	@GetMapping("/fetchBySkillId/{skillId}/{page}/{size}")
+	@GetMapping("/fetchBySkillId/{skillId}/{page}/{size}/{roleName}")
 	public ResponseEntity<PaginationDto> fetcAllSkillIdWise(@PathVariable int[] skillId, @PathVariable int page,
-			@PathVariable int size) {
+			@PathVariable int size, @PathVariable String roleName) {
 		log.info("fetcAllSkillIdWise Start:Fetching AllSkills Details");
 		PaginationDto employeeSkillsBySkillIds = null;
 		try {
-			employeeSkillsBySkillIds = skillCompetencyService.getAllEmployeeSkillsBySkillIds(skillId, page, size);
+			employeeSkillsBySkillIds = skillCompetencyService.getAllEmployeeSkillsBySkillIds(skillId, page, size,roleName);
 			log.info("fetcAllSkillIdWise End:Fetched AllSkills Details");
 			return new ResponseEntity<>(employeeSkillsBySkillIds, HttpStatus.OK);
 		} catch (NullPointerException | RecordNotFoundException exception) {

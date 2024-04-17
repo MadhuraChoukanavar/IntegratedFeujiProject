@@ -8,7 +8,6 @@ import { SkillDisplayComponent } from '../../skillgap/skill-display/skill-displa
 import { SkillData } from '../../../../models/SkillData.service';
 import Swal from 'sweetalert2';
 import { ConfirmDialogComponent } from '../../skillgap/confirm-dialog/confirm-dialog.component';
-import { MatExpansionPanel } from '@angular/material/expansion';
 @Component({
   selector: 'app-add-main-skill',
   templateUrl: './add-main-skill.component.html',

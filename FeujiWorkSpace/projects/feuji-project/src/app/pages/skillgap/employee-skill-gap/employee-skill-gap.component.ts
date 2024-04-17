@@ -47,12 +47,14 @@ export class EmployeeSkillGapComponent {
    *  Fetches skills associated with the employee
    *  Fetches skill categories from the backend
    */
+  public user:any=null;
   ngOnInit(): void {
-    const email = localStorage.getItem("Email")
-    if (email) {
-      this.empMail = JSON.parse(email)
+   
+    var temp = localStorage.getItem("user");
+    if(temp!=null && temp!=undefined){
+     this.user = JSON.parse(temp);
     }
-
+   this.empMail = this.user.email;
     this.getSkillsOfEmployee()
     this.empskillService.getSkillCategories(this.skillCatogoryInput).subscribe(
 

@@ -1,7 +1,6 @@
 package com.feuji.referenceservice.config;
+
 import org.springframework.beans.factory.annotation.Autowired;
-
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,18 +19,17 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.feuji.referenceservice.filter.JwtAuthFilter;
 
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-    @Autowired
-    private JwtAuthFilter authFilter;
+	@Autowired
+	private JwtAuthFilter authFilter;
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return new UserInfoUserDetailsService();
-    }
+	@Bean
+	public UserDetailsService userDetailsService() {
+		return new UserInfoUserDetailsService();
+	}
 
 //    @Bean
 //     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -48,56 +46,48 @@ public class SecurityConfig {
 //                .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
 //                .build();
 //    }
-    @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.csrf().disable()
-                .authorizeHttpRequests()
-                    .requestMatchers("/referencedetails/**").permitAll() // Allow access to /users/login
-                    .requestMatchers("/referencetype/**").permitAll()// Allow access to all requests under /employee
-                    .anyRequest().permitAll() // Allow access to all other requests
-                .and()
-                .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authenticationProvider(authenticationProvider())
-                .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
-    }
-    
-//    @Bean
-//    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//       return http.csrf().disable()
-//               .authorizeHttpRequests()
-//               .requestMatchers("/products/signUp","/products/login","/products/refreshToken").permitAll()
-//               .and()
-//               .authorizeHttpRequests().requestMatchers("/products/all").hasAnyAuthority("ADMIN").requestMatchers("/products/{id}")
-//				.hasAnyAuthority("USER").anyRequest()
-//               .authenticated().and()
-//               .sessionManagement()
-//               .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//               .and()
-//               .authenticationProvider(authenticationProvider())
-//               .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
-//               .build();
-//   }
+	
+//	referencedetails/getById
+	@Bean
+	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		return http.csrf().disable().authorizeHttpRequests()
+				 .requestMatchers("/referencedetails/getById/{id}","/referencetype/getById/{id}",
+						 "/referencedetails/getByName/{name}").permitAll()
+	            .and().authorizeHttpRequests()
+				.requestMatchers("/referencedetails/getreference/{typeName}")
+				.hasAnyAuthority("Software Engineer", "Manager","Admin")
+				
+				.requestMatchers("/referencedetails/deleteSubskill/{referenceDetailId}",
+						"/referencedetails/deleteSkillCategory/{skillCategory}",
+						"/referencetype/save")
+				.hasAnyAuthority("Admin")
+				
+				.requestMatchers("/referencedetails/getreference/{typeName}")
+				.hasAnyAuthority("Manager")
+				
+				.anyRequest().authenticated()// Allow access to all other requests
+				.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+				.authenticationProvider(authenticationProvider())
+				.addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class).build();
+	}
 
 
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	@Bean
+	public AuthenticationProvider authenticationProvider() {
+		DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+		authenticationProvider.setUserDetailsService(userDetailsService());
+		authenticationProvider.setPasswordEncoder(passwordEncoder());
+		return authenticationProvider;
+	}
 
-    @Bean
-    public AuthenticationProvider authenticationProvider(){
-        DaoAuthenticationProvider authenticationProvider=new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailsService());
-        authenticationProvider.setPasswordEncoder(passwordEncoder());
-        return authenticationProvider;
-    }
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
-    }
+	@Bean
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+		return config.getAuthenticationManager();
+	}
 
 }
