@@ -64,21 +64,6 @@ public class CommonReferenceTypeController {
 	    }
 	}
 
-//	@GetMapping("/getref/{name}")
-//	public ResponseEntity<CommonReferenceTypeEntity> getReferenceTypeByName(@PathVariable String name) {
-//
-//		try {
-//			log.info("getting timesheet", name);
-//			CommonReferenceTypeEntity commonReferenceTypeEntity = commonReferenceType.getByTypeName(name);
-//			return new ResponseEntity<>(commonReferenceTypeEntity, HttpStatus.CREATED);
-//
-//		} catch (Exception e) {
-//			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//		}
-//
-//	}\
-	
-	
 	
 	@GetMapping("/getref/{name}")
 	public ResponseEntity<CommonReferenceTypeEntity> getReferenceTypeByName(@PathVariable String name) {

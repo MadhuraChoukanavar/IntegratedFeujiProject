@@ -74,9 +74,10 @@ import { AuthInterceptor } from './Auth/AuthInterceptor';
   ],
 
   providers: [UserService,TimesheetHomeService,
-    EmployeeService,DatePipe, provideAnimationsAsync(), provideAnimationsAsync('noop'),
-  AuthGuard,{provide:HTTP_INTERCEPTORS,useClass:AuthInterceptor,multi:true}],
-    bootstrap: [AppComponent],
+  EmployeeService,DatePipe, provideAnimationsAsync(), provideAnimationsAsync('noop'),
+AuthGuard,{provide:HTTP_INTERCEPTORS,useClass:AuthInterceptor,multi:true}],
+  bootstrap: [AppComponent],
+
 
 })
 export class AppModule { }

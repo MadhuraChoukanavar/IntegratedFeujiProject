@@ -23,7 +23,9 @@ export class LoginLayoutComponent {
     email: string='';
     password: string='';
 
-  constructor( private userService:UserService , private router: Router,private fb: FormBuilder,private authService:AuthService) {
+  constructor( private userService:UserService , private router: Router,
+    private fb: FormBuilder,private authService:AuthService) {
+
       this.formData = this.fb.group({
         email: ['', [Validators.required, Validators.email]],
         password: ['', [Validators.required, Validators.minLength(4)]]
@@ -43,9 +45,11 @@ export class LoginLayoutComponent {
 
       this.userService.login( email,password).subscribe((user: any) => {
         const token=user.accessToken;
-        this.authService.setAccessToken(token)
-        this.authService.setRole(user.userEntity.designation)
-        this.authService.setUser(user.userEntity)
+            console.log(token);
+            
+            this.authService.setAccessToken(token)
+            this.authService.setRole(user.userEntity.designation);
+            this.authService.setUser(JSON.stringify(user.userEntity))
 
         this.userService.getEmployeeByid(user.userEntity.userEmpId).subscribe(
           (result: any) => {
@@ -54,15 +58,16 @@ export class LoginLayoutComponent {
             console.log("this.empId DATA", this.empDataById);
             localStorage.setItem('user', JSON.stringify(this.empDataById));
             this.isLoggedIn = true;
-           
           },
           (error) => {
             console.error('Error fetching employee details', error);
           }
         );
-
+        
         const designation = user.userEntity.designation;
         console.log('User designation:', designation);
+       
+
         switch (designation) {
           case 'Admin':
             console.log("Navigated to admin page");

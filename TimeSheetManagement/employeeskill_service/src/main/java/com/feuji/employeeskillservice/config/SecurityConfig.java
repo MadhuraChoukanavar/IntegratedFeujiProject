@@ -47,11 +47,16 @@ public class SecurityConfig {
 //    }
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.csrf().disable()
-                .authorizeHttpRequests()
-                    .requestMatchers("/users/login").permitAll() // Allow access to /users/login
-                    .requestMatchers("/employee/**").permitAll()// Allow access to all requests under /employee
-                    .anyRequest().permitAll() // Allow access to all other requests
+        return http.csrf().disable().authorizeHttpRequests().
+
+                requestMatchers("/employeeskill/getBySkillId/{skillId}","/employeeskill/getAll/**")
+				.hasAnyAuthority("Software Engineer","Manager")
+                .requestMatchers("/employeeskill/update/{employeeSkillId}","/employeeskill/saverecord"
+                		,"/employeeskill/delete/{employeeSkillId}","/employeeskill/getEmployeeSkillById/{employeeId}")
+				.hasAnyAuthority("Software Engineer")
+				.requestMatchers("/employeeskill/getBySkillId/{skillId}","/employeeskill/getAll/**")
+				.hasAnyAuthority("Manager")
+				.anyRequest().authenticated()
                 .and()
                 .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

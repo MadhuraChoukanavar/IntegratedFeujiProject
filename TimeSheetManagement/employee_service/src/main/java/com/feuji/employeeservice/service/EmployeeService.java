@@ -2,12 +2,6 @@ package com.feuji.employeeservice.service;
 
 import java.util.List;
 
-
-import org.springframework.data.repository.query.Param;
-
-
-
-
 import com.feuji.employeeservice.bean.EmployeeBean;
 import com.feuji.employeeservice.dto.AddEmployee;
 import com.feuji.employeeservice.dto.EmployeeDisplayDto;
@@ -15,9 +9,8 @@ import com.feuji.employeeservice.dto.EmployeeDto;
 import com.feuji.employeeservice.dto.SaveEmployeeDto;
 import com.feuji.employeeservice.dto.SaveEmployeeUserDto;
 import com.feuji.employeeservice.dto.UpadteEmployeeDto;
-import com.feuji.employeeservice.entity.CommonReferenceDetailsEntity;
-import com.feuji.employeeservice.entity.CommonReferenceTypeEntity;
 import com.feuji.employeeservice.entity.EmployeeEntity;
+import com.feuji.employeeservice.exception.RecordsNotFoundException;
 
 public interface EmployeeService {
 
@@ -51,5 +44,6 @@ public interface EmployeeService {
 	EmployeeEntity delete(Integer employeeId);
 	public EmployeeEntity saveEmployeeAndUser(SaveEmployeeUserDto employeeUserDTO);
 	public  boolean isEmailUnique(String email);
+	public EmployeeBean findByEmail(String email) throws RecordsNotFoundException;
 	
 }

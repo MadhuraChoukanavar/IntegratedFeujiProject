@@ -160,6 +160,7 @@ public class SkillController {
 		}
 	}
 
+	
 	/**
 	 * Retrieves a SkillBean record from the database based on its skillUuid.
 	 *

@@ -47,13 +47,29 @@ public class SecurityConfig {
 //                .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
 //                .build();
 //    }
+    
+//    "/getBySkillId/{skillId}"
+    
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable()
                 .authorizeHttpRequests()
-                    .requestMatchers("/referencedetails/**").permitAll() // Allow access to /users/login
-                    .requestMatchers("/referencetype/**").permitAll()// Allow access to all requests under /employee
-                    .anyRequest().permitAll() // Allow access to all other requests
+                .requestMatchers("/skill/getBySkillId/{skillId}",
+                		"/skill/deleteSkill/{subSkillCategoryId}").permitAll()
+                .and().authorizeHttpRequests()
+                .requestMatchers("/skill/getAllForEmployee/{categoryId}","/skill/getAll/{categoryId}")
+				.hasAnyAuthority("Software Engineer", "Manager","Admin")
+				
+				
+				.requestMatchers("/skill/updateStatus")
+				.hasAnyAuthority("Admin")
+				
+				.requestMatchers("/getRoles/{technicalCatId}",
+						"/fetchBySkillId/{skillId}/{page}/{size}/{roleName}",
+						"/skill/getSkillNames/{skillIds}",
+						"/fetchallemployees/{skillIds}")
+				.hasAnyAuthority("Manager")
+				.anyRequest().authenticated()
                 .and()
                 .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

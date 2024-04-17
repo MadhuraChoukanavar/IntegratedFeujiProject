@@ -65,6 +65,7 @@ public class CommonReferenceTypeImpl  implements CommonReferenceType{
 	 @Override
 		public String getNameById(int id) {
 			log.info("getByid() started");
+			log.info("---");
 			String nameById = commonReferenceTypeRepo.getNameById(id);
 			if (nameById != null) {
 				log.info("getByid() ended");

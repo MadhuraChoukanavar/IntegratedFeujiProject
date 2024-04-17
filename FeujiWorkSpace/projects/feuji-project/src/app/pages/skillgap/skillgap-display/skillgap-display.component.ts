@@ -7,6 +7,7 @@ import { EmployeesSkillsListDto } from '../../../../models/EmployeesSkillsListDt
 import { SkillsBean } from '../../../../models/SkillsBean.model';
 import { SkillNamesDto } from '../../../../models/SkillNamesDto.model';
 import Swal from 'sweetalert2';
+import { SkillCompetency } from '../../../../models/SkillCompetency.model';
 
 
 @Component({
@@ -17,17 +18,18 @@ import Swal from 'sweetalert2';
 export class SkillgapDisplayComponent implements OnInit {
 
   empSkills: EmployeesSkillsListDto[] = [];
-  skillNames: SkillNamesDto[] = [];
+  skillNames: string[] = [];
   skillCatogoryInput: string = 'Skill Category';
   skillCategories: any[] = [];
   selectedSkillCate: string = '';
-  selectedTechnicalCate: string='';
+  selectedTechnicalCate: string = '';
   selectedDesgn: string = '';
-  selectedRoleName: string='';
+  selectedRoleName: string = '';
   isBorderBlue: boolean = false;
   isBorderBlue2: boolean = false;
   isBorderBlue3: boolean = false;
-
+  skillompetencyBean: SkillCompetency[] = [];
+  skillType: SkillNamesDto[] = [];
   empValues: EmployeesSkillsListDto[] = [];
   technicalCategories: any[] = [];
   empName: string = "";
@@ -41,20 +43,21 @@ export class SkillgapDisplayComponent implements OnInit {
   uniqueRoles: { [key: string]: number[] } = {};
   uniqueRoleNames: string[] = [];
   skillIds: number[] = [];
-  empMail: string='';
+  empMail: string = '';
 
   constructor(private http: HttpClient, private empskillService: EmployeeSkillService) { }
 
   /**
    *  Fetches skill categories from the backend
    *  Displays an error message if fetching fails
-   */
+   */
+  public user: any = null;
   ngOnInit(): void {
-    const email = localStorage.getItem("Email");
-  if (email) {
-    this.empMail = JSON.parse(email);
-  }
-
+    var temp = localStorage.getItem("user");
+    if (temp != null && temp != undefined) {
+      this.user = JSON.parse(temp);
+    }
+    this.empMail = this.user.email;
     this.empskillService.getSkillCategories(this.skillCatogoryInput).subscribe(
       (resp) => {
         this.skillCategories = resp;
@@ -72,19 +75,19 @@ export class SkillgapDisplayComponent implements OnInit {
 
   /**
    * Change the border style to blue
-   */
+   */
   changeBorderStyle() {
     this.isBorderBlue = true;
   }
   /**
    * Change the border style to blue
-   */
+   */
   changeBorderStyle2() {
     this.isBorderBlue2 = true;
   }
   /**
    * Change the border style to blue
-   */
+   */
   changeBorderStyle3() {
     this.isBorderBlue3 = true;
   }
@@ -93,7 +96,7 @@ export class SkillgapDisplayComponent implements OnInit {
    * Update the selected skill category
    * Fetch technical categories based on the selected skill category
    * Display an error message if fetching fails
-   */
+   */
   onSelectskillCat(skillcat: any) {
 
     this.selectedSkillCate = skillcat.target.value;
@@ -119,7 +122,7 @@ export class SkillgapDisplayComponent implements OnInit {
    *  Fetch roles based on the selected value
    *  Organize roles into unique groups and update uniqueRoleNames
    *  Display an error message if fetching fails
- */
+ */
   onSelectTechCat(techCat: any) {
 
     const values = techCat.target.value.split(',');
@@ -129,6 +132,7 @@ export class SkillgapDisplayComponent implements OnInit {
     this.uniqueRoles = {} as { [key: string]: any[] };
     this.empskillService.getRoles(val)
       .subscribe((res2) => {
+        this.skillompetencyBean = res2;
         res2.forEach((skillComp: any) => {
           const { roleName, skillId } = skillComp;
 
@@ -157,9 +161,10 @@ export class SkillgapDisplayComponent implements OnInit {
    *  Check if the selected role name exists in uniqueRoles
    *  If it exists, update skillIds with the corresponding skill IDs
    *  If not, display an error message
-   */
+   */
   onSelectRole(role: any) {
-    this.page=0;
+
+    this.page = 0;
     this.selectedRoleName = role.target.value;
     if (this.uniqueRoles.hasOwnProperty(this.selectedRoleName)) {
       this.skillIds = this.uniqueRoles[this.selectedRoleName];
@@ -178,7 +183,7 @@ export class SkillgapDisplayComponent implements OnInit {
   /**
    *  Increment the page number
    * Trigger the search function
-   */
+   */
   onNext() {
     this.page = this.page + 1;
     this.onsearch();
@@ -187,7 +192,7 @@ export class SkillgapDisplayComponent implements OnInit {
   /**
    * Decrement the page number
    * Trigger the search function
-   */
+   */
   onPrevious() {
     this.page = this.page - 1;
     this.onsearch();
@@ -196,7 +201,7 @@ export class SkillgapDisplayComponent implements OnInit {
   /**
    * Set the page number to the last page
    * Trigger the search function
-   */
+   */
   onLast() {
     this.page = this.totalPages - 1;
     this.onsearch();
@@ -205,7 +210,7 @@ export class SkillgapDisplayComponent implements OnInit {
   /**
    * Set the page number to the first page
    * Trigger the search function
-   */
+   */
   onFirst() {
     this.page = 0;
     this.onsearch();
@@ -215,22 +220,23 @@ export class SkillgapDisplayComponent implements OnInit {
    * Update the page size
    *  Reset the page number to the first page
    *  Trigger the search function
-   */
+   */
   onSelectPageSize(size: any) {
     this.size = size.target.value;
     this.page = 0;
     this.onsearch();
   }
-  
+
   /**
    * Fetch employee skills by skill ID, page number, and page size
     * Update pagination information and employee skills data
     * Fetch skill names associated with the skill IDs
     * Display error message if fetching skill names fai
-   */
+   */
   onsearch() {
-    
-    this.empskillService.getEmployeSkillsBySkillId(this.skillIds, this.page, this.size)
+    this.skillType = [];
+    const rolename = this.selectedRoleName;
+    this.empskillService.getEmployeSkillsBySkillId(this.skillIds, this.page, this.size, rolename)
       .pipe(
         switchMap((res) => {
           this.first = res.first;
@@ -247,7 +253,20 @@ export class SkillgapDisplayComponent implements OnInit {
 
     this.empskillService.getSkillNames(this.skillIds).
       subscribe((resp) => {
-        this.skillNames = resp;
+        // this.skillType=resp;
+        const uniqueSkillNames: string[] = [];
+
+        // Iterate over the response and add unique skill names
+        resp.forEach(skillNameDto => {
+          const skillName = skillNameDto.skillName;
+          if (!uniqueSkillNames.includes(skillName)) {
+            uniqueSkillNames.push(skillName);
+            this.skillType.push(skillNameDto);
+          }
+        });
+
+        // Assign the unique skill names array
+        this.skillNames = uniqueSkillNames;
       },
         (error) => {
           Swal.fire({
@@ -311,30 +330,30 @@ export class SkillgapDisplayComponent implements OnInit {
     }
     return (exLevel - acLevel);
   }
-  
+
   /**
    *  Determine the competency text based on the competency level ID
    *  Return a string containing expected competency, actual competency, and gap  
-   */
+   */
   getCompetencyText(skillBean: SkillsBean): string {
-    let value:number= this.generateResultForImg(skillBean.expectedCompetency,skillBean.actualCompetency)
+    let value: number = this.generateResultForImg(skillBean.expectedCompetency, skillBean.actualCompetency)
     switch (value) {
       case 0:
         return 'Expected: ' + skillBean.expectedCompetency +
-         '\nActual: ' + skillBean.actualCompetency + 
-         '\nGap: ' + 'No Gap';
+          '\nActual: ' + skillBean.actualCompetency +
+          '\nGap: ' + 'No Gap';
       case -1:
-        return 'Expected: ' +skillBean.expectedCompetency  + 
-        '\nActual: ' + skillBean.actualCompetency + 
-        '\nGap: ' + 'Expert';
+        return 'Expected: ' + skillBean.expectedCompetency +
+          '\nActual: ' + skillBean.actualCompetency +
+          '\nGap: ' + 'Expert';
       case 1:
-        return 'Expected: ' + skillBean.expectedCompetency   + 
-        '\nActual: ' + skillBean.actualCompetency + 
-        '\nGap: ' + 'Low Gap';
+        return 'Expected: ' + skillBean.expectedCompetency +
+          '\nActual: ' + skillBean.actualCompetency +
+          '\nGap: ' + 'Low Gap';
       default:
-        return  'Expected: ' + skillBean.expectedCompetency   + 
-        '\nActual: ' + skillBean.actualCompetency + 
-        '\nGap: High Gap';
-    }
-  }
+        return 'Expected: ' + skillBean.expectedCompetency +
+          '\nActual: ' + skillBean.actualCompetency +
+          '\nGap: High Gap';
+    }
+  }
 }

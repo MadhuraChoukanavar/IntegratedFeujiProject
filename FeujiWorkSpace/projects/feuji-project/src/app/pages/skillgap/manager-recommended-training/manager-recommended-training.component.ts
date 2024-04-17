@@ -33,7 +33,8 @@ export class ManagerRecommendedTrainingComponent {
 
 
 
-  constructor(private employeeSkillService: EmployeeSkillService, public dialog: MatDialog, private subSkillDataSevice: SubSkillData) {
+  constructor(private employeeSkillService: EmployeeSkillService, 
+    public dialog: MatDialog, private subSkillDataSevice: SubSkillData) {
 
   }
   ngOnInit(): void {
@@ -51,6 +52,7 @@ export class ManagerRecommendedTrainingComponent {
     this.employeeSkillService.getTechnicalCategory(selectedSkillCategory).subscribe((subSkills: any[]) => {
       this.accordionSubData = subSkills;
       this.subSkillDataSevice.updateAccordionSubData(subSkills);
+      console.log(" sub categories --",this.accordionSubData)
     });
     console.log(this.accordionSubData);
   }
@@ -63,6 +65,8 @@ export class ManagerRecommendedTrainingComponent {
     this.selectedSubItem = this.accordionSubData.find(item => item.referenceDetailId === techCat);
     this.calculateSize();
     this['selectedSubTechCat'] = this.selectedSubItem ? this.selectedSubItem.referenceDetailValue : 'N/A';
+    console.log(techCat);
+    
     this.employeeSkillService.getSkills(techCat).subscribe((skills: any[]) => {
       this.allSkills = skills;
       console.log(this.allSkills);

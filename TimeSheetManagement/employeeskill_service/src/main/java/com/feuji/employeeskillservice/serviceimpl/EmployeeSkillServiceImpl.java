@@ -311,6 +311,7 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 		log.info(" getAllEmployeeSkills() started: in EmployeeSkillServiceImpl");
 		if (email != null) {
 			EmployeeBean employee = getEmployeeByEmail(email);
+			log.info(employee.toString());
 			List<EmployeeSkillBean> findAll = getEmployeeSkillById(employee.getEmployeeId());
 			List<EmployeeSkillGet> list = new ArrayList<>();
 			for (EmployeeSkillBean bean : findAll) {
