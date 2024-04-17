@@ -55,8 +55,8 @@ export class UpdateProjectComponent implements OnInit {
     this.accountProjectService.updateAccountProject(this.accountProject).subscribe({
       next: (res) => {
         this.accountProjectdetails = res;
-        alert(this.accountProject)
-        alert(this.accountProjectdetails);
+        // alert(this.accountProject)
+        // alert(this.accountProjectdetails);
         console.log(this.accountProjectdetails);
         
         Swal.fire('Success', 'Data updated', 'success');

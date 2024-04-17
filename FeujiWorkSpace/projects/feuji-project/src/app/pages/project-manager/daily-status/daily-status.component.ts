@@ -469,7 +469,7 @@ export class DailyStatusComponent implements OnInit {
     const selectedAccount = event.target.value;
     console.log(selectedAccount);
     this.accountId = 2;
-    alert(this.selectedAccount);
+  //  alert(this.selectedAccount);
     this.timesheetService
       .getProjectsByAccountId(this.userEmpId, this.year, this.accountId)
       .subscribe(

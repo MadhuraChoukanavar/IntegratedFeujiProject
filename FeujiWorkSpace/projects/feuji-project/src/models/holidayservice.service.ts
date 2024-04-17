@@ -30,7 +30,7 @@ export class HolidayService {
   deleteRow(holidayId:any){
     console.log("entered service remove",holidayId);
     const headers=new HttpHeaders({'content-Type':'application/json'});
-    return this.http.delete<Holiday>(`${this.apiUrl}/${holidayId}`);
+    return this.http.delete<Holiday>(`${this.apiUrl}/delete/${holidayId}`);
     
   }
 

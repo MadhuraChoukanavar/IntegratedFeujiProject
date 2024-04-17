@@ -31,7 +31,8 @@ public class SecurityConfig {
 		return new UserInfoUserDetailsService();
 	}
 
-	@Bean
+
+    @Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http.csrf().disable().authorizeHttpRequests()
 				 .requestMatchers("/referencedetails/getById/{id}","/referencetype/getById/{id}",
@@ -50,6 +51,7 @@ public class SecurityConfig {
 				.authenticationProvider(authenticationProvider())
 				.addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class).build();
 	}
+
 
 
 	@Bean

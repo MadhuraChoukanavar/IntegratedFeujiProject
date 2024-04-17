@@ -54,7 +54,7 @@ export class HolidayComponent  implements OnInit
 
 
   navigateeditholiday(holiday: any) {
-    alert("navigate")
+    //alert("navigate")
     // console.log(holidayDetails);
     this.router.navigate(["/admin/edit-holiday"], { state: { holiday } })
 

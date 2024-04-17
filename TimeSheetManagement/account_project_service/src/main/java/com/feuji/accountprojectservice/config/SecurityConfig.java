@@ -51,9 +51,16 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable()
                 .authorizeHttpRequests()
-                    .requestMatchers("/users/login").permitAll() // Allow access to /users/login
-                    .requestMatchers("/employee/**").permitAll()// Allow access to all requests under /employee
-                    .anyRequest().permitAll() // Allow access to all other requests
+                    .requestMatchers("/AccountProjectResourceMapping/accountdetails/All").hasAuthority("Admin") // Allow access to /users/login
+                   
+          
+               
+                .requestMatchers("/accountProjects/**").permitAll() // Allow access to /users/login
+               
+                .requestMatchers("/accountProjectTaskType/**").permitAll()// Allow access to /users/login
+                
+                .anyRequest()
+                .authenticated() // Allow access to /users/login
                 .and()
                 .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

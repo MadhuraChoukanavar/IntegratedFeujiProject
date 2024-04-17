@@ -7,20 +7,16 @@ import { TimesheetWeekApprovalService } from '../../../../models/timesheet-week-
 @Component({
   selector: 'app-timesheetapprove',
   templateUrl: './timesheetapprove.component.html',
-  styleUrl: './timesheetapprove.component.css'
+  styleUrls: ['./timesheetapprove.component.css'] // corrected 'styleUrl' to 'styleUrls'
 })
 export class TimesheetapproveComponent implements OnInit {
-  timesheets: any[] = [];;
-
+  timesheets: any[] = [];
   public weekTimeSheet: any = [];
   public timesheetData: any[] = [];
   public account: any[] = [];
-
-
   public months: string[] = ['All', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   public years: number[] = [];
   public accountName: string[] = [];
-
   public selectedMonth: string = '';
   public selectedYear: number;
   public year: number = 2024;
@@ -28,15 +24,14 @@ export class TimesheetapproveComponent implements OnInit {
   public accounts: any[] = [];
   public employee: any[] = [];
   public accountId: number = 0;
-  public employeeId: number = 0;
+  public empId: number = 0;
   public userEmpId: number = 0;
-
   selectedAccount: any;
 
   constructor(private timesheetService: TimesheetWeekApprovalService, private router: Router) {
     const currentDate = new Date();
     this.selectedMonth = this.months[currentDate.getMonth() + 1];
-    this.selectedAccount = 2
+    this.selectedAccount = 0;
     this.selectedYear = currentDate.getFullYear();
 
     const userData = JSON.parse(localStorage.getItem('user') || '{}');
@@ -59,6 +54,8 @@ export class TimesheetapproveComponent implements OnInit {
     this.timesheetService.getAllTimesheets()
       .subscribe(
         (data) => {
+          console.log(data);
+
           this.weekTimeSheet = data;
         },
         (error) => {
@@ -66,7 +63,6 @@ export class TimesheetapproveComponent implements OnInit {
         }
       );
   }
-
 
   get filteredEmployees() {
     return this.employee.filter(emp => emp.firstName.toLowerCase().includes(this.searchText.toLowerCase()));
@@ -87,38 +83,10 @@ export class TimesheetapproveComponent implements OnInit {
             console.error('Error fetching timesheets:', error);
           }
         );
-
     } else {
       console.error('Selected account ID is null or undefined.');
     }
   }
-
-
-// OnSelectAccountByAccountId(event:any) {
-
-
-//  const selectedAccount = event.target.value;
-
-//  this.accountId=Number(selectedAccount);
-
-
-//   this.selectedAccount;
-//   this.timesheetService.getProjectsByAccountId(this.userEmpId,this.year,this.accountId)
-//   .subscribe(
-//     (resp) => {
-
-//       this.weekTimeSheet=resp;
-
-//       console.log(this.weekTimeSheet)
-//       console.log(resp)
-//     },
-//     (error) => {
-//       console.error(error);
-//     }
-//   );
-// }
-
-
 
   OnSelectAccountByMonth(event: any) {
     this.selectedMonth = event.target.value;
@@ -126,6 +94,7 @@ export class TimesheetapproveComponent implements OnInit {
     this.timesheetService.fetchData(this.selectedMonth, this.year, this.accountId)
       .subscribe(
         (resp) => {
+          console.log(resp);
           this.weekTimeSheet = resp;
         },
         (error) => {
@@ -134,34 +103,30 @@ export class TimesheetapproveComponent implements OnInit {
       );
   }
 
-
-
   OnSelectAccount(event: any) {
-    const employeeId = event.target.value;
+    if (!this.selectedAccount || !this.selectedMonth) {
+      alert('Please select Account and Month before searching.');
+      return;
+    }
+    const empId = event.target.value;
     const month1 = this.selectedMonth;
-    this.timesheetService.getProjects(this.userEmpId, month1, this.year, this.accountId, this.employeeId).subscribe(
+    this.timesheetService.getProjects(this.userEmpId, month1, this.year, this.accountId, this.empId).subscribe(
       (resp) => {
-
+        console.log(resp);
         this.weekTimeSheet = resp;
       },
       (error) => {
         console.error(error);
       }
     );
+
     return this.employee.filter(emp => emp.firstName.toLowerCase().includes(this.searchText.toLowerCase()));
   }
 
-
-
   goToView(weekTimesheet: timesheetWeekApproval) {
-    weekTimesheet.employeeId = this.employeeId;
+    weekTimesheet.employeeId = this.empId;
     weekTimesheet.accountId = this.accountId;
 
     this.router.navigate(['/manager/dailyStatus'], { state: { weekTimesheet: weekTimesheet } });
   }
-
-}
-
-function subscribe(arg0: (resp: any) => void, arg1: (error: any) => void) {
-  throw new Error('Function not implemented.');
 }

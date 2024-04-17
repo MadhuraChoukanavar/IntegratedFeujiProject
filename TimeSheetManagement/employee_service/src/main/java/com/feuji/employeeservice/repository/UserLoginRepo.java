@@ -9,5 +9,6 @@ import com.feuji.employeeservice.entity.UserLoginEntity;
 public interface UserLoginRepo extends JpaRepository<UserLoginEntity, Integer>{
 	
 	Optional<UserLoginEntity> findByUserEmail(String userEmail);
+//	Optional<UserLoginEntity> findByUserEmail(String userEmail);
 
 }

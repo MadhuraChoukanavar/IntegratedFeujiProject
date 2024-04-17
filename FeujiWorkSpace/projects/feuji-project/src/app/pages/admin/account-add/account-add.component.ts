@@ -29,7 +29,7 @@ export class AccountAddComponent implements OnInit{
 
  constructor(private accountService: AccountserviceService) {}
  sendAccount() {
-  alert("entrinf")
+  // alert("entrinf")
   console.log(this.acc);
   this.accountService.saveAccount(this.acc).subscribe(res=>this.account=res);
 

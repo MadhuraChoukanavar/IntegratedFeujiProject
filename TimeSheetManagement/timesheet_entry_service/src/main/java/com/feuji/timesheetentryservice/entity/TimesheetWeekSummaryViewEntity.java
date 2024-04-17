@@ -31,9 +31,9 @@ public class TimesheetWeekSummaryViewEntity {
 	private Integer weekNumber;
 	private String projectName;
 	private Integer accountProjectId;
-	private Double totalBillingHours;
-	private Double totalNonBillingHours;
-	private Double totalLeaveHours;
+	private Long totalBillingHours;
+	private Long totalNonBillingHours;
+	private Long totalLeaveHours;
 	private String timesheetStatus;
 	private Timestamp weekStartDate;
 	private Timestamp weekEndDate;

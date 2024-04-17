@@ -54,8 +54,8 @@ this.getEmployeeName();
     this.accountService.updateAccount(this.acc).subscribe({
       next: (res) => {
         this.account = res;
-        alert(this.acc)
-        alert(this.account)
+       // alert(this.acc)
+       // alert(this.account)
         console.log(this.account);
         
         Swal.fire('Success', 'Data updated', 'success');

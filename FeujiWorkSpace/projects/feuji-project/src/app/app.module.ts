@@ -70,13 +70,14 @@ import { AuthInterceptor } from './Auth/AuthInterceptor';
     MatHeaderCell,
     MatRow,
     MatTooltipModule,
-    MatRadioModule
+    MatRadioModule
   ],
 
   providers: [UserService,TimesheetHomeService,
   EmployeeService,DatePipe, provideAnimationsAsync(), provideAnimationsAsync('noop'),
 AuthGuard,{provide:HTTP_INTERCEPTORS,useClass:AuthInterceptor,multi:true}],
   bootstrap: [AppComponent],
+
 
 })
 export class AppModule { }

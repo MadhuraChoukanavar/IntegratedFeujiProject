@@ -1,7 +1,6 @@
 package com.feuji.timesheetentryservice.serviceimpl;
 
 import java.sql.Timestamp;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DateTimeException;
@@ -31,6 +30,9 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import com.feuji.timesheetentryservice.bean.AccountProjectTaskTypeBean;
@@ -110,7 +112,7 @@ public class TimesheetDataServiceImpl implements TimeSheetDataService {
 			if (getprojectIdOfWeek.size() == 0
 					|| !getprojectIdOfWeek.contains(weekAndDayDataBean.getAccountProjectId())) {
 
-				TimesheetWeekEntity timesheetWeekEntity = createTimesheetWeekEntity(currentWeekNumber,
+ 				TimesheetWeekEntity timesheetWeekEntity = createTimesheetWeekEntity(currentWeekNumber,
 						weekAndDayDataBean, mondayDatee);
 				weekEntityList.add(timesheetWeekEntity);
 				timesheetWeekRepo.save(timesheetWeekEntity);
@@ -345,21 +347,96 @@ public class TimesheetDataServiceImpl implements TimeSheetDataService {
 		return referenceDetailsBean;
 	}
 
+//	public AccountProjectsBean getAccountIdFromProjectId(Integer accountId) {
+//		log.info("Connecting to AccountProject server...");
+//		String url = "http://localhost:8083/api/accountProjects/getAccountProject/" + accountId;
+//
+//		HttpHeaders headers = new HttpHeaders();
+//		headers.setContentType(MediaType.APPLICATION_JSON);
+//
+//		HttpEntity<String> httpEntity = new HttpEntity<>(headers);
+//		ResponseEntity<AccountProjectsBean> responseEntity = restTemplate.exchange(url, HttpMethod.GET, httpEntity,
+//				AccountProjectsBean.class);
+//
+//		AccountProjectsBean accountProjectsBean = responseEntity.getBody();
+//		return accountProjectsBean;
+//
+//	}
+//	public AccountProjectsBean getAccountIdFromProjectId(Integer accountId) {
+//	    try {
+//	        log.info("Connecting to AccountProject server...");
+//	        String url = "http://localhost:8083/api/accountProjects/getAccountProject/" + accountId;
+//
+//	        HttpHeaders headers = new HttpHeaders();
+//	        headers.setContentType(MediaType.APPLICATION_JSON);
+//
+//	        HttpEntity<String> httpEntity = new HttpEntity<>(headers);
+//	        ResponseEntity<AccountProjectsBean> responseEntity = restTemplate.exchange(url, HttpMethod.GET, httpEntity,
+//	                AccountProjectsBean.class);
+//
+//	        AccountProjectsBean accountProjectsBean = responseEntity.getBody();
+//	        return accountProjectsBean;
+//	    } catch (HttpClientErrorException e) {
+//	        log.error("HttpClientErrorException occurred while connecting to AccountProject server: {}", e.getMessage());
+//	        // Handle HttpClientErrorException, e.g., log or throw custom exception
+//	        return null;
+//	    } catch (HttpServerErrorException e) {
+//	        log.error("HttpServerErrorException occurred while connecting to AccountProject server: {}", e.getMessage());
+//	        // Handle HttpServerErrorException, e.g., log or throw custom exception
+//	        return null;
+//	    } catch (RestClientException e) {
+//	        log.error("RestClientException occurred while connecting to AccountProject server: {}", e.getMessage());
+//	        // Handle RestClientException, e.g., log or throw custom exception
+//	        return null;
+//	    } catch (Exception e) {
+//	        log.error("An unexpected error occurred while connecting to AccountProject server: {}", e.getMessage());
+//	        // Handle any other unexpected exception, e.g., log or throw custom exception
+//	        return null;
+//	    }
+//	}
+//
+	
 	public AccountProjectsBean getAccountIdFromProjectId(Integer accountId) {
-		log.info("Connecting to AccountProject server...");
-		String url = "http://localhost:8083/api/accountProjects/getAccountProject/" + accountId;
+	    try {
+	        log.info("Connecting to AccountProject server...");
+	        String url = "http://localhost:8083/api/accountProjects/getAccountProject/" + accountId;
+	        
+	        HttpHeaders headers = new HttpHeaders();
+	        headers.setContentType(MediaType.APPLICATION_JSON);
 
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
+	        HttpEntity<String> httpEntity = new HttpEntity<>(headers);
+	        ResponseEntity<AccountProjectsBean> responseEntity = restTemplate.exchange(url, HttpMethod.GET, httpEntity,
+	                AccountProjectsBean.class);
 
-		HttpEntity<String> httpEntity = new HttpEntity<>(headers);
-		ResponseEntity<AccountProjectsBean> responseEntity = restTemplate.exchange(url, HttpMethod.GET, httpEntity,
-				AccountProjectsBean.class);
+	        AccountProjectsBean accountProjectsBean = responseEntity.getBody();
 
-		AccountProjectsBean accountProjectsBean = responseEntity.getBody();
-		return accountProjectsBean;
-
+	        if (accountProjectsBean != null) {
+	            log.info("Received AccountProjectsBean from AccountProject server: {}", accountProjectsBean);
+	            return accountProjectsBean;
+	        } else {
+	            log.error("Received null response from AccountProject server");
+	            // Handle the case where the response is null, e.g., throw custom exception or return default value
+	            return null;
+	        }
+	    } catch (HttpClientErrorException e) {
+	        log.error("HttpClientErrorException occurred while connecting to AccountProject server: {}", e.getMessage());
+	        // Handle HttpClientErrorException, e.g., log or throw custom exception
+	        return null;
+	    } catch (HttpServerErrorException e) {
+	        log.error("HttpServerErrorException occurred while connecting to AccountProject server: {}", e.getMessage());
+	        // Handle HttpServerErrorException, e.g., log or throw custom exception
+	        return null;
+	    } catch (RestClientException e) {
+	        log.error("RestClientException occurred while connecting to AccountProject server: {}", e.getMessage());
+	        // Handle RestClientException, e.g., log or throw custom exception
+	        return null;
+	    } catch (Exception e) {
+	        log.error("An unexpected error occurred while connecting to AccountProject server: {}", e.getMessage());
+	        // Handle any other unexpected exception, e.g., log or throw custom exception
+	        return null;
+	    }
 	}
+
 
 	public AccountProjectTaskTypeBean getAccountTaskType(Integer taskTypeId) {
 		log.info("Connecting to other server...");

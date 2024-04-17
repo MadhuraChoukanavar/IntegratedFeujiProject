@@ -51,9 +51,16 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable()
                 .authorizeHttpRequests()
-                    .requestMatchers("/referencedetails/**").permitAll() // Allow access to /users/login
-                    .requestMatchers("/referencetype/**").permitAll()// Allow access to all requests under /employee
-                    .anyRequest().permitAll() // Allow access to all other requests
+                    .requestMatchers("/holiday/save","/holiday/update","/holiday/delete/**").hasAnyAuthority("Admin") // Allow access to /users/login
+                    .requestMatchers("/holiday/{holidayId}","/holiday/{holidayId}").hasAnyAuthority("Admin","Manager","Software Engineer") // Allow access to /users/login
+                    
+                    .requestMatchers("/timesheetdata/**","/timesheetday/**","/timesheet/**").hasAnyAuthority("Manager","Software Engineer") // Allow access to /users/login
+                  
+                    
+                    .requestMatchers("/TimesheetWeekSummaryView/**").hasAnyAuthority("Manager")
+                    .anyRequest()
+                    .authenticated()// Allow access to all requests under /employee
+                     // Allow access to all other requests
                 .and()
                 .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

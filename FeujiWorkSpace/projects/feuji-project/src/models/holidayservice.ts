@@ -17,9 +17,9 @@ export class HolidayService {
       return this.http.post<Holiday>(`http://localhost:8084/api/holiday`,holiday);
   }
 
-  // deleteHoliday(HolidayId:number){
-  //   console.log(HolidayId);
-  //   return this.http.delete(`http://localhost:8088/stud/delete/${HolidayId}`);
+  deleteHoliday(HolidayId:number){
+    console.log(HolidayId);
+    return this.http.delete(`http://localhost:8088/api/holiday/delete/${HolidayId}`);
 
-  // }
+  }
 }

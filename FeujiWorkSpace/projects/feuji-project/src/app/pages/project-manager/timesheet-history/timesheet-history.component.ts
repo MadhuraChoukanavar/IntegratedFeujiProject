@@ -56,12 +56,10 @@ getAccountBymonthAndYear(): void {
 
   this.timesheetService.fetchAccountBymonthAndYear(this.selectedMonth, this.selectedYear,this.currentUser)
     .subscribe(acc => {
-      console.log("asdfghjklkjhgfdsdfghjk"+acc);
-
+      
       // Assigning the selected account name to the first account name in the array
       this.selectedAccountName = acc[0].accountName;
-      console.log("asdfghjklkjhgfdsdfghjk"+this.selectedAccountName);
-      // Fetch data after getting the account name
+     
        this.fetchData();
     });
 }
@@ -71,6 +69,10 @@ fetchData(): void {
   console.log(
     this.selectedAccountName
   )
+  console.log(this.selectedYear);
+  console.log(this.currentUser);
+  
+  
   if (this.selectedMonth === 'All') {
       this.timesheetService.fetchAllData( this.selectedYear,this.selectedAccountName,this.currentUser)
     .subscribe(data => {

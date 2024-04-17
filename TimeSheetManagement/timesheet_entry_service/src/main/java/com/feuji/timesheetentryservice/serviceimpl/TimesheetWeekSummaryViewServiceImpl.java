@@ -15,6 +15,9 @@ import org.springframework.stereotype.Service;
 import com.feuji.timesheetentryservice.dto.AccountNameDto;
 import com.feuji.timesheetentryservice.dto.ProjectNameDto;
 import com.feuji.timesheetentryservice.dto.TimeSheeApprovalDto;
+
+import com.feuji.timesheetentryservice.dto.TimeSheetHistoryDto;
+import com.feuji.timesheetentryservice.dto.TimesheetApprovalSecondDto;
 import com.feuji.timesheetentryservice.entity.TimesheetWeekSummaryViewEntity;
 import com.feuji.timesheetentryservice.repository.TimesheetWeekSummaryRepo;
 import com.feuji.timesheetentryservice.service.TimesheetWeekSummaryService;
@@ -37,11 +40,12 @@ public class TimesheetWeekSummaryViewServiceImpl implements TimesheetWeekSummary
 	     }
 	     return timesheets;
 	 }
+	 
 	 @Override
-	 public List<ProjectNameDto> getAccountProjects(Integer accountId,Integer employeeId) {
+	 public List<TimesheetApprovalSecondDto> getAccountProjects(Integer accountId,Integer approvedBy) {
 	     try {
 	         log.info("Fetching account projects for accountId: {}", accountId);
-	         List<ProjectNameDto> accountProjects = timesheetWeekSummaryRepo.getAccountProjects(accountId,employeeId);
+	         List<TimesheetApprovalSecondDto> accountProjects = timesheetWeekSummaryRepo.getAccountProjects(accountId,approvedBy);
 	         return accountProjects;
 	     } catch (Exception e) {
 	         log.error("Error occurred while fetching account projects: {}", e.getMessage());
@@ -72,75 +76,36 @@ public class TimesheetWeekSummaryViewServiceImpl implements TimesheetWeekSummary
 	     }    
 	}
 	 
+//	--------------------
 	 @Override
-	 public List<AccountNameDto> getAccounts(String approvedBy) {
-	     try {
-	         log.info("Fetching accounts for approvedBy: {}", approvedBy);
-	         // Ensure that approvedBy is used as an integer if it's meant to be an integer
-	         // If approvedBy is an integer, consider changing the parameter type to Integer instead of String
-	         List<AccountNameDto> accounts = timesheetWeekSummaryRepo.getAccounts(approvedBy);
-	         return accounts != null ? accounts : Collections.emptyList(); // Return empty list if accounts is null
-	     } catch (Exception e) {
-	         log.error("Error occurred while fetching accounts: {}", e.getMessage());
-	         return Collections.emptyList(); // Return empty list in case of exception
+	 public List<TimesheetApprovalSecondDto> getAllTimesheets() {
+	     List<TimesheetApprovalSecondDto> dtos = new ArrayList<>();
+	     List<TimesheetWeekSummaryViewEntity> entities = timesheetWeekSummaryRepo.findAll();
+	     for (TimesheetWeekSummaryViewEntity entity : entities) {
+	         TimesheetApprovalSecondDto dto = new TimesheetApprovalSecondDto();
+	         
+	         // Map entity fields to DTO fields
+	         dto.setEmployeeId(entity.getEmployeeId());
+	         dto.setWeekStartDate(entity.getWeekStartDate());
+	         dto.setWeekEndDate(entity.getWeekEndDate());
+	         dto.setPlannedStartDate(entity.getPlannedStartDate());
+	         dto.setPlannedEndDate(entity.getPlannedEndDate());
+//	         dto.setAccountName(entity.getAccountId());  // Uncommented line
+	         dto.setDesignation(entity.getDesignation());
+//	         dto.setManagerId(entity.getManagerId());  // Uncommented line
+	         dto.setEmail(entity.getEmail());
+	         dto.setEmpCode(entity.getEmployeeCode());
+	         dto.setFullName(entity.getFullName());
+	         dto.setProjectName(entity.getProjectName());
+	         dto.setBillingHours(entity.getTotalBillingHours());
+	         dto.setNonBillinghours(entity.getTotalNonBillingHours());
+	         dto.setLeaveDays(entity.getTotalLeaveHours());
+	         dto.setTimesheetStatus(entity.getTimesheetStatus());
+	         
+	         dtos.add(dto);
 	     }
+	     return dtos;
 	 }
-
-	 @Override
-	 public List<TimeSheeApprovalDto> getTimesheetsForFirstAccountAndCurrentMonth(Integer approvedBy) {
-	     // Implement logic to get the ID of the first account from the dropdown
-	     Integer accountId = getFirstAccountId(approvedBy);
-
-	     // Implement logic to get the current month and year
-	     Calendar now = Calendar.getInstance();
-	     int month = now.get(Calendar.MONTH) + 1; // Adding 1 because Calendar.MONTH is zero-based
-	     int year = now.get(Calendar.YEAR);
-
-	     // Retrieve timesheets from repository for the first account and current month/year
-	     if (accountId != null) { 
-
-	         List<TimesheetWeekSummaryViewEntity> timesheets = timesheetWeekSummaryRepo.findByApprovedByAndAccountIdAndMonth(approvedBy, accountId, month);
-	         List<TimeSheeApprovalDto> dtos = new ArrayList<>();
-	         for (TimesheetWeekSummaryViewEntity timesheet : timesheets) {
-	             TimeSheeApprovalDto dto = new TimeSheeApprovalDto();
-	             dto.setWeekStartDate(timesheet.getWeekStartDate());
-	             dto.setEmail(timesheet.getEmail());
-	             dto.setPlannedStartDate(timesheet.getPlannedStartDate());
-	             dto.setPlannedEndDate(timesheet.getPlannedEndDate());
-	             dto.setWeekEndDate(timesheet.getWeekEndDate());
-	             dto.setProjectName(timesheet.getProjectName());
-	             // Set other attributes similarly
-	             dtos.add(dto);
-	         }
-	         return dtos;
-	     } else {
-	         log.error("Failed to retrieve accountId. Unable to fetch timesheets.");
-	         return Collections.emptyList();
-	     }
-	 }
-
-	 
-	 private Integer getFirstAccountId(Integer approvedBy) {
-		    try {
-		        log.info("Fetching accounts to get the ID of the first account.");
-		        List<AccountNameDto> accounts = getAccounts(approvedBy.toString()); // Convert integer to string
-
-		        // Check if accounts list is not empty and retrieve the ID of the first account
-		        if (accounts != null && !accounts.isEmpty() && accounts.size() > 1) { // Check size before accessing elements
-		            return accounts.get(0).getAccountId(); // Return the ID of the first account (index 0)
-		        } else {
-		            // Handle the case where no accounts are available or list size is insufficient
-		            log.warn("No accounts found or insufficient accounts. Returning null for accountId.");
-		            return null; // Or any default value that suits your requirements
-		        }
-		    } catch (Exception e) {
-		        log.error("Error occurred while fetching accounts: {}", e.getMessage());
-		        return null; // Return null in case of exception
-		    }
-		}
-	 
-	
-
 
 	 @Override
 	 public List<TimeSheeApprovalDto> getTimeSheetApproval(Integer projectManagerId, Integer year, Integer accountId) {
@@ -166,4 +131,5 @@ public class TimesheetWeekSummaryViewServiceImpl implements TimesheetWeekSummary
 	     }
 	     return null;
 	 }
+	
 }

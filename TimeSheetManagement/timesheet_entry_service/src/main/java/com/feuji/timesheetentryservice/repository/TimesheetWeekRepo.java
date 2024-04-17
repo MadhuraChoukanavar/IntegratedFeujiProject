@@ -85,7 +85,7 @@ public interface TimesheetWeekRepo extends JpaRepository<TimesheetWeekEntity, In
 	
 	
 	@Query("SELECT new com.feuji.timesheetentryservice.dto.TimeSheetHistoryDto(" +
-	           "  pwt.uuid,  pwt.weekStartDate, " +
+	           "  ep.employeeId ,pwt.uuid,  pwt.weekStartDate, " +
 	           "   pwt.weekEndDate, " +
 	           "   ap.projectName, " +
 	           "   acc.accountName, " +
@@ -107,12 +107,12 @@ public interface TimesheetWeekRepo extends JpaRepository<TimesheetWeekEntity, In
 	           "AND MONTHNAME(pdt.date) = :month " +
 	           "AND acc.accountName = :accountName " +
 	           "AND pwt.employeeId=:employeeId AND pwt.isDeleted=0 AND pdt.isDeleted=0 "+
-	           "GROUP BY pwt.uuid,pwt.weekStartDate,ep.lastName,ep.firstName, pwt.weekEndDate, ap.projectName, acc.accountName, crdStatus.referenceDetailValue")
+	           "GROUP BY  ep.employeeId ,pwt.uuid,pwt.weekStartDate,ep.lastName,ep.firstName, pwt.weekEndDate, ap.projectName, acc.accountName, crdStatus.referenceDetailValue")
 	    List<TimeSheetHistoryDto> getTimeSheetHistory(@Param("month") String month, @Param("year") int year, @Param("accountName") String accountName ,@Param("employeeId") int employeeId);
 
 	
 	@Query("SELECT new com.feuji.timesheetentryservice.dto.TimeSheetHistoryDto(" +
-	           "   pwt.uuid,pwt.weekStartDate, " +
+	           "  ep.employeeId ,  pwt.uuid,pwt.weekStartDate, " +
 	           "   pwt.weekEndDate, " +
 	           "   ap.projectName, " +
 	           "   acc.accountName, " +
@@ -133,13 +133,13 @@ public interface TimesheetWeekRepo extends JpaRepository<TimesheetWeekEntity, In
 	           "WHERE YEAR(pdt.date) = :year " +
 	           "AND acc.accountName = :accountName " +
 	           "AND pwt.employeeId=:employeeId "+
-	           "GROUP BY pwt.uuid,pwt.weekStartDate, pwt.weekEndDate,ep.lastName,ep.firstName, ap.projectName, acc.accountName, crdStatus.referenceDetailValue")
+	           "GROUP BY ep.employeeId , pwt.uuid,pwt.weekStartDate, pwt.weekEndDate,ep.lastName,ep.firstName, ap.projectName, acc.accountName, crdStatus.referenceDetailValue")
 	    List<TimeSheetHistoryDto> getTimeSheetHistoryByYear( @Param("year") int year, @Param("accountName") String accountName ,@Param("employeeId") int employeeId);
 
 	
 
 	@Query("SELECT new com.feuji.timesheetentryservice.dto.TimeSheetHistoryDto(" +
-	           " pwt.uuid,  pwt.weekStartDate, " +
+	           " ep.employeeId , pwt.uuid,  pwt.weekStartDate, " +
 	           "   pwt.weekEndDate, " +
 	           "   ap.projectName, " +
 	           "   acc.accountName, " +
@@ -160,7 +160,7 @@ public interface TimesheetWeekRepo extends JpaRepository<TimesheetWeekEntity, In
 	           "WHERE YEAR(pdt.date) = :year " +
 	           "AND MONTHNAME(pdt.date) = :month " +
 	           "AND pwt.employeeId=:employeeId "+
-			 "GROUP BY pwt.uuid,pwt.weekStartDate, pwt.weekEndDate,ep.lastName,ep.firstName, ap.projectName, acc.accountName, crdStatus.referenceDetailValue")
+			 "GROUP BY  ep.employeeId ,pwt.uuid,pwt.weekStartDate, pwt.weekEndDate,ep.lastName,ep.firstName, ap.projectName, acc.accountName, crdStatus.referenceDetailValue")
 	    List<TimeSheetHistoryDto> getAccountByMonthAndYear(@Param("month") String month, @Param("year") int year,@Param("employeeId") int employeeId);
 
 	@Query(value="select  distinct  year(week_end_date) from project_week_timesheet\r\n"
