@@ -49,10 +49,10 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable()
                 .authorizeHttpRequests()
-                    .requestMatchers("/users/login").permitAll() // Allow access to /users/login
-                    .requestMatchers("/employee/**").permitAll()// Allow access to all requests under /employee
-                    .anyRequest().permitAll() // Allow access to all other requests
-                .and()
+                    .requestMatchers("/accountSave/all").hasAnyAuthority("Admin").anyRequest()
+                    .authenticated().and()
+
+           
                 .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()

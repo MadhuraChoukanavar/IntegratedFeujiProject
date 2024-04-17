@@ -10,6 +10,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class TimeSheetHistoryDto {
+	private Integer employeeId;
 	private String uuId;
 	private Timestamp weekStartDate;
 	private Timestamp weekEndDate;
@@ -21,10 +22,11 @@ public class TimeSheetHistoryDto {
 	private double billingHours;
 	private double nonBillinghours;
 	private double leaveDays;
-	public TimeSheetHistoryDto(String uuId, Timestamp weekStartDate, Timestamp weekEndDate, String projectName,
+	public TimeSheetHistoryDto(Integer empId,String uuId, Timestamp weekStartDate, Timestamp weekEndDate, String projectName,
 			String accountName, String status, String empFirstName, String empLastName, double billingHours,
 			double nonBillinghours, double leaveDays) {
 		super();
+		this.employeeId=empId;
 		this.uuId = uuId;
 		this.weekStartDate = weekStartDate;
 		this.weekEndDate = weekEndDate;

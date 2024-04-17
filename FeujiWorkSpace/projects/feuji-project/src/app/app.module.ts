@@ -11,7 +11,7 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
 import { EmployeeLayoutComponent } from './layouts/employee-layout/employee-layout.component';
 import { ManagerLayoutComponent } from './layouts/manager-layout/manager-layout.component';
 import { PmoLayoutComponent } from './layouts/pmo-layout/pmo-layout.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { UserService } from '../models/user.service';
 import { EmployeeService } from '../models/employee.service';
 import { CommonModule, DatePipe } from '@angular/common';
@@ -33,6 +33,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
+import { AuthGuard } from './Auth/AuthGuard';
+import { AuthInterceptor } from './Auth/AuthInterceptor';
 
 
 
@@ -68,12 +70,13 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatHeaderCell,
     MatRow,
     MatTooltipModule,
-    MatRadioModule
+    MatRadioModule
   ],
 
   providers: [UserService,TimesheetHomeService,
-  EmployeeService,DatePipe, provideAnimationsAsync(), provideAnimationsAsync('noop')],
-  bootstrap: [AppComponent],
+    EmployeeService,DatePipe, provideAnimationsAsync(), provideAnimationsAsync('noop'),
+  AuthGuard,{provide:HTTP_INTERCEPTORS,useClass:AuthInterceptor,multi:true}],
+    bootstrap: [AppComponent],
 
 })
 export class AppModule { }

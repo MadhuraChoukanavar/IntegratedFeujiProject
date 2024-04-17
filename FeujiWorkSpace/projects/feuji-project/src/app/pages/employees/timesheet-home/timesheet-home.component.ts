@@ -145,7 +145,6 @@ export class TimesheetHomeComponent implements OnInit, AfterViewChecked {
         (resp) => {
           this.projects = resp as any[];
 
-          console.log(this.projects);
         },
         (error) => {
           console.error(error);
@@ -1002,20 +1001,14 @@ export class TimesheetHomeComponent implements OnInit, AfterViewChecked {
       let sum: number = 0;
 
       for (let rowCount = 0; rowCount < this.rownum; rowCount++) {
-        console.log('ROWNUM', this.rownum);
-
+     
         const inputValue = (
           document.getElementById(
             'input_' + rowCount + columnCount
           ) as HTMLInputElement
         ).value;
         sum += Number(inputValue);
-        console.log(
-          'input_' + rowCount + columnCount,
-          '--->',
-          Number(inputValue)
-        );
-        console.log(rowCount);
+       
 
         this.rowsum(rowCount);
       }
@@ -1026,6 +1019,6 @@ export class TimesheetHomeComponent implements OnInit, AfterViewChecked {
     return this.totalvalue;
   }
   isSubmitted(): boolean {
-    return this.fetchedDetails[0].timesheetStatusname === 'Submitted';
+    return this.fetchedDetails[0].timesheetStatusname === 'Submitted'|| this.fetchedDetails[0].timesheetStatusname === 'Approved';
   }
 }

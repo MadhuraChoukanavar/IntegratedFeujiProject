@@ -56,6 +56,8 @@ public class TimesheetDataController {
 	@PostMapping("/saveedit/{weekStartDate}")
 	public ResponseEntity< List<TimesheetWeekEntity> > saveOrUpdateRecords(@RequestBody SaveAndEditRecordsDto weekAndDayDataBeans,
 	        @PathVariable String weekStartDate) {
+		System.out.println(weekAndDayDataBeans);
+		System.out.println(weekStartDate);
 	    try {
 	        log.info("Saving or updating records for week starting from: {}", weekStartDate);
 	        List<TimesheetWeekEntity> saveOrUpdate = timeSheetDataService.saveOrUpdate(weekAndDayDataBeans, weekStartDate);

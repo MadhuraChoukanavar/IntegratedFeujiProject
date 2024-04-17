@@ -11,9 +11,10 @@ import { TimesheetDayhistoryComponent } from "./timesheet-dayhistory/timesheet-d
 import { EmployeeLandingPageComponent } from './employee-landing-page/employee-landing-page.component';
 import { EmployeeSkillDisplayComponent } from "../skillgap/employee-skill-display/employee-skill-display.component";
 import { EmployeeSkillGapComponent } from "../skillgap/employee-skill-gap/employee-skill-gap.component";
-import { TrainingRecommendationComponent } from "../../../src/app/pages/skillgap/training-recommendation/training-recommendation.component";
+
 import { MatTabsModule } from "@angular/material/tabs";
 import { MatCardModule } from "@angular/material/card";
+import { TrainingRecommendationComponent } from "../skillgap/training-recommendation/training-recommendation.component";
 
 @NgModule({
   declarations: [

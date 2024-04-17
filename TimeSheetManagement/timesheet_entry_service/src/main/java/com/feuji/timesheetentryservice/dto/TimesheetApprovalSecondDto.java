@@ -11,8 +11,8 @@ import lombok.ToString;
 @Setter
 @ToString
 @NoArgsConstructor
-public class TimeSheeApprovalDto {
-	private Integer employeeId;
+public class TimesheetApprovalSecondDto {
+    private Integer employeeId;
     private Timestamp weekStartDate;
     private String email;
     private Timestamp plannedStartDate;
@@ -29,12 +29,12 @@ public class TimeSheeApprovalDto {
     private Long nonBillinghours;
     private Long leaveDays;
 
-    public TimeSheeApprovalDto(Integer empId,  Timestamp weekStartDate, String email, Timestamp plannedStartDate,
+    public TimesheetApprovalSecondDto(Integer employeeId, Timestamp weekStartDate, String email, Timestamp plannedStartDate,
             Timestamp plannedEndDate, Timestamp weekEndDate, String projectName, String accountName, String empCode,
             String designation, int managerId, String timesheetStatus, String fullName, Long billingHours,
             Long nonBillinghours, Long leaveDays) {
         super();
-       this.employeeId=empId;
+        this.employeeId = employeeId;
         this.weekStartDate = weekStartDate;
         this.email = email;
         this.plannedStartDate = plannedStartDate;

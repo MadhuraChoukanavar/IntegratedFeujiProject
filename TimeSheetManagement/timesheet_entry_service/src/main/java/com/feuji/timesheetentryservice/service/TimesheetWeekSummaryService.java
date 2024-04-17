@@ -5,26 +5,22 @@ import java.util.List;
 import com.feuji.timesheetentryservice.dto.AccountNameDto;
 import com.feuji.timesheetentryservice.dto.ProjectNameDto;
 import com.feuji.timesheetentryservice.dto.TimeSheeApprovalDto;
+import com.feuji.timesheetentryservice.dto.TimesheetApprovalSecondDto;
 import com.feuji.timesheetentryservice.entity.TimesheetWeekSummaryViewEntity;
 
 public interface TimesheetWeekSummaryService {
 
-//	public List<TimesheetWeekSummaryViewEntity> getTimesheetsForManager(Integer approvedBy, Integer accountId,
-//			Integer accountProjectId, Integer weekNumber);
-
-//	public List<ProjectNameDto> getAccountProjects(Integer accountId);
-
-	public List<AccountNameDto> getAccounts(String approvedBy);
+//	public List<AccountNameDto> getAccounts(String approvedBy);
 
 	public Integer getTotalHours(Integer employeeId, Integer accountProjectId, Integer weekNumber);
 
-	public List<TimeSheeApprovalDto> getTimesheetsForFirstAccountAndCurrentMonth(Integer approvedBy);
+//	public List<TimeSheeApprovalDto> getTimesheetsForFirstAccountAndCurrentMonth(Integer accountId, Integer selectedMonth, Integer selectedYear);
 
 	List<TimesheetWeekSummaryViewEntity> getTimesheetsForManager(Integer approvedBy, Integer accountId,
 
 			Integer weekNumber);
 
-	public List<ProjectNameDto> getAccountProjects(Integer accountId, Integer employeeId);
+	public List<TimesheetApprovalSecondDto> getAccountProjects(Integer accountId, Integer approvedBy);
 
 	List<AccountNameDto> getAccounts(Integer approvedBy);
 
@@ -32,5 +28,6 @@ public interface TimesheetWeekSummaryService {
 
 	List<TimeSheeApprovalDto> getTimeSheetApprovalByEmployeeId(Integer projectManagerId, String month, Integer year,
 			Integer accountId, Integer employeeId);
-
+	
+	List<TimesheetApprovalSecondDto> getAllTimesheets();
 }

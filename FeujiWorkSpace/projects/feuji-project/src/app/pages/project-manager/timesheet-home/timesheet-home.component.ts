@@ -131,7 +131,7 @@ export class TimesheetHomeComponent implements OnInit, AfterViewChecked {
     }
     this.timesheetHomeService.getAccounts(this.currentUser).subscribe(
       (resp) => {
-        alert(resp)
+      //  alert(resp)
 
         this.accounts = resp as any[];
       },
@@ -613,8 +613,7 @@ export class TimesheetHomeComponent implements OnInit, AfterViewChecked {
   }
 
   deleteselected(index: number) {
-    alert("hoooooooooooooooo")
-    alert(this.fetchedDetails[0].timesheetStatusname==='Submitted')
+  
    if(this.fetchedDetails[0].timesheetStatusname==='Submitted') 
     {
       Swal.fire({

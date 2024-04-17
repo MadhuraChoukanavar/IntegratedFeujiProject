@@ -70,6 +70,8 @@ fetchData(): void {
   console.log(
     this.selectedAccountName
   )
+  console.log(this.selectedYear);
+  console.log(this.currentUser);
   if (this.selectedMonth === 'All') {
       this.timesheetService.fetchAllData( this.selectedYear,this.selectedAccountName,this.currentUser)
     .subscribe(data => {

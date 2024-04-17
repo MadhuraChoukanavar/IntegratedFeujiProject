@@ -89,7 +89,7 @@ public class HolidayController {
 	    }
 	}
 
-	@DeleteMapping("/{holidayId}")
+	@DeleteMapping("delete/{holidayId}")
 	public ResponseEntity<HolidayEntity> deleteHoliday(@PathVariable Integer holidayId) {
 	    try {
 	        log.info("Deleting holiday with ID: {}", holidayId);
