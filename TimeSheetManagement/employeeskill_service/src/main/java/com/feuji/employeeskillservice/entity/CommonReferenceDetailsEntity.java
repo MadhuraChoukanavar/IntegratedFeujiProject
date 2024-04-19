@@ -30,7 +30,7 @@ public class CommonReferenceDetailsEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "reference_details_id")
-	private Long referenceDetailId;
+	private Integer referenceDetailId;
 	
 	@Column(name = "reference_details_values")
 	private String referenceDetailValue;

@@ -104,12 +104,9 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 			entity.setYearsOfExp(set.getYearsOfExp());
 			entity.setDescription(set.getDescription());
 			entity.setSkillTypeId(GetIdByName(set.getSkillTypeId()));
-			if (set.getCertification().equals(CommonConstants.YES))
-			{
+			if (set.getCertification().equals(CommonConstants.YES)) {
 				entity.setCertification((byte) CommonConstants.TRUE);
-			}
-			else
-			{
+			} else {
 				entity.setCertification((byte) CommonConstants.FALSE);
 			}
 			entity.setDescription(set.getDescription());
@@ -126,7 +123,6 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 		}
 
 	}
-
 
 	/**
 	 * Saves an employee skill bean.
@@ -186,12 +182,9 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 				empSkillBean.setSkillTypeId(Integer.parseInt(bean.getSkillTypeId()));
 				empSkillBean.setYearsOfExp(bean.getYearsOfExp());
 				empSkillBean.setIsDeleted(Byte.parseByte(bean.getIsDeleted()));
-				if (bean.getCertification().equals(CommonConstants.YES))
-				{
+				if (bean.getCertification().equals(CommonConstants.YES)) {
 					empSkillBean.setCertification((byte) CommonConstants.TRUE);
-				}
-				else
-				{
+				} else {
 					empSkillBean.setCertification((byte) CommonConstants.FALSE);
 				}
 				listBeans.add(empSkillBean);
@@ -413,7 +406,7 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 			ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.GET, httpEntity,
 					String.class);
 			if (responseEntity != null) {
-				
+
 				log.info("GetIdByName() ended:in EmployeeSkillServiceImpl");
 				return Integer.parseInt(responseEntity.getBody());
 			} else {
@@ -423,7 +416,7 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 			throw new InvalidInputException("invalid input::in EmployeeSkillServiceImpl");
 		}
 	}
-	
+
 	public String getTypeNameFromTypeService(int id) throws NoRecordFoundException, InvalidInputException {
 		if (id != CommonConstants.FALSE) {
 			log.info("getTypeName() started: in EmployeeSkillServiceImpl");
@@ -434,8 +427,7 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 
 			HttpEntity<String> httpEntity = new HttpEntity<>(headers);
 
-			 ResponseEntity<String> exchange = restTemplate.exchange(url, HttpMethod.GET, httpEntity,
-					String.class);
+			ResponseEntity<String> exchange = restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class);
 			log.info("getTypeName() ended:in EmployeeSkillServiceImpl");
 			return exchange.getBody();
 		} else {
@@ -443,7 +435,6 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 		}
 
 	}
-
 
 	/**
 	 * Converts an employee skill bean to an employee skill get bean.
@@ -507,7 +498,6 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 		log.info("entityToBeanCovertion() ended :in EmployeeSkillServiceImpl");
 		return bean;
 	}
-	
 
 	/**
 	 * Converts an employee skill bean to an EmployeeSkillEntity.

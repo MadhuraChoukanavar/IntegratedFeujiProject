@@ -28,12 +28,10 @@ mat-tab {
   display: flex;
   flex-direction: column;
   align-items:baseline;
-  /* justify-content:end; */
 
 }
 #firstDiv{
   align-items:center;
-  /* justify-content:space-evenly; */
   display: flex;
   margin-top: 2%;
 }
@@ -53,8 +51,6 @@ mat-tab {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* margin-left: 2%; */
-  /* margin-top: 2%; */
 }
 
 #image {

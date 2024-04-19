@@ -242,22 +242,45 @@ public class TimesheetWeekServiceImpl implements TimesheetWeekService {
 		}
 
 	}
-	@Override
-	public List<TimeSheeApprovalDto> timeSheetHistoryDto(String month, int year,Integer accountId) {
-		
-		try
-		{
+//	@Override
+//	public List<TimeSheeApprovalDto> timeSheetHistoryDto(String month, int year,Integer accountId) {
+//		
+//		try
+//		{
+//	
+//		List<TimeSheeApprovalDto>   timeSheeApproval =timesheetWeekRepo.getTimeSheetHistory(month, year,accountId);
+//
+//		log.info("timeSheetHistory :" ,timeSheeApproval);
+//		return timeSheeApproval;
+//		}
+//		catch (Exception e) {
+//
+//			log.info(e.getMessage());
+//		}
+//		return null;
+//	}
 	
-		List<TimeSheeApprovalDto>   timeSheeApproval =timesheetWeekRepo.getTimeSheetHistory(month, year,accountId);
+	@Override
+	public List<TimeSheeApprovalDto> timeSheetHistoryDto(String month, int year, Integer accountId) {
 
-		log.info("timeSheetHistory :" ,timeSheeApproval);
-		return timeSheeApproval;
-		}
-		catch (Exception e) {
+	    try {
+	        List<TimeSheeApprovalDto> timeSheeApproval = timesheetWeekRepo.getTimeSheetHistory(month, year, accountId);
+	        List<TimeSheeApprovalDto> submittedAndApproved = new ArrayList<>();
+//	        ||"Rejected".equals(approvalDto.getTimesheetStatus())
+	        for (TimeSheeApprovalDto approvalDto : timeSheeApproval) {
+	        	 if ("Submitted".equals(approvalDto.getTimesheetStatus()) || "Approved".equals(approvalDto.getTimesheetStatus())||"Rejected".equals(approvalDto.getTimesheetStatus())) 
+	         {
+	                submittedAndApproved.add(approvalDto);
+	            }
+	        }
 
-			log.info(e.getMessage());
-		}
-		return null;
+	        log.info("timeSheetHistory: ", submittedAndApproved);
+	        return submittedAndApproved;
+	    } catch (Exception e) {
+	        log.info(e.getMessage());
+	    }
+	    return null;
 	}
+
 	
 }

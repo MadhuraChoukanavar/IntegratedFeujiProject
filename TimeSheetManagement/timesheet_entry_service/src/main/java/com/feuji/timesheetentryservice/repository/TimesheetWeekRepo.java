@@ -177,7 +177,9 @@ public interface TimesheetWeekRepo extends JpaRepository<TimesheetWeekEntity, In
 	@Modifying
 	@Query(value="update project_week_timesheet set timesheet_status=60 where employee_id=:employeeId and account_id=:accountId and week_start_date=:weekStartDate",nativeQuery=true)
 	public void rejectedTimesheet(Integer employeeId,Integer accountId,Date weekStartDate);
+	
 	@Query("SELECT new com.feuji.timesheetentryservice.dto.TimeSheeApprovalDto(" +
+	"ep.employeeId, "+
 	        "pwt.weekStartDate, " +
 	        "ep.email, " +
 	        "ap.plannedStartDate, " +
@@ -192,7 +194,7 @@ public interface TimesheetWeekRepo extends JpaRepository<TimesheetWeekEntity, In
 	        "CONCAT(ep.firstName,' ', ep.lastName), "+
 	        "SUM(CASE WHEN crd.referenceDetailValue = 'Billable' THEN pdt.numberOfHours ELSE 0 END), "+
 	        "SUM(CASE WHEN crd.referenceDetailValue = 'Non billable' THEN pdt.numberOfHours ELSE 0 END), "+
-	        "SUM(CASE WHEN crd.referenceDetailValue = 'Leave' THEN pdt.numberOfHours ELSE 0 END)/8) "+
+	        "SUM(CASE WHEN crd.referenceDetailValue = 'Leave' THEN pdt.numberOfHours ELSE 0 END)/8,pwt.accountId) "+
 	        "FROM TimesheetWeekEntity pwt "+
 	        "JOIN EmployeeEntity ep ON ep.employeeId = pwt.employeeId "+
 	        "JOIN AccountProjectsEntity ap ON ap.accountProjectId = pwt.accountProjectId "+
@@ -203,6 +205,6 @@ public interface TimesheetWeekRepo extends JpaRepository<TimesheetWeekEntity, In
 	        "WHERE YEAR(pdt.date) = :year " +
 	        "AND MONTHNAME(pdt.date) = :month " +
 	        "AND acc.accountId = :accountId " +
-	        "GROUP BY ep.email,ap.plannedStartDate,ap.plannedEndDate,pwt.uuid, ap.projectManagerId, ep.designation, ep.employeeCode, pwt.weekStartDate, ep.lastName, ep.firstName, pwt.weekEndDate, ap.projectName, acc.accountName, crdStatus.referenceDetailValue")
+	        "GROUP BY ep.employeeId, ep.email,ap.plannedStartDate,ap.plannedEndDate,pwt.uuid, ap.projectManagerId, ep.designation, ep.employeeCode, pwt.weekStartDate, ep.lastName, ep.firstName, pwt.weekEndDate, ap.projectName, acc.accountName, crdStatus.referenceDetailValue,pwt.accountId")
 	List<TimeSheeApprovalDto> getTimeSheetHistory(@Param("month") String month, @Param("year") int year, @Param("accountId") Integer accountId);
 }

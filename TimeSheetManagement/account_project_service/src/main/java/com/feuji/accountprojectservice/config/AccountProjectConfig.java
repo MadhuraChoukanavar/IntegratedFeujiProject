@@ -22,10 +22,7 @@ public class AccountProjectConfig {
 	}
 
 	
-	@Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
+
 	
 	
 

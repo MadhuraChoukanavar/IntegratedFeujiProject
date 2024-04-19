@@ -39,22 +39,18 @@
                   <mat-header-cell *matHeaderCellDef> Designation </mat-header-cell>
                   <mat-cell *matCellDef="let employee"> {{employee.designition}} </mat-cell>
                 </ng-container>
-                <!-- Email Column -->
                 <ng-container matColumnDef="email">
                   <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
                   <mat-cell id="emailtag" *matCellDef="let employee"> {{employee.email}} </mat-cell>
                 </ng-container>
-                <!-- Skill Name Column -->
                 <ng-container matColumnDef="skillName">
                   <mat-header-cell *matHeaderCellDef> Skill Name </mat-header-cell>
                   <mat-cell *matCellDef="let employee"> {{employee.skillName}} </mat-cell>
                 </ng-container>
-                <!-- Actual Competency Column -->
                 <ng-container matColumnDef="actualCompetency">
                   <mat-header-cell *matHeaderCellDef> Actual Competency </mat-header-cell>
                   <mat-cell *matCellDef="let employee"> {{employee.actualCompetency}} </mat-cell>
                 </ng-container>
-                <!-- Expected Competency Column -->
                 <ng-container matColumnDef="expectedCompetency">
                   <mat-header-cell *matHeaderCellDef> Expected Competency </mat-header-cell>
                   <mat-cell *matCellDef="let employee"> {{employee.expectedCompetency}} </mat-cell>
@@ -67,7 +63,6 @@
                       alt="Result" />
                   </mat-cell>
                 </ng-container>
-                <!-- Add more columns as needed -->
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
               </mat-table>

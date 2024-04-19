@@ -33,72 +33,78 @@ public class CommonReferenceTypeController {
 
 	@Autowired
 	CommonReferenceTypeRepo commonReferenceTypeRepo;
+
 	@Autowired
 	CommonReferenceType commonReferenceType;
 
-//	@PostMapping("/save")
-//	public ResponseEntity<CommonReferenceTypeEntity> saveTimesheetWeek(
-//			@RequestBody CommonReferenceTypeBean commonReferenceTypeBean) {
-//		try {
-//			log.info("timesheet week controller", commonReferenceTypeBean);
-//			CommonReferenceTypeEntity save = commonReferenceType.save(commonReferenceTypeBean);
-//			return new ResponseEntity<>(save, HttpStatus.CREATED);
-//
-//		} catch (Exception e) {
-//
-//			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//
-//		}
-//	}
+	/**
+	 * Saves the timesheet week.
+	 *
+	 * @param commonReferenceTypeBean The CommonReferenceTypeBean containing the
+	 *                                timesheet week data.
+	 * @return ResponseEntity<CommonReferenceTypeEntity> ResponseEntity containing
+	 *         the saved entity.  
+	 */
 	@PostMapping("/save")
 	public ResponseEntity<CommonReferenceTypeEntity> saveTimesheetWeek(
-	        @RequestBody CommonReferenceTypeBean commonReferenceTypeBean) {
-	    try {
-	        log.info("Saving timesheet week in controller: {}", commonReferenceTypeBean);
-	        CommonReferenceTypeEntity save = commonReferenceType.save(commonReferenceTypeBean);
-	        log.info("Saved timesheet week: {}", save);
-	        return new ResponseEntity<>(save, HttpStatus.CREATED);
-	    } catch (Exception e) {
-	        log.error("An error occurred while saving timesheet week: {}", e.getMessage());
-	        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-	    }
+			@RequestBody CommonReferenceTypeBean commonReferenceTypeBean) {
+		try {
+			log.info("Saving timesheet week in controller: {}", commonReferenceTypeBean);
+			CommonReferenceTypeEntity save = commonReferenceType.save(commonReferenceTypeBean);
+			log.info("Saved timesheet week: {}", save);
+			return new ResponseEntity<>(save, HttpStatus.CREATED);
+		} catch (Exception e) {
+			log.error("An error occurred while saving timesheet week: {}", e.getMessage());
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
-	
+	/**
+	 * Retrieves the reference type by name.
+	 *
+	 * @param name The name of the reference type to retrieve.
+	 * @return ResponseEntity<CommonReferenceTypeEntity> ResponseEntity containing
+	 *         the retrieved reference type entity.  
+	 */
 	@GetMapping("/getref/{name}")
 	public ResponseEntity<CommonReferenceTypeEntity> getReferenceTypeByName(@PathVariable String name) {
-	    try {
-	        log.info("Fetching reference type by name: {}", name);
-	        CommonReferenceTypeEntity commonReferenceTypeEntity = commonReferenceType.getByTypeName(name);
-	        log.info("Retrieved reference type: {}", commonReferenceTypeEntity);
-	        return ResponseEntity.ok(commonReferenceTypeEntity);
-	    } catch (Exception e) {
-	        log.error("An error occurred while fetching reference type by name {}: {}", name, e.getMessage());
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-	    }
+		try {
+			log.info("Fetching reference type by name: {}", name);
+			CommonReferenceTypeEntity commonReferenceTypeEntity = commonReferenceType.getByTypeName(name);
+			log.info("Retrieved reference type: {}", commonReferenceTypeEntity);
+			return ResponseEntity.ok(commonReferenceTypeEntity);
+		} catch (Exception e) {
+			log.error("An error occurred while fetching reference type by name {}: {}", name, e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
 	}
 
-	
-//	@GetMapping("/all")
-//    public List<ReferenceDto> getAllReferences() {
-//        log.info("Fetching all references");
-//        List<ReferenceDto> references = commonReferenceType.getAllReferences();
-//        log.info("Retrieved {} references", references.size());
-//        return references;
-//    }
+	/**
+	 * Retrieves all references.
+	 *
+	 * @return ResponseEntity<List<ReferenceDto>> ResponseEntity containing the list
+	 *         of all references.  
+	 */
 	@GetMapping("/all")
 	public ResponseEntity<List<ReferenceDto>> getAllReferences() {
-	    try {
-	        log.info("Fetching all references");
-	        List<ReferenceDto> references = commonReferenceType.getAllReferences();
-	        log.info("Retrieved {} references", references.size());
-	        return ResponseEntity.ok(references);
-	    } catch (Exception e) {
-	        log.error("An error occurred while fetching all references: {}", e.getMessage());
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
-	    }
+		try {
+			log.info("Fetching all references");
+			List<ReferenceDto> references = commonReferenceType.getAllReferences();
+			log.info("Retrieved {} references", references.size());
+			return ResponseEntity.ok(references);
+		} catch (Exception e) {
+			log.error("An error occurred while fetching all references: {}", e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
+		}
 	}
 
+	/**
+	 * Retrieves the name of a reference by its ID.
+	 *
+	 * @param id The ID of the reference.
+	 * @return ResponseEntity<String> ResponseEntity containing the name of the
+	 *          reference.  
+	 */
 	@GetMapping("/getById/{id}")
 	public ResponseEntity<String> getById(@PathVariable int id) {
 		log.info("getById() started");
@@ -113,8 +119,14 @@ public class CommonReferenceTypeController {
 
 		}
 	}
-	
-	
+
+	/**
+	 * Retrieves the reference type by its name.
+	 *
+	 * @param typeName The name of the reference type.
+	 * @return ResponseEntity<CommonReferenceTypeBean> ResponseEntity containing the
+	 *         reference type.  
+	 */
 	@GetMapping("/getreference/{typeName}")
 	public ResponseEntity<CommonReferenceTypeBean> getReferenceTypeByRefName(@PathVariable String typeName) {
 		log.info("getReferenceTypeByName start");
@@ -129,5 +141,5 @@ public class CommonReferenceTypeController {
 			return new ResponseEntity<>(commonReferenceTypeEntity, HttpStatus.NOT_FOUND);
 		}
 	}
-	
+
 }

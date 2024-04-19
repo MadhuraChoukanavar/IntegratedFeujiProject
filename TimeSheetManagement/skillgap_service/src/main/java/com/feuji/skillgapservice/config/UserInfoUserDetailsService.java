@@ -12,7 +12,7 @@ import com.feuji.skillgapservice.entity.UserLoginEntity;
 import com.feuji.skillgapservice.repository.UserLoginRepo;
 
 @Component
-public class UserInfoUserDetailsService implements UserDetailsService{
+public class UserInfoUserDetailsService implements UserDetailsService {
 
 	@Autowired
 	private UserLoginRepo repository;
@@ -24,9 +24,5 @@ public class UserInfoUserDetailsService implements UserDetailsService{
 				.orElseThrow(() -> new UsernameNotFoundException("user not found " + email));
 
 	}
-	
-//	Optional<UserInfo> userInfo = repository.findByEmail(email);
-//	return userInfo.map(UserInfoUserDetails::new)
-//			.orElseThrow(() -> new UsernameNotFoundException("user not found " + email));
 
 }

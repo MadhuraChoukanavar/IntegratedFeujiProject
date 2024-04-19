@@ -16,7 +16,7 @@ import lombok.ToString;
 @Builder
 public class CommonReferenceTypeBean {
 	
-	private Long referenceTypeId;
+	private Integer referenceTypeId;
 
 	private String referenceTypeName;
 

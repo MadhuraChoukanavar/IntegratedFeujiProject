@@ -3,7 +3,10 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { Holiday } from "./holiday.model";
 
-@Injectable({providedIn: 'root'})
+
+@Injectable({
+  providedIn: 'root'
+})
 export class HolidayService {
   public holiday:Holiday[]=[]
   constructor(private http:HttpClient) { }

@@ -45,7 +45,7 @@ export class SkillgapDisplayComponent implements OnInit {
   skillIds: number[] = [];
   empMail: string = '';
 
-  constructor(private http: HttpClient, private empskillService: EmployeeSkillService) { }
+  constructor(private http: HttpClient, public empskillService: EmployeeSkillService) { }
 
   /**
    *  Fetches skill categories from the backend

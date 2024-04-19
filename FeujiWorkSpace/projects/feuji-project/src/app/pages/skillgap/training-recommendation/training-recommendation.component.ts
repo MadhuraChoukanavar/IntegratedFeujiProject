@@ -50,12 +50,9 @@ export class TrainingRecommendationComponent implements OnInit {
          }
        
         });
-        
         if(this.highGapSkills.length==0){
-          this.skillGapMessage=2;
-          
+          this.skillGapMessage=2;      
          }
-
          if(this.moderateGapSkills.length==0){
           this.skillGapMessage=1;
          }

@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.feuji.skillset.exception.RecordNotFoundException;
 import com.skillset.dto.GapDto;
 import com.skillset.dto.SkillGapDto;
+import com.skillset.exception.RecordNotFoundException;
 import com.skillset.service.SkillSetService;
 
 import lombok.extern.slf4j.Slf4j;

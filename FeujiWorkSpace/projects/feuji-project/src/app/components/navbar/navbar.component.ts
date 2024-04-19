@@ -54,6 +54,7 @@ export class NavbarComponent {
 
   logout() {
     localStorage.removeItem('user');
+    localStorage.clear();
     this.checkUser();
   }
 
@@ -121,13 +122,31 @@ export class NavbarComponent {
       case 'dailyStatus':
           this.title = 'Daily status';
         break;
+      case 'skill-gap':
+          this.title = 'Skill Gap';
+        break;
+      case 'training-recommendation':
+          this.title = 'Employees Recommended For Training';
+        break;
+      
+        case 'update-skills':
+          this.title = 'Update Skills';
+        break;
+      case 'employee-skillgap':
+          this.title = 'My Skillgap';
+        break;
+      case 'employee-trainingRecommendation':
+          this.title = 'Recommended Skills For Training';
+        break;
+      case 'add-skills':
+        this.title=" Add Skills";
+        break;
       default:
         this.title = 'Dashboard';
         break;
     }
 
 
-    // Set the title in the browser tab
     this.titleService.setTitle(this.title);
   }
 

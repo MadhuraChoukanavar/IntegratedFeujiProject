@@ -180,6 +180,14 @@ public class SkillCompetencyController {
 		}
 	}
 
+	/**
+	 * Retrieves all training recommended employees.
+	 *
+	 * @param skillIds Array of skill IDs for which training recommended employees
+	 *                 are to be retrieved.
+	 * @return ResponseEntity containing a list of TrainigRecommendedEmployeesDto
+	 *         objects.
+	 */
 	@GetMapping("/fetchallemployees/{skillIds}")
 	public ResponseEntity<List<TrainigRecommendedEmployeesDto>> getAllTrainingRecommendedEmp(
 			@PathVariable int[] skillIds) {
@@ -187,5 +195,9 @@ public class SkillCompetencyController {
 		List<TrainigRecommendedEmployeesDto> list = skillCompetencyService.getAllTrainingRecommendedEmp(skillIds);
 		log.info(list.size() + " output size");
 		return new ResponseEntity<List<TrainigRecommendedEmployeesDto>>(list, HttpStatus.OK);
+	}
+
+	public void setSkillCompetencyService(SkillCompetencyService skillCompetencyServiceMock) {
+		
 	}
 }

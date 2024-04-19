@@ -24,7 +24,7 @@ public class CommonReferenceDetailsBean {
 
 	private String uuid;
 
-	private Boolean isDeleted;
+	private Byte isDeleted;
 
 	private String createdBy;
 

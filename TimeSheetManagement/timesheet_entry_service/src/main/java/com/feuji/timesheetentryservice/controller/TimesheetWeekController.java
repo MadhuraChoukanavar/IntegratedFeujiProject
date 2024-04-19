@@ -323,7 +323,7 @@ public class TimesheetWeekController {
 			List<TimeSheeApprovalDto> timeSheetHistory = timesheetWeekService.timeSheetHistoryDto(month, year,
 					accountId);
 
-			log.info("Fetching timeSheetHistory for {} {} accountName: {} employeeId: {}", month, year, accountId
+			log.info("Fetching timeSheetHistory for {} {} accountId: {} ", month, year, accountId
 					);
 
 			return ResponseEntity.status(HttpStatus.OK).body(timeSheetHistory);
@@ -336,4 +336,3 @@ public class TimesheetWeekController {
 		}
 	}
 }
-

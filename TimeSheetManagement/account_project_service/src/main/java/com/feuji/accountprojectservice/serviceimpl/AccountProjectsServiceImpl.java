@@ -213,7 +213,7 @@ private static Logger log = LoggerFactory.getLogger(AccountProjectsServiceImpl.c
 			    List<EmployeeBean> employeeBeans = responseEntity.getBody();
 			    
 			    List<EmployeeBean> filteredEmployees = employeeBeans.stream()
-			            .filter(employee -> employee.getDesignation().equalsIgnoreCase("Project Manager" ))
+			            .filter(employee -> employee.getDesignation().equalsIgnoreCase("Manager" ))
 			            .collect(Collectors.toList());
 		    return filteredEmployees;
 		}

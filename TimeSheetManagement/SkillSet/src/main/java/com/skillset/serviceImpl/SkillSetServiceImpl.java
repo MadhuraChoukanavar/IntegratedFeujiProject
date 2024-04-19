@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.feuji.skillset.exception.RecordNotFoundException;
 import com.skillset.dto.GapDto;
 import com.skillset.dto.SkillGapDto;
+import com.skillset.exception.RecordNotFoundException;
 import com.skillset.repository.SkillSetRepository;
 import com.skillset.service.SkillSetService;
 

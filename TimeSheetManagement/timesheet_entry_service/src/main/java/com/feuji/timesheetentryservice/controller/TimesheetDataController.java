@@ -54,21 +54,23 @@ public class TimesheetDataController {
 	 *         HTTP status code.
 	 */
 	@PostMapping("/saveedit/{weekStartDate}")
-	public ResponseEntity< List<TimesheetWeekEntity> > saveOrUpdateRecords(@RequestBody SaveAndEditRecordsDto weekAndDayDataBeans,
-	        @PathVariable String weekStartDate) {
+	public ResponseEntity<List<TimesheetWeekEntity>> saveOrUpdateRecords(
+			@RequestBody SaveAndEditRecordsDto weekAndDayDataBeans, @PathVariable String weekStartDate) {
 		System.out.println(weekAndDayDataBeans);
 		System.out.println(weekStartDate);
-	    try {
-	        log.info("Saving or updating records for week starting from: {}", weekStartDate);
-	        List<TimesheetWeekEntity> saveOrUpdate = timeSheetDataService.saveOrUpdate(weekAndDayDataBeans, weekStartDate);
-	        log.info("Records saved or updated successfully");
-	        return ResponseEntity.ok(saveOrUpdate);
-	    } catch (Exception e) {
-	        log.error("An error occurred while saving or updating records for week starting from {}: {}", weekStartDate,
-	                e.getMessage());
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-	    }
+		try {
+			log.info("Saving or updating records for week starting from: {}", weekStartDate);
+			List<TimesheetWeekEntity> saveOrUpdate = timeSheetDataService.saveOrUpdate(weekAndDayDataBeans,
+					weekStartDate);
+			log.info("Records saved or updated successfully");
+			return ResponseEntity.ok(saveOrUpdate);
+		} catch (Exception e) {
+			log.error("An error occurred while saving or updating records for week starting from {}: {}", weekStartDate,
+					e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
 	}
+
 	/**
 	 * Handles the HTTP GET request to retrieve the timesheet data for a specific
 	 * week and employee.
@@ -146,7 +148,7 @@ public class TimesheetDataController {
 					Constants.TIME_SHEET_STATUS_SAVED);
 
 			List<TimesheetWeekEntity> submittingTimesheet = timeSheetDataService.submittingTimesheet(weekStartDate,
-					Constants.TIME_SHEET_STATUS_SUBMITTED,accountId,employeeId);
+					Constants.TIME_SHEET_STATUS_SUBMITTED, accountId, employeeId);
 
 			if (submittingTimesheet != null && !submittingTimesheet.isEmpty()) {
 				this.sendEmails(employeeId, accountId, weekStartDate);
@@ -161,7 +163,6 @@ public class TimesheetDataController {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-
 
 	public ResponseEntity<List<TimesheetWeekEntity>> sendEmails(Integer employeeId, Integer accountId,
 			String weekStartDate) {
@@ -188,22 +189,22 @@ public class TimesheetDataController {
 	}
 
 	private String composeBody(EmployeeDataDto emp, String weekStartDate) {
-	    try {
-	        log.info("composeBody for employee: {}", emp.getEmail());
+		try {
+			log.info("composeBody for employee: {}", emp.getEmail());
 
-	        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-	        LocalDate startDate = LocalDate.parse(weekStartDate, dateTimeFormatter);
-	        LocalDate endDate = startDate.plusDays(6);
+			DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+			LocalDate startDate = LocalDate.parse(weekStartDate, dateTimeFormatter);
+			LocalDate endDate = startDate.plusDays(6);
 
-	        String emailBody = "Dear " + emp.getFirstName() + " " + emp.getLastName() + ",\n\n"
-	                + "The employee has submitted the timesheet for the period from: " + startDate.toString() + " to: "
-	                + endDate.toString() + " Please review and approve it accordingly.";
+			String emailBody = "Dear " + emp.getFirstName() + " " + emp.getLastName() + ",\n\n"
+					+ "The employee has submitted the timesheet for the period from: " + startDate.toString() + " to: "
+					+ endDate.toString() + " Please review and approve it accordingly.";
 
-	        return emailBody;
-	    } catch (Exception e) {
-	        log.error("An error occurred while composing email body for employee: {}", emp.getEmail(), e);
-	        return null;
-	    }
+			return emailBody;
+		} catch (Exception e) {
+			log.error("An error occurred while composing email body for employee: {}", emp.getEmail(), e);
+			return null;
+		}
 	}
 
 }

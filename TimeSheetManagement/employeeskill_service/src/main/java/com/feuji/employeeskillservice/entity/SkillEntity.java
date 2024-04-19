@@ -1,7 +1,6 @@
 package com.feuji.employeeskillservice.entity;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,13 +26,13 @@ public class SkillEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "skill_id")
 	private int skillId;
-	
+
 	@Column(name = "skill_name")
 	private String skillName;
-	
+
 	@Column(name = "techinical_category_id")
 	private int techinicalCategoryId;
-	
+
 	@Column(name = "skill_category_id")
 	private int skillCategoryId;
 

@@ -1,5 +1,5 @@
 .container {
-  /* margin-top: 10%; */
+  margin-top: 10%;
   margin-left: 5%;
   width: 90%
 }
@@ -8,8 +8,8 @@
   position: fixed;
   background-color: rgb(164, 164, 236);
   left: 91%;
-  top: 20%;
-} 
+  top:15%;
+}
 
 .btn {
   border-radius: 50%;

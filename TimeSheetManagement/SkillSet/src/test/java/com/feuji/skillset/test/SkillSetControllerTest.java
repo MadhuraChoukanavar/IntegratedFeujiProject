@@ -14,9 +14,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.feuji.skillset.exception.RecordNotFoundException;
 import com.skillset.controller.SkillSetController;
 import com.skillset.dto.GapDto;
+import com.skillset.exception.RecordNotFoundException;
 import com.skillset.service.SkillSetService;
 
 public class SkillSetControllerTest {

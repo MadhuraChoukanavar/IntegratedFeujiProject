@@ -49,7 +49,10 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable()
                 .authorizeHttpRequests()
-                    .requestMatchers("/accountSave/all").hasAnyAuthority("Admin").anyRequest()
+                    .requestMatchers("/accountSave/all").hasAnyAuthority("Admin").
+                    requestMatchers("accountSave/getAll").permitAll()
+         
+                    .anyRequest()
                     .authenticated().and()
 
            

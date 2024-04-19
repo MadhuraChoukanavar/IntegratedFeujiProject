@@ -35,7 +35,6 @@ export class SkillDisplayComponent {
     this.skillCategoryName = this.data.selectedSkillCategory;
     this.skillDataSevice.accordionSubData$.subscribe(subData => {
       this.accordionSubData = subData;
-      console.log('Sub-skills Data:', this.accordionSubData);
     });
   }
 
@@ -48,11 +47,8 @@ export class SkillDisplayComponent {
     this.employeeSkillService.getSkillCategoryTypeId(this.skillCategoryName)
       .subscribe(response => {
         this.referenceTypeRecord = response
-        console.log(this.referenceTypeRecord);
         this.skillCategoryId = this.referenceTypeRecord.referenceTypeId;
 
-        console.log("skill name " + this.newSkillName)
-        console.log("sub skill name");
 
         if (this.newSkillName.trim() !== '') {
           this.newSkillName=this.newSkillName.replace(/\s+/g, ' ').trim();
@@ -82,7 +78,6 @@ export class SkillDisplayComponent {
             }
           );
         } else {
-          console.log('New sub skill category name is empty or not defined');
         }
       })
   }

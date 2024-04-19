@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.ResponseEntity.BodyBuilder;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,9 +29,6 @@ import com.feuji.employeeservice.service.JwtService;
 import com.feuji.employeeservice.service.RefreshTokenService;
 import com.feuji.employeeservice.service.UserLoginService;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @RestController
 @RequestMapping("/users")
 @CrossOrigin(origins = "http://localhost:4200")
@@ -51,37 +47,16 @@ public class UserLoginController {
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
-//
-//	@PostMapping("/login")
-//	public ResponseEntity<UserLoginEntity> loginUser(@RequestBody UserLoginEntity userCredentials) {
-//		log.info("user details :{}",userCredentials);
-//	    UserLoginEntity loggedInUser;
-//			loggedInUser = userLoginService.loginUser(userCredentials.getUserEmail(), userCredentials.getUserPassword());
-//	    if (loggedInUser != null) {
-//	    	log.info("Login Success :{}",userCredentials);
-//	        return ResponseEntity.ok(loggedInUser); // Return the UserLoginEntity if login is successful
-//	    } else {
-//	    	log.info("Login Fails :{}",userCredentials);
-//	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); // Return 401 Unauthorized if login fails
-//	    }
-//	}
 
-//	@GetMapping("/checkUniqueEmail")
-//    public ResponseEntity<Boolean> checkUniqueEmail(@RequestParam("email") String email) {
-//        boolean isUnique = userLoginService.isEmailUnique(email);
-//        return ResponseEntity.ok(isUnique);
-//    }
-//	
-	
 	@PostMapping("/login")
 	public JwtResponse authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword()));
 		if (authentication.isAuthenticated()) {
-		
-		    UserLoginEntity user = loginRepo.findByUserEmail(authRequest.getEmail()).get();
-			
-		    RefreshToken refreshToken = refreshTokenService.createRefreshToken(authRequest.getEmail());
+
+			UserLoginEntity user = loginRepo.findByUserEmail(authRequest.getEmail()).get();
+
+			RefreshToken refreshToken = refreshTokenService.createRefreshToken(authRequest.getEmail());
 			return JwtResponse.builder().accessToken(jwtService.generateToken(authRequest.getEmail()))
 					.token(refreshToken.getToken()).userEntity(user).build();
 		} else {
@@ -113,7 +88,7 @@ public class UserLoginController {
 			if (result != null) {
 				return ResponseEntity.ok().body(createResponse(true, "Password updated successfully!"));
 			} else {
-				return ((BodyBuilder ) ResponseEntity.notFound()).body(createResponse(false, "Email not found!"));
+				return ((BodyBuilder) ResponseEntity.notFound()).body(createResponse(false, "Email not found!"));
 			}
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -172,6 +147,5 @@ public class UserLoginController {
 		userLoginService.updateUserPassword(email, newPassword);
 		return ResponseEntity.ok().build();
 	}
-
 
 }
