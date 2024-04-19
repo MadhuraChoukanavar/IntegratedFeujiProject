@@ -36,7 +36,7 @@ public class SecurityConfig {
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http.csrf().disable().authorizeHttpRequests()
 				 .requestMatchers("/referencedetails/getById/{id}","/referencetype/getById/{id}",
-						 "/referencedetails/getByName/{name}").permitAll()
+						 "/referencedetails/getByName/{name}","referencedetails/getbyid/{id}").permitAll()
 	            .and().authorizeHttpRequests()
 				.requestMatchers("/referencedetails/getreference/{typeName}")
 				.hasAnyAuthority("Software Engineer", "Manager","Admin")

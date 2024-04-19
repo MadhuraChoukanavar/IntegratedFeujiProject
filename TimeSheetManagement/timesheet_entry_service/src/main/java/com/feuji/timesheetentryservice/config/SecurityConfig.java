@@ -32,21 +32,6 @@ public class SecurityConfig {
         return new UserInfoUserDetailsService();
     }
 
-//    @Bean
-//     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        return http.csrf().disable()
-//                .authorizeHttpRequests()
-//                .requestMatchers("/users/login").permitAll()
-//                .and()
-//                .authorizeHttpRequests().requestMatchers("/employee/**").hasAnyAuthority("**").anyRequest()
-//                .authenticated().and()
-//                .sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-//                .authenticationProvider(authenticationProvider())
-//                .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
-//                .build();
-//    }
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable()
@@ -60,7 +45,6 @@ public class SecurityConfig {
                     .requestMatchers("/TimesheetWeekSummaryView/**").hasAnyAuthority("Manager")
                     .anyRequest()
                     .authenticated()// Allow access to all requests under /employee
-                     // Allow access to all other requests
                 .and()
                 .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -70,24 +54,6 @@ public class SecurityConfig {
                 .build();
     }
     
-//    @Bean
-//    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//       return http.csrf().disable()
-//               .authorizeHttpRequests()
-//               .requestMatchers("/products/signUp","/products/login","/products/refreshToken").permitAll()
-//               .and()
-//               .authorizeHttpRequests().requestMatchers("/products/all").hasAnyAuthority("ADMIN").requestMatchers("/products/{id}")
-//				.hasAnyAuthority("USER").anyRequest()
-//               .authenticated().and()
-//               .sessionManagement()
-//               .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//               .and()
-//               .authenticationProvider(authenticationProvider())
-//               .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
-//               .build();
-//   }
-
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {
