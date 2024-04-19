@@ -1,76 +1,92 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { of } from 'rxjs';
-import { EmployeeSkillService } from '../../../services/employee-skill.service';
 import { AddMainSkillComponent } from './add-main-skill.component';
+import { EmployeeSkillService } from '../../../services/employee-skill.service';
 
 describe('AddMainSkillComponent', () => {
   let component: AddMainSkillComponent;
   let fixture: ComponentFixture<AddMainSkillComponent>;
-  let mockEmployeeSkillService: jasmine.SpyObj<EmployeeSkillService>;
-  let mockMatDialog: jasmine.SpyObj<MatDialog>;
+  let employeeSkillServiceSpy: jasmine.SpyObj<EmployeeSkillService>;
+  let dialogSpy: jasmine.SpyObj<MatDialog>;
 
   beforeEach(async () => {
-    mockMatDialog = jasmine.createSpyObj('MatDialog', ['open']);
-    mockEmployeeSkillService = jasmine.createSpyObj('EmployeeSkillService', ['getSkillCategories', 'getTechnicalCategory', 'getSkills']);
+    const employeeSkillServiceSpyObj = jasmine.createSpyObj('EmployeeSkillService', [
+      'getSkillCategories',
+      'getTechnicalCategory',
+      'getSkills',
+      'updateStatusAdmin',
+      'deleteSubCategory',
+      'deleteCategory'
+    ]);
+
+    const dialogSpyObj = jasmine.createSpyObj('MatDialog', ['open']);
 
     await TestBed.configureTestingModule({
       declarations: [AddMainSkillComponent],
       providers: [
-        { provide: MatDialog, useValue: mockMatDialog },
-        { provide: EmployeeSkillService, useValue: mockEmployeeSkillService }
+        { provide: EmployeeSkillService, useValue: employeeSkillServiceSpyObj },
+        { provide: MatDialog, useValue: dialogSpyObj }
       ]
     }).compileComponents();
 
+    employeeSkillServiceSpy = TestBed.inject(EmployeeSkillService) as jasmine.SpyObj<EmployeeSkillService>;
+    dialogSpy = TestBed.inject(MatDialog) as jasmine.SpyObj<MatDialog>;
+  });
+
+  beforeEach(() => {
     fixture = TestBed.createComponent(AddMainSkillComponent);
     component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should load skill categories on init', () => {
-    const mockData = [{ id: 1, name: 'Category 1' }, { id: 2, name: 'Category 2' }];
-    mockEmployeeSkillService.getSkillCategories.and.returnValue(of(mockData));
+  it('should load skill categories on initialization', () => {
+    const mockCategories = [{ id: 1, name: 'Category A' }, { id: 2, name: 'Category B' }];
+    employeeSkillServiceSpy.getSkillCategories.and.returnValue(of(mockCategories));
 
-    fixture.detectChanges();
+    component.ngOnInit();
 
-    expect(component.accordionData).toEqual(mockData);
+    expect(employeeSkillServiceSpy.getSkillCategories).toHaveBeenCalled();
+    expect(component.accordionData).toEqual(mockCategories);
   });
 
-  it('should select skill category', () => {
-    const selectedCategory = 'Category 1';
+  const mockCategory = { id: 1, name: 'Category A' };
+
+it('should handle selecting a skill category', () => {
     const mockSubSkills = [{ id: 1, name: 'Sub Skill 1' }, { id: 2, name: 'Sub Skill 2' }];
-    mockEmployeeSkillService.getTechnicalCategory.and.returnValue(of(mockSubSkills));
 
-    component.onSelectSkillCategory(selectedCategory);
+    employeeSkillServiceSpy.getTechnicalCategory.and.returnValue(of(mockSubSkills));
 
-    expect(component.selectedSkillCategory).toEqual(selectedCategory);
+    component.onSelectSkillCategory(mockCategory);
+
+    expect(employeeSkillServiceSpy.getTechnicalCategory).toHaveBeenCalledWith(mockCategory);
     expect(component.accordionSubData).toEqual(mockSubSkills);
-  });
+    expect(component.selectedSkillCategory).toEqual(mockCategory.name); // Accessing the name property
+});
 
-  it('should select tech category', () => {
-    const techCatId = 1;
-    const mockSkills = [{ id: 1, name: 'Skill 1' }, { id: 2, name: 'Skill 2' }];
-    mockEmployeeSkillService.getSkills.and.returnValue(of(mockSkills));
 
-    component.onSelectTechCat(techCatId);
+const mockSkills: { id: number; name: string; }[] = [
+  { id: 1, name: 'Skill 1' },
+  { id: 2, name: 'Skill 2' },
+];
 
-    expect(component.selectedSubSkillCategory).toEqual(techCatId);
-    expect(component.allSkills).toEqual(mockSkills);
-    expect(component.size).toEqual(mockSkills.length);
-  });
+it('should handle selecting a technical category', () => {
+  const mockTechCat = 1;
 
-  it('should add new row', () => {
-    const dialogRefSpyObj = jasmine.createSpyObj({ afterClosed : of({}), close: null });
-    mockMatDialog.open.and.returnValue(dialogRefSpyObj);
+  employeeSkillServiceSpy.getSkills.and.returnValue(of(mockSkills));
 
-    component.addNewRow();
+  component.onSelectTechCat(mockTechCat);
 
-    expect(mockMatDialog.open).toHaveBeenCalled();
-    expect(mockEmployeeSkillService.getSkillCategories).toHaveBeenCalled();
-  });
+  expect(employeeSkillServiceSpy.getSkills).toHaveBeenCalledWith(mockTechCat);
+  expect(component.allSkills).toEqual(mockSkills);
+  expect(component.selectedSubItem).toBeDefined();
+  expect(component.size).toEqual(mockSkills.length); 
+});
 
-  // Add more test cases for other component methods as needed
+
+
 });

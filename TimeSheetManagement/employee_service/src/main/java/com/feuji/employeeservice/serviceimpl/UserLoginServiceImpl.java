@@ -38,9 +38,9 @@ public class UserLoginServiceImpl implements UserLoginService {
     public UserLoginEntity loginUser(String userEmail, String userPassword) {
         Optional<UserLoginEntity> optionalUser = userLoginRepo.findByUserEmail(userEmail);
         if (optionalUser.isPresent() && optionalUser.get().getUserPassword().equals(userPassword)) {
-            return optionalUser.get(); // Return the UserLoginEntity if credentials are valid
+            return optionalUser.get(); 
         }
-        return null; // Return null if credentials are invalid
+        return null;
     }
 
     @Override
@@ -66,12 +66,6 @@ public class UserLoginServiceImpl implements UserLoginService {
     }
 
     
-//    @Override
-//	public String generateOtp() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-    
     @Override
     public String generateOtp(String email) {
         Random random = new Random();
@@ -79,7 +73,7 @@ public class UserLoginServiceImpl implements UserLoginService {
         String generatedOtp = String.valueOf(otpValue);
         log.info("Generated OTP for user: {}", generatedOtp);
         
-        saveOtp(email, generatedOtp); // Save the generated OTP in the database
+        saveOtp(email, generatedOtp); 
         
         return generatedOtp;
     }
@@ -88,7 +82,7 @@ public class UserLoginServiceImpl implements UserLoginService {
     @Override
 	public void saveOtp(String email, String otp) {
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime expirationTime = now.plusMinutes(30); // Setting expiration time to 30 minutes from now
+        LocalDateTime expirationTime = now.plusMinutes(30); 
         
         OTPEntity otpEntity = new OTPEntity();
         otpEntity.setEmail(email);

@@ -7,14 +7,14 @@ import com.feuji.referenceservice.dto.ReferenceDto;
 import com.feuji.referenceservice.entity.CommonReferenceTypeEntity;
 
 public interface CommonReferenceType {
-	
+
 	public CommonReferenceTypeEntity getByTypeName(String typeName);
-	
-	//public CommonReferenceTypeEntity save(CommonReferenceTypeEntity commonReferenceTypeEntity);
 
 	public CommonReferenceTypeEntity save(CommonReferenceTypeBean commonReferenceTypeBean);
 
-	 List<ReferenceDto> getAllReferences();
-	 public String getNameById(int id);
-	 public CommonReferenceTypeBean getRefByTypeName(String typeName);
+	List<ReferenceDto> getAllReferences();
+
+	public String getNameById(int id);
+
+	public CommonReferenceTypeBean getRefByTypeName(String typeName);
 }

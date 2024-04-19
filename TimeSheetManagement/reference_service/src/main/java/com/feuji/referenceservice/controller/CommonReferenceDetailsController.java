@@ -41,152 +41,159 @@ public class CommonReferenceDetailsController {
 
 	@Autowired
 	CommonReferenceDetailsRepo commonReferenceDetailsRepo;
+
 	@Autowired
 	CommonReferenceDetails commonReferenceDetails;
-	
-	
 
-//	@GetMapping("/getref/{typeName}")
-//	 @CrossOrigin(origins = "http://localhost:4200")
-//	
-//	public ResponseEntity<List<ReferenceDetailsBean>> getReferenceTypeByName(@PathVariable String typeName)
-//	{
-//	try{
-//		log.info(typeName);
-//		
-//		
-//		List<ReferenceDetailsBean> getbyreferenceType = commonReferenceDetails.getDetailsByTypeId(typeName);
-//		log.info(getbyreferenceType+"output");
-//		return new ResponseEntity<>(getbyreferenceType, HttpStatus.OK) ;	
-//	}
-//	catch (Exception e) {
-//    return null;
-//	}
-//	}
+	/**
+	 * Retrieves reference details by type name.
+	 * 
+	 * @param typeName The name of the reference type.
+	 * @return ResponseEntity<List<ReferenceDetailsBean>> A response entity
+	 *         containing a list of reference details.
+	 * @see ReferenceDetailsBean
+	 */
 	@GetMapping("/getref/{typeName}")
 	@CrossOrigin(origins = "http://localhost:4200")
 	public ResponseEntity<List<ReferenceDetailsBean>> getReferenceTypeByName(@PathVariable String typeName) {
-	    try {
-	        log.info("Fetching reference details for type: {}", typeName);
-	        
-	        List<ReferenceDetailsBean> referenceDetails = commonReferenceDetails.getDetailsByTypeId(typeName);
-	        
-	        log.info("Retrieved reference details: {}", referenceDetails);
-	        
-	        return ResponseEntity.ok(referenceDetails);
-	    } catch (Exception e) {
-	        log.error("An error occurred while fetching reference details for type {}: {}", typeName, e.getMessage());
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-	    }
-	}
+		try {
+			log.info("Fetching reference details for type: {}", typeName);
 
-//	@GetMapping("/getbyid/{id}")
-//	public ResponseEntity<CommonReferenceDetailsBean> getrefenceDetailsById(@PathVariable Integer id)
-//	{
-//	try{
-//		log.info(id+"id");
-//		
-//		
-//		 CommonReferenceDetailsBean referenceById = commonReferenceDetails.getReferenceById(id);
-//		log.info(referenceById+"output");
-//		return new ResponseEntity<>(referenceById, HttpStatus.OK) ;	
-//	}
-//	catch (Exception e) {
-//    return null;
-//	}
-//	}
+			List<ReferenceDetailsBean> referenceDetails = commonReferenceDetails.getDetailsByTypeId(typeName);
+
+			log.info("Retrieved reference details: {}", referenceDetails);
+
+			return ResponseEntity.ok(referenceDetails);
+		} catch (Exception e) {
+			log.error("An error occurred while fetching reference details for type {}: {}", typeName, e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
+	}
 	
+	/**
+	 * Retrieves reference details by ID.
+	 * 
+	 * @param id The ID of the reference details.
+	 * @return ResponseEntity<CommonReferenceDetailsBean> A response entity
+	 *         containing the reference details.
+	 */
 	@GetMapping("/getbyid/{id}")
 	public ResponseEntity<CommonReferenceDetailsBean> getrefenceDetailsById(@PathVariable Integer id) {
-	    try {
-	        log.info("Fetching reference details by ID: {}", id);
-	        
-	        CommonReferenceDetailsBean referenceById = commonReferenceDetails.getReferenceById(id);
-	        
-	        log.info("Retrieved reference details: {}", referenceById);
-	        
-	        return ResponseEntity.ok(referenceById);
-	    } catch (Exception e) {
-	        log.error("An error occurred while fetching reference details for ID {}: {}", id, e.getMessage());
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-	    }
+		try {
+			log.info("Fetching reference details by ID: {}", id);
+
+			CommonReferenceDetailsBean referenceById = commonReferenceDetails.getReferenceById(id);
+
+			log.info("Retrieved reference details: {}", referenceById);
+
+			return ResponseEntity.ok(referenceById);
+		} catch (Exception e) {
+			log.error("An error occurred while fetching reference details for ID {}: {}", id, e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
 	}
 
-//	@GetMapping("/{referenceTypeId}")
-//    public List<CommonReferenceDetailsEntity> getByReferenceTypeId(@PathVariable Integer referenceTypeId) {
-//        log.info("Fetching Common Reference Details for Reference Type ID: {}", referenceTypeId);
-//        try {
-//            return commonReferenceDetails.getReferenceTypeById(referenceTypeId);
-//        } catch (Exception e) {
-//            log.error("Error occurred while fetching Common Reference Details: {}", e.getMessage());
-//            throw new RuntimeException("Failed to fetch Common Reference Details. Please try again later.");
-//        }
-//    }
-	
+	/**
+	 * Adds a sub-skill category.
+	 *
+	 * @param bean The CommonReferenceDetailsBean containing the details of the
+	 *             sub-skill category to be added.
+	 * @return ResponseEntity<CommonReferenceDetailsBean> ResponseEntity containing
+	 *         the added sub-skill category.
+	 */
 	@PostMapping("/addSubSkill")
 	public ResponseEntity<CommonReferenceDetailsBean> addingSubSkillCategory(
-			@RequestBody CommonReferenceDetailsBean bean) 
-	{
-		log.info("addingSubSkillCategory is started in  commomreferenceDetailsController"+bean);
-		CommonReferenceDetailsBean addSubSkillcategory=null;
+			@RequestBody CommonReferenceDetailsBean bean) {
+		log.info("addingSubSkillCategory is started in  commomreferenceDetailsController" + bean);
+		CommonReferenceDetailsBean addSubSkillcategory = null;
 		try {
 			addSubSkillcategory = commonReferenceDetails.addSubSkillcategory(bean);
 			log.info("addingSubSkillCategory is end in  commomreferenceDetailsController");
 			return new ResponseEntity<CommonReferenceDetailsBean>(addSubSkillcategory, HttpStatus.ACCEPTED);
 		} catch (ReferenceNotFoundException e) {
-			log.info(e.getCause()+"ReferenceNotFoundException occured in commomreferenceDetailsController");
+			log.info(e.getCause() + "ReferenceNotFoundException occured in commomreferenceDetailsController");
 			return new ResponseEntity<CommonReferenceDetailsBean>(addSubSkillcategory, HttpStatus.NOT_FOUND);
 		}
 	}
-	
+
+	/**
+	 * Saves reference details.
+	 *
+	 * @param referenceDetailsBean The CommonReferenceDetailsBean containing the
+	 *                             details to be saved.
+	 * @return ResponseEntity<CommonReferenceTypeBean> ResponseEntity containing the
+	 *         saved reference details.
+	 */
 	@PostMapping("/save")
-    public ResponseEntity<CommonReferenceTypeBean> saveReferenceDetails(@RequestBody CommonReferenceDetailsBean referenceDetailsBean) {
-		log.info("saveReferenceDetails is started in CommonReferenceDetailsController"+referenceDetailsBean);
-		CommonReferenceTypeBean saveReferenceDetails =null;
+	public ResponseEntity<CommonReferenceTypeBean> saveReferenceDetails(
+			@RequestBody CommonReferenceDetailsBean referenceDetailsBean) {
+		log.info("saveReferenceDetails is started in CommonReferenceDetailsController" + referenceDetailsBean);
+		CommonReferenceTypeBean saveReferenceDetails = null;
 		try {
 			saveReferenceDetails = commonReferenceDetails.saveReferenceDetails(referenceDetailsBean);
 			log.info("saveReferenceDetails is end in CommonReferenceDetailsController");
-			return new ResponseEntity<CommonReferenceTypeBean>(saveReferenceDetails,HttpStatus.CREATED);
-		}catch(RecordAlreadyExistsException e)
-		{
+			return new ResponseEntity<CommonReferenceTypeBean>(saveReferenceDetails, HttpStatus.CREATED);
+		} catch (RecordAlreadyExistsException e) {
 			log.info(e.getMessage());
-			return new ResponseEntity<CommonReferenceTypeBean>(saveReferenceDetails,HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<CommonReferenceTypeBean>(saveReferenceDetails, HttpStatus.BAD_REQUEST);
 		}
 	}
-	
+
+	/**
+	 * Updates the 'isDeleted' status of a common reference detail.
+	 *
+	 * @param commonReferenceDetailsBean The CommonReferenceDetailsBean containing
+	 *                                   the details for update.
+	 * @return ResponseEntity<CommonReferenceDetailsBean> ResponseEntity containing
+	 *         the updated common reference detail.
+	 */
 	@PutMapping("/updateIsDeleted")
-    public ResponseEntity<CommonReferenceDetailsBean> updateIsDeleted(@RequestBody CommonReferenceDetailsBean commonReferenceDetailsBean){
+	public ResponseEntity<CommonReferenceDetailsBean> updateIsDeleted(
+			@RequestBody CommonReferenceDetailsBean commonReferenceDetailsBean) {
 		log.info("updateIsDeleted is started in CommonReferenceDetailsController");
-		CommonReferenceDetailsBean updateIsDeleted =null;
+		CommonReferenceDetailsBean updateIsDeleted = null;
 		try {
-			 updateIsDeleted = commonReferenceDetails.updateIsDeleted(commonReferenceDetailsBean);
-				log.info("updateIsDeleted is end in CommonReferenceDetailsController");
-			 return new ResponseEntity<CommonReferenceDetailsBean>(updateIsDeleted,HttpStatus.OK);
+			updateIsDeleted = commonReferenceDetails.updateIsDeleted(commonReferenceDetailsBean);
+			log.info("updateIsDeleted is end in CommonReferenceDetailsController");
+			return new ResponseEntity<CommonReferenceDetailsBean>(updateIsDeleted, HttpStatus.OK);
 		} catch (InvalidInputException e) {
 			log.info(e.getMessage());
-			 return new ResponseEntity<CommonReferenceDetailsBean>(updateIsDeleted,HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<CommonReferenceDetailsBean>(updateIsDeleted, HttpStatus.BAD_REQUEST);
 		}
 	}
-	
+
+	/**
+	 * Deletes a subskill from the common reference details.
+	 *
+	 * @param referenceDetailId The ID of the reference detail to be deleted.
+	 * @return ResponseEntity<CommonReferenceDetailsBean> ResponseEntity containing
+	 *         the deleted common reference detail.
+	 */
 	@PutMapping("/deleteSubskill/{referenceDetailId}")
-    public ResponseEntity<CommonReferenceDetailsBean> deleteSubSkill(@PathVariable Integer referenceDetailId) {
+	public ResponseEntity<CommonReferenceDetailsBean> deleteSubSkill(@PathVariable Integer referenceDetailId) {
 		log.info("deleteSubSkill is started in CommonReferenceDetailsController");
-		CommonReferenceDetailsBean deletedBean=null;
+		CommonReferenceDetailsBean deletedBean = null;
 		try {
-			deletedBean = commonReferenceDetails.deleteSubSkill(referenceDetailId, true);
+			deletedBean = commonReferenceDetails.deleteSubSkill(referenceDetailId, CommonConstants.TRUE);
 			log.info("deleteSubSkill is end in CommonReferenceDetailsController");
-            return new ResponseEntity<CommonReferenceDetailsBean>(deletedBean, HttpStatus.OK);
-		
-		}catch(RecordNotFoundException | NoRecordFoundException | InvalidInputException e){
+			return new ResponseEntity<CommonReferenceDetailsBean>(deletedBean, HttpStatus.OK);
+
+		} catch (RecordNotFoundException | NoRecordFoundException | InvalidInputException e) {
 			log.info(e.getMessage());
-			return new ResponseEntity<CommonReferenceDetailsBean>(deletedBean,HttpStatus.NOT_FOUND);
+			return new ResponseEntity<CommonReferenceDetailsBean>(deletedBean, HttpStatus.NOT_FOUND);
 		}
 	}
-    
-	
+
+	/**
+	 * Retrieves technical skills by reference type name.
+	 *
+	 * @param typeName The name of the reference type.
+	 * @return ResponseEntity<List<TechnicalSkillsBean>> ResponseEntity containing
+	 *         the list of technical skills.
+	 */
 	@GetMapping("/getreference/{typeName}")
 	public ResponseEntity<List<TechnicalSkillsBean>> getReferenceTypeByRefName(@PathVariable String typeName) {
-		List<TechnicalSkillsBean> getbyreferenceType=null;
+		List<TechnicalSkillsBean> getbyreferenceType = null;
 		try {
 			log.info("Enterd into getReferenceTypeByName method of commomreferenceDetailsController  " + typeName);
 			getbyreferenceType = commonReferenceDetails.getRefDetailsByTypeId(typeName);
@@ -196,6 +203,14 @@ public class CommonReferenceDetailsController {
 			return new ResponseEntity<>(getbyreferenceType, HttpStatus.OK);
 		}
 	}
+
+	/**
+	 * Retrieves categories based on the given category.
+	 *
+	 * @param category The category to search for.
+	 * @return ResponseEntity<List<String>> ResponseEntity containing the list of
+	 *         categories.
+	 */
 	@GetMapping("/getCategories/{category}")
 	public ResponseEntity<List<String>> getCategories(@PathVariable String category) {
 		log.info("getCategories start");
@@ -210,9 +225,18 @@ public class CommonReferenceDetailsController {
 		}
 
 	}
-	
+
+	/**
+	 * Retrieves the ID associated with the given name.
+	 *
+	 * @param name The name to search for.
+	 * @return ResponseEntity<Integer> ResponseEntity containing the ID.
+	 * @throws NameNotFoundException              If the name is not found.
+	 * @throws javax.naming.NameNotFoundException If the name is not found.
+	 */
 	@GetMapping("/getByName/{name}")
-	public ResponseEntity<Integer> getByName(@PathVariable String name) throws NameNotFoundException, javax.naming.NameNotFoundException {
+	public ResponseEntity<Integer> getByName(@PathVariable String name)
+			throws NameNotFoundException, javax.naming.NameNotFoundException {
 		log.info("controller-getByName() started");
 		try {
 			log.info("Entered into getIdByName method of service in controller");
@@ -221,11 +245,17 @@ public class CommonReferenceDetailsController {
 			return new ResponseEntity<Integer>(idByName, HttpStatus.OK);
 		} catch (NameNotFoundException e) {
 			log.info("NameNotFoundException occured in commomreferenceDetailsController");
-			throw new NameNotFoundException("Name not found: " +name);
+			throw new NameNotFoundException("Name not found: " + name);
 		}
 
 	}
-	
+
+	/**
+	 * Retrieves the name associated with the given ID.
+	 *
+	 * @param id The ID to search for.
+	 * @return ResponseEntity<String> ResponseEntity containing the name.
+	 */
 	@GetMapping("/getById/{id}")
 	public ResponseEntity<String> getById(@PathVariable int id) {
 		log.info("getById() started");
@@ -241,22 +271,25 @@ public class CommonReferenceDetailsController {
 		}
 	}
 
-	
+	/**
+	 * Deletes the skill category with the given name.
+	 *
+	 * @param skillCategory The name of the skill category to delete.
+	 * @return ResponseEntity<CommonReferenceDetailsBean> ResponseEntity containing
+	 *         the deleted bean.
+	 */
 	@PutMapping("/deleteSkillCategory/{skillCategory}")
-	public ResponseEntity<CommonReferenceDetailsBean> deleteSkillcategory(@PathVariable String skillCategory)
-	{
+	public ResponseEntity<CommonReferenceDetailsBean> deleteSkillcategory(@PathVariable String skillCategory) {
 		log.info("deleteSkillcategory is started in CommonReferenceDetailsController");
-		CommonReferenceDetailsBean deletedBean=null;
+		CommonReferenceDetailsBean deletedBean = null;
 		try {
 			deletedBean = commonReferenceDetails.deleteSkillCategory(skillCategory, CommonConstants.TRUE);
 			log.info("deleteSkillcategory is end in CommonReferenceDetailsController");
 			return new ResponseEntity<CommonReferenceDetailsBean>(deletedBean, HttpStatus.OK);
-		}catch(RecordNotFoundException | NoRecordFoundException | InvalidInputException e)
-		{
+		} catch (RecordNotFoundException | NoRecordFoundException | InvalidInputException e) {
 			log.info(e.getMessage());
-			return new ResponseEntity<CommonReferenceDetailsBean>(deletedBean,HttpStatus.NOT_FOUND);
+			return new ResponseEntity<CommonReferenceDetailsBean>(deletedBean, HttpStatus.NOT_FOUND);
 		}
 	}
-
 
 }

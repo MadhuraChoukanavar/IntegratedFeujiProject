@@ -29,13 +29,13 @@ public class AccountTestController {
 	private AccountTestController accountController;
 	@Test
 	public void testsaveAccount() {
-		AccountBean accountBean	=AccountBean.builder().accountId(1).accountName("").address("").accountStatus((long) 101).build();
+		AccountBean accountBean	=AccountBean.builder().accountId(1).accountName("").address("").accountStatus((Integer) 101).build();
 		accountService.saveAccount(accountBean);
 		verify(accountService,times(1)).saveAccount(accountBean);
 	}
 	@Test
 	public void testupdateAccount() {
-		AccountBean accountBean	=AccountBean.builder().accountId(1).accountName("").address("").accountStatus((long) 101).build();
+		AccountBean accountBean	=AccountBean.builder().accountId(1).accountName("").address("").accountStatus((Integer) 101).build();
 		accountService.updateAccount(accountBean);
 		verify(accountService,times(1)).updateAccount(accountBean);
 	}
@@ -47,7 +47,7 @@ public class AccountTestController {
                 .accountName("")
                 .address("")
                 .uuId("101")
-                .accountStatus((long) 101)
+                .accountStatus((Integer) 101)
                 .build();
         
         // Mock the behavior of accountService.findByUUId("101")

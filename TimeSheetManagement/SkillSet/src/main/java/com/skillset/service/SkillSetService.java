@@ -2,9 +2,9 @@ package com.skillset.service;
 
 import java.util.List;
 
-import com.feuji.skillset.exception.RecordNotFoundException;
 import com.skillset.dto.GapDto;
 import com.skillset.dto.SkillGapDto;
+import com.skillset.exception.RecordNotFoundException;
 
 public interface SkillSetService {
 	

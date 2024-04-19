@@ -33,13 +33,10 @@ public class SecurityConfig {
 
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		return http.csrf().disable().authorizeHttpRequests()
-				.requestMatchers("/fetch/{email}")
+		return http.csrf().disable().authorizeHttpRequests().requestMatchers("/fetch/{email}")
 				.hasAnyAuthority("Software Engineer", "Manager", "Admin")
-				.requestMatchers("/fetch/{email}/{skillCategoryId}")
-				.hasAnyAuthority("Software Engineer")
-				.anyRequest().authenticated()
-				.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+				.requestMatchers("/fetch/{email}/{skillCategoryId}").hasAnyAuthority("Software Engineer").anyRequest()
+				.authenticated().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 				.authenticationProvider(authenticationProvider())
 				.addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class).build();
 	}

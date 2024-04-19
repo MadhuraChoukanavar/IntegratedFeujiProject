@@ -13,7 +13,6 @@ import { EmployeeSkillDisplayComponent } from "../skillgap/employee-skill-displa
 import { EmployeeSkillGapComponent } from "../skillgap/employee-skill-gap/employee-skill-gap.component";
 
 import { MatTabsModule } from "@angular/material/tabs";
-import { TrainingRecommendationComponent } from "../skillgap/training-recommendation/training-recommendation.component";
 import { MatCardModule } from "@angular/material/card";
 import { TrainingRecommendationComponent } from "../skillgap/training-recommendation/training-recommendation.component";
 

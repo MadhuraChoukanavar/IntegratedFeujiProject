@@ -17,7 +17,7 @@ export class AdminLandingPageComponent {
     if (user) {
       this.user = JSON.parse(user);
       console.log("User from localStorage:", this.user);
-      this.empName=this.user.userName
+      this.empName=this.user.firstName
       console.log(this.empName);
       console.log(user);
     }

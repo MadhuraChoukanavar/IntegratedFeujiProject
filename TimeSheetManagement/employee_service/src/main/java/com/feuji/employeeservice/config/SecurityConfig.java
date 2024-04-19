@@ -31,62 +31,23 @@ public class SecurityConfig {
 		return new UserInfoUserDetailsService();
 	}
 
-//    @Bean
-//     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        return http.csrf().disable()
-//                .authorizeHttpRequests()
-//                .requestMatchers("/users/login").permitAll()
-//                .and()
-//                .authorizeHttpRequests().requestMatchers("/employee/**").hasAnyAuthority("**").anyRequest()
-//                .authenticated().and()
-//                .sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-//                .authenticationProvider(authenticationProvider())
-//                .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
-//                .build();
-//    }
+	@Bean
+	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		return http.csrf().disable().authorizeHttpRequests()
+				.requestMatchers("/users/login", "/employee/getByEmail/{employeeEmail}").permitAll()
+				.requestMatchers("/employee/getReportingMngIdByEmpId/**","/employee/getAll").permitAll()
 
-    @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.csrf().disable()
-        		 .authorizeHttpRequests()
-                 .requestMatchers("/users/login","/employee/getByEmail/{employeeEmail}").permitAll()
-                 .requestMatchers("/employee/getReportingMngIdByEmpId/**").permitAll()
-                 
-                    .requestMatchers("/employee/employees","/employee/referenceTypeId/**"
-                    		,"/employee/checkEmail","/employee/getAll","/employee/reporting-managers",
-                    		"/employee/{userEmpId}","/employee/getEmployeeDetails","/employee/deleteEmp/**",
-                    		"/employee/getEmployeeDetailByUUiD/{uuid}","/employee/updateEmployee","/employee/search","/employee/**").hasAnyAuthority("Admin","Manager","Software Engineer").anyRequest()
-                    .authenticated()
-// Allow access to all requests under /employee
-                     // Allow access to all other requests
-                .and()
-                .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authenticationProvider(authenticationProvider())
-                .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
-    }
-//    
-  
-//    @Bean
-//    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//       return http.csrf().disable()
-//               .authorizeHttpRequests()
-//               .requestMatchers("/products/signUp","/products/login","/products/refreshToken").permitAll()
-//               .and()
-//               .authorizeHttpRequests().requestMatchers("/products/all").hasAnyAuthority("ADMIN").requestMatchers("/products/{id}")
-//				.hasAnyAuthority("USER").anyRequest()
-//               .authenticated().and()
-//               .sessionManagement()
-//               .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//               .and()
-//               .authenticationProvider(authenticationProvider())
-//               .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
-//               .build();
-//   }
+				.requestMatchers("/employee/employees", "/employee/referenceTypeId/**", "/employee/checkEmail",
+						 "/employee/reporting-managers", "/employee/{userEmpId}",
+						"/employee/getEmployeeDetails", "/employee/deleteEmp/**",
+						"/employee/getEmployeeDetailByUUiD/{uuid}", "/employee/updateEmployee", "/employee/search",
+						"/employee/**")
+				.hasAnyAuthority("Admin", "Manager", "Software Engineer").anyRequest().authenticated()
+				.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+				.authenticationProvider(authenticationProvider())
+				.addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class).build();
+	}
+
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {

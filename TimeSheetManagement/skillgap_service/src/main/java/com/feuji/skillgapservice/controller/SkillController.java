@@ -20,7 +20,6 @@ import com.feuji.skillgapservice.bean.SkillBean;
 import com.feuji.skillgapservice.commonconstants.CommonConstants;
 import com.feuji.skillgapservice.dto.SkillNamesDto;
 import com.feuji.skillgapservice.entity.SkillEntity;
-import com.feuji.skillgapservice.exception.InputNotFoundException;
 import com.feuji.skillgapservice.exception.RecordNotFoundException;
 import com.feuji.skillgapservice.exception.SkillNotFoundException;
 import com.feuji.skillgapservice.service.SkillService;
@@ -38,7 +37,7 @@ public class SkillController {
 
 	/**
 	 * Saves a new SkillBean record.
-	 *
+	 * 
 	 * @param bean The SkillBean object to save.
 	 * @return A ResponseEntity containing the saved SkillBean object and HTTP
 	 *         status CREATED.
@@ -160,7 +159,6 @@ public class SkillController {
 		}
 	}
 
-	
 	/**
 	 * Retrieves a SkillBean record from the database based on its skillUuid.
 	 *
@@ -185,10 +183,18 @@ public class SkillController {
 		}
 	}
 
+	/**
+	 * Updates the status of skills.
+	 *
+	 * @param skillIds The IDs of the skills to update.
+	 * @param status   The new status for the skills.
+	 * @return ResponseEntity indicating the success of the operation.
+	 * @throws RecordNotFoundException If no records are found for the given skill
+	 *                                        IDs.  
+	 */
 	@PutMapping("/updateStatus")
 	public ResponseEntity<SkillEntity> updateSkillStatus(@RequestParam("skillIds") List<Integer> skillIds,
 			@RequestParam("status") List<Byte> status) throws RecordNotFoundException {
-		log.info("*****************************************");
 		if (skillIds.isEmpty() || status.isEmpty()) {
 			throw new IllegalArgumentException("Invalid request format");
 		}
@@ -202,6 +208,13 @@ public class SkillController {
 
 	}
 
+	/**
+	 * Retrieves skills by technical category ID for employees.
+	 *
+	 * @param categoryId The ID of the technical category for which skills are to be
+	 *                   retrieved.
+	 * @return ResponseEntity containing a list of SkillBean objects.  
+	 */
 	@GetMapping(path = "/getAllForEmployee/{categoryId}")
 	public ResponseEntity<List<SkillBean>> getSkillsByTechCategoryIdForEmployee(@PathVariable int categoryId) {
 		log.info("GetAll Start:in SkillController");
@@ -215,19 +228,27 @@ public class SkillController {
 			return new ResponseEntity<>(skillBeanList, HttpStatus.NOT_FOUND);
 		}
 	}
-	
+
+	/**
+	 * Deletes a skill by its sub-skill category ID.
+	 *
+	 * @param subSkillCategoryId The ID of the sub-skill category associated with
+	 *                           the skill to be deleted.
+	 * @return ResponseEntity indicating the success of the operation.  
+	 */
 	@PutMapping("deleteSkill/{subSkillCategoryId}")
-    public ResponseEntity<SkillEntity> deleteSkillBySubSkillCategoryId(@PathVariable Long subSkillCategoryId){
-		List<SkillEntity> deletedSkills =null;
-		deletedSkills = skillService.deleteSkillBySubSkillCategoryId(subSkillCategoryId, (byte)CommonConstants.TRUE);
-		if(deletedSkills.size()>0)
-		{
-			return new ResponseEntity<SkillEntity>(deletedSkills.get(CommonConstants.FALSE),HttpStatus.ACCEPTED);
-		}
-		else {
+	public ResponseEntity<SkillEntity> deleteSkillBySubSkillCategoryId(@PathVariable Long subSkillCategoryId) {
+		List<SkillEntity> deletedSkills = null;
+		deletedSkills = skillService.deleteSkillBySubSkillCategoryId(subSkillCategoryId, (byte) CommonConstants.TRUE);
+		if (deletedSkills.size() > 0) {
+			return new ResponseEntity<SkillEntity>(deletedSkills.get(CommonConstants.FALSE), HttpStatus.ACCEPTED);
+		} else {
 			return new ResponseEntity<SkillEntity>(HttpStatus.OK);
 		}
 	}
-    
-	
+
+	public void setSkillService(SkillService skillService2) {
+		
+	}
+
 }

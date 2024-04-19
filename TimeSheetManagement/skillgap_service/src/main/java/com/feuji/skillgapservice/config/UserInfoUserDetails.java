@@ -11,8 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.feuji.skillgapservice.entity.UserLoginEntity;
 
-
-
 public class UserInfoUserDetails implements UserDetails {
 
 	private String email;

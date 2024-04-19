@@ -5,6 +5,10 @@ import { EmployeeLayoutComponent } from './layouts/employee-layout/employee-layo
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
 import { ManagerLayoutComponent } from './layouts/manager-layout/manager-layout.component';
 import { PmoLayoutComponent } from './layouts/pmo-layout/pmo-layout.component';
+import { AuthGuard } from './Auth/AuthGuard';
+import { AdminGuard } from './Auth/AdminGaurd';
+import { EmployeeGuard } from './Auth/EmployeeGaurd';
+import { ManagerGuard } from './Auth/ManagerGaurd';
 
 const Routes: Routes = [
   {
@@ -15,6 +19,7 @@ const Routes: Routes = [
   },
   {
     path: '',
+    canActivate:[AuthGuard,AdminGuard],
     component: AdminLayoutComponent,
     children: [
       {
@@ -37,6 +42,7 @@ const Routes: Routes = [
   },
   {
     path: '',
+    canActivate:[AuthGuard,EmployeeGuard],
     component: EmployeeLayoutComponent,
     children: [
       {
@@ -48,6 +54,7 @@ const Routes: Routes = [
   },
   {
     path: '',
+    canActivate:[AuthGuard,ManagerGuard],
     component: ManagerLayoutComponent,
     children: [
       {

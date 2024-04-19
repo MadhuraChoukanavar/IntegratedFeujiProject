@@ -193,7 +193,7 @@ export class EmployeeSkillGapComponent {
     pdf.setFontSize(10);
     pdf.setFont("helvetica", "normal");
     pdf.text('Employee Name: ' + this.getMySkills[0]?.employeeName, 10, startY + 20);
-    pdf.text('Email: ' + this.getMySkills[0]?.employeeEmail, 10, startY + 25);
+    pdf.text('Email: ' + this.empMail, 10, startY + 25);
     pdf.text('Designation: ' + this.getMySkills[0]?.designation, 10, startY + 30);
 
     pdf.text('More than expected', 160, startY + 10);

@@ -29,7 +29,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(path = "/employeeskill")
 @CrossOrigin(origins = "http://localhost:4200")
 public class EmployeeSkillController {
-
 	@Autowired
 	private EmployeeSkillService employeeSkillservice;
 
@@ -184,6 +183,9 @@ public class EmployeeSkillController {
 			log.error(e.getMessage());
 			return new ResponseEntity<EmployeeSkillBean>(bean, HttpStatus.BAD_GATEWAY);
 		}
+	}
+
+	public void setEmployeeSkillService(EmployeeSkillService employeeSkillService2) {
 	}
 
 }

@@ -1,6 +1,5 @@
 .container {
   margin-top: 2%;
-  /* margin-left: 21%; */
 }
 
 .skillName {
@@ -67,5 +66,5 @@ mat-cell {
   border: none;
 }
 .mat-expansion-panel-header div .mat-panel-title  {
-  color: green !important; /* Change the color to your desired color */
+  color: green !important; 
 }

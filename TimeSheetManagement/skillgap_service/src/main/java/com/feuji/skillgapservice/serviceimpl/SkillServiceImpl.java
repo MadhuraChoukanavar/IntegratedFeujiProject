@@ -347,7 +347,11 @@ public class SkillServiceImpl implements SkillService {
         if (findAllById!=null) {
             List<SkillEntity> skillEntity = findAllById;
             for (int index=0;index<skillEntity.size();index++) {
-            	skillEntity.get(index).setStatus(status.get(index));
+            	for(int index2=0;index2<skillIds.size();index2++)
+            	{
+            		if(skillEntity.get(index).getSkillId()==skillIds.get(index2))
+                    	skillEntity.get(index).setStatus(status.get(index2));
+            	}
 			}
              return skillRepository.saveAll(skillEntity);
         } else {

@@ -16,7 +16,7 @@ import lombok.ToString;
 @Builder
 public class CommonReferenceDetailsBean {
 	
-	private Long referenceDetailId;
+	private Integer referenceDetailId;
 
 	private String referenceDetailValue;
 

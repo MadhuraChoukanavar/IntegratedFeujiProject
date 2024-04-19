@@ -2,13 +2,17 @@ package com.feuji.skillgapservice.exception;
 
 public class InputNotFoundException extends RuntimeException {
 
-	public InputNotFoundException(String message)
-	{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public InputNotFoundException(String message) {
 		super(message);
 	}
-	public InputNotFoundException()
-	{
+
+	public InputNotFoundException() {
 		super();
 	}
-	
+
 }

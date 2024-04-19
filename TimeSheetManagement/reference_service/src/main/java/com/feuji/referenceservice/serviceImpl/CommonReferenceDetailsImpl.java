@@ -43,16 +43,16 @@ public class CommonReferenceDetailsImpl implements CommonReferenceDetails {
 	CommonReferenceDetailsRepo commonReferenceDetailsRepo;
 	@Autowired
 	ModelMapper modelMapper;
-	
+
 	@Autowired
 	CommonReferenceTypeRepo commonReferenceTypeRepo;
-	
+
 	@Autowired
 	CommonReferenceTypeImpl commonReferenceTypeImpl;
 
 	@Autowired
 	private RestTemplate restTemplate;
-	
+
 	@Override
 	public List<ReferenceDetailsBean> getDetailsByTypeId(String typeName) {
 		log.info("result" + typeName);
@@ -131,7 +131,7 @@ public class CommonReferenceDetailsImpl implements CommonReferenceDetails {
 		return bean;
 
 	}
-	
+
 	@Override
 	public CommonReferenceTypeBean saveReferenceDetails(CommonReferenceDetailsBean referenceDetailsBean) {
 		CommonReferenceTypeBean bean = null;
@@ -166,7 +166,7 @@ public class CommonReferenceDetailsImpl implements CommonReferenceDetails {
 		}
 		return bean;
 	}
-	
+
 	@Override
 	public CommonReferenceDetailsBean updateIsDeleted(CommonReferenceDetailsBean commonReferenceDetailsBean)
 			throws InvalidInputException {
@@ -188,9 +188,9 @@ public class CommonReferenceDetailsImpl implements CommonReferenceDetails {
 		}
 
 	}
-	
+
 	@Override
-	public CommonReferenceDetailsBean deleteSkillCategory(String skillCategory, Boolean isDeleted)
+	public CommonReferenceDetailsBean deleteSkillCategory(String skillCategory, Byte isDeleted)
 			throws RecordNotFoundException, NoRecordFoundException, InvalidInputException {
 		int skillCategoryId = getIdByName(skillCategory);
 		Optional<CommonReferenceDetailsEntity> optionalEntity = commonReferenceDetailsRepo.findById(skillCategoryId);
@@ -216,7 +216,7 @@ public class CommonReferenceDetailsImpl implements CommonReferenceDetails {
 			throw new RecordNotFoundException("Record not found with this reference details id: " + skillCategoryId);
 		}
 	}
-	
+
 	@Override
 	public int getIdByName(String name) {
 		log.info("getByName() started");
@@ -229,10 +229,9 @@ public class CommonReferenceDetailsImpl implements CommonReferenceDetails {
 		}
 
 	}
-	
-	
+
 	@Override
-	public CommonReferenceDetailsBean deleteSubSkill(Integer referenceDetailId, Boolean isDeleted)
+	public CommonReferenceDetailsBean deleteSubSkill(Integer referenceDetailId, Byte isDeleted)
 			throws RecordNotFoundException, NoRecordFoundException, InvalidInputException {
 		Optional<CommonReferenceDetailsEntity> optionalEntity = commonReferenceDetailsRepo.findById(referenceDetailId);
 		if (optionalEntity.isPresent()) {
@@ -245,7 +244,7 @@ public class CommonReferenceDetailsImpl implements CommonReferenceDetails {
 			throw new RecordNotFoundException("Record not found with this reference details id: " + referenceDetailId);
 		}
 	}
-	
+
 	public SkillEntity deleteSkill(Integer referenceDetailId) throws NoRecordFoundException, InvalidInputException {
 		if (referenceDetailId != null) {
 			String url = "http://localhost:8087/api/skill/deleteSkill/" + referenceDetailId;
@@ -274,7 +273,7 @@ public class CommonReferenceDetailsImpl implements CommonReferenceDetails {
 			log.info("getByid() ended");
 			return nameById;
 		} else {
-			throw new ReferenceNotFoundException("no suitable name found for this id: "+id);
+			throw new ReferenceNotFoundException("no suitable name found for this id: " + id);
 		}
 	}
 
@@ -299,7 +298,7 @@ public class CommonReferenceDetailsImpl implements CommonReferenceDetails {
 		}
 		return technicalSkillBeanList;
 	}
-	
+
 	@Override
 	public List<String> getCategories(String categoryName) {
 		log.info("getCategories() start");
@@ -312,8 +311,5 @@ public class CommonReferenceDetailsImpl implements CommonReferenceDetails {
 		}
 
 	}
-
-
-
 
 }

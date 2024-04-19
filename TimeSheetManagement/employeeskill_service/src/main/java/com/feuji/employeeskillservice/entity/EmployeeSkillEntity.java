@@ -1,4 +1,5 @@
 package com.feuji.employeeskillservice.entity;
+
 import java.sql.Timestamp;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -23,61 +24,59 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-
 @DynamicInsert
 @DynamicUpdate
 @Table(name = "employee_skills")
-public class EmployeeSkillEntity 
-{
+public class EmployeeSkillEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "employee_skill_id")
 	private Long employeeSkillId;
-	
-	@Column(name="employee_id")
-	private int employeeId;
-	
-	@Column(name="employee_code")
+
+	@Column(name = "employee_id")
+	private Integer employeeId;
+
+	@Column(name = "employee_code")
 	private String employeeCode;
 
-	@Column(name="skill_id")
+	@Column(name = "skill_id")
 	private int skillId;
-	
-	@Column(name="competency_level_id")
+
+	@Column(name = "competency_level_id")
 	private int competencyLevelId;
-	
-	@Column(name="skill_type_id")
+
+	@Column(name = "skill_type_id")
 	private int skillTypeId;
-	
-	@Column(name="years_of_experiance")
+
+	@Column(name = "years_of_experiance")
 	private int yearsOfExp;
-	
-	@Column(name="certification")
+
+	@Column(name = "certification")
 	private byte certification;
-	
-	@Column(name="description")
+
+	@Column(name = "description")
 	private String description;
-	
-	@Column(name="comments")
+
+	@Column(name = "comments")
 	private String comments;
-	
-	@Column(name="is_deleted")
+
+	@Column(name = "is_deleted")
 	private byte isDeleted;
-	
-	@Column(name="uuid")
+
+	@Column(name = "uuid")
 	private String uuid;
-	
-	@Column(name="created_by")
+
+	@Column(name = "created_by")
 	private String createdBy;
-	
+
 	@CreationTimestamp
-	@Column(name="created_on",nullable=false,updatable=false)
+	@Column(name = "created_on", nullable = false, updatable = false)
 	private Timestamp createdOn;
-	
-	@Column(name="modified_by")
+
+	@Column(name = "modified_by")
 	private String modifiedBy;
-	
+
 	@CreationTimestamp
-	@Column(name="modified_on",nullable=false)
+	@Column(name = "modified_on", nullable = false)
 	private Timestamp modifiedOn;
 }

@@ -47,7 +47,6 @@ export class AddMainSkillComponent implements OnInit {
   loadSkillCategories() {
     this.employeeSkillService.getSkillCategories('Skill Category').subscribe((data: any[]) => {
       this.accordionData = data;
-      console.log(this.accordionData);
       
     });
   }
@@ -143,11 +142,22 @@ export class AddMainSkillComponent implements OnInit {
     const status = this.changesToSave.map(item => item.status ? 1 : 0);
     this.employeeSkillService.updateStatusAdmin(skillIds, status).subscribe(
       (response: any) => {
-        Swal.fire("Status updated successfully");
+        this.onSelectTechCat(this.selectedSubSkillCategory);
+        Swal.fire({
+          title: 'Status',
+          text: 'Status updated successfully',
+          icon: 'success',
+          confirmButtonText: 'Ok',
+        });
         this.changesToSave = [];
       },
       (error: any) => {
-        Swal.fire("Unable to update status");
+        Swal.fire({
+          title: 'Status',
+          text: 'Unable to Update Status',
+          icon: 'error',
+          confirmButtonText: 'Ok',
+        });
       }
     );
   }

@@ -13,7 +13,7 @@ export class ManagerLandingPageComponent {
     const user = localStorage.getItem("user");
     if (user) {
       this.user = JSON.parse(user);
-      this.empName=this.user.userName
+      this.empName=this.user.firstName
       console.log(this.empName);
       console.log(user);
 

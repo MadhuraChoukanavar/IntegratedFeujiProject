@@ -43,7 +43,7 @@ public class CommonReferenceTypeEntity {
 	private String uuid;
 	
 	@Column(name = "is_deleted")
-	private Boolean isDeleted;
+	private Byte isDeleted;
 	
 	@Column(name = "created_by")
 	private String createdBy;

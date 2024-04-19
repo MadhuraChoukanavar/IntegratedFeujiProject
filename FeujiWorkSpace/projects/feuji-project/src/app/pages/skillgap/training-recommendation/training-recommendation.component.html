@@ -6,10 +6,10 @@
           <span style="color: black;">Training Recommendations(High SkillGap)</span>
         </ng-template>
         <div id="section2">
-          <div class="message"  *ngIf="skillGapMessage==2">
-            <p class="toptext"> No High Gap in skills.</p>
-            <p>You have demonstrated proficiency in all high-priority skills. Keep up the excellent work!</p>
-           </div>
+          <div class="message" *ngIf="skillGapMessage==2">
+            <p  class="toptext"> No High Gap in skills.</p>
+             <p>You have demonstrated proficiency in all high-priority skills. Keep up the excellent work!</p>
+            </div>
           <div id="recommend-training" *ngFor="let skill of highGapSkills">
             <div class="container">
               <div id="firstDiv">
@@ -43,7 +43,7 @@
         </ng-template>
         <div id="section2">
           <div class="message" *ngIf="skillGapMessage==1">
-            <p  class="toptext"> No  Modetare Gap in skills.</p>
+            <p  class="toptext"> No Modetare Gap in skills.</p>
              <p>You have demonstrated proficiency in all moderate-skills. Keep up the good work!</p>
             </div>
           <div id="recommend-training" *ngFor="let skill of moderateGapSkills">

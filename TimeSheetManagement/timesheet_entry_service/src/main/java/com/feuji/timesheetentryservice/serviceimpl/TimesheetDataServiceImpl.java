@@ -79,14 +79,15 @@ public class TimesheetDataServiceImpl implements TimeSheetDataService {
 	EmailSender emailSender;
 
 	@Override
-	  public List<TimesheetWeekEntity> saveOrUpdate(SaveAndEditRecordsDto saveAndEditRecordsDto, String mondayDate) {
-	        List<WeekAndDayDataBean> dto = saveAndEditRecordsDto.getTimesheetWeekDayDetailDto();
-	        Date date = convertDateStringToDate(mondayDate);
-	        List<TimesheetWeekEntity> savedEntities = saveAll(saveAndEditRecordsDto.getTimesheetWeekDayDetailDto(), date);
-	        
-	        update(saveAndEditRecordsDto.getWeekAndDayDto());
-	        return savedEntities;
-	    }
+	public List<TimesheetWeekEntity> saveOrUpdate(SaveAndEditRecordsDto saveAndEditRecordsDto, String mondayDate) {
+		List<WeekAndDayDataBean> dto = saveAndEditRecordsDto.getTimesheetWeekDayDetailDto();
+		Date date = convertDateStringToDate(mondayDate);
+		List<TimesheetWeekEntity> savedEntities = saveAll(saveAndEditRecordsDto.getTimesheetWeekDayDetailDto(), date);
+
+		update(saveAndEditRecordsDto.getWeekAndDayDto());
+		return savedEntities;
+	}
+
 	@Override
 	public List<TimesheetWeekEntity> saveAll(List<WeekAndDayDataBean> weekAndDayDataBeans, Date mondayDate) {
 		List<TimesheetWeekEntity> weekEntityList = new ArrayList<>();
@@ -102,7 +103,7 @@ public class TimesheetDataServiceImpl implements TimeSheetDataService {
 		String formattedDate = dateFormat.format(mondayDatee);
 
 		Date monDate = convertDateStringToDate(formattedDate);
-	
+
 		for (WeekAndDayDataBean weekAndDayDataBean : weekAndDayDataBeans) {
 			Integer employeeId = weekAndDayDataBean.getEmployeeId();
 			Integer accountId = weekAndDayDataBean.getAccountId();
@@ -112,7 +113,7 @@ public class TimesheetDataServiceImpl implements TimeSheetDataService {
 			if (getprojectIdOfWeek.size() == 0
 					|| !getprojectIdOfWeek.contains(weekAndDayDataBean.getAccountProjectId())) {
 
- 				TimesheetWeekEntity timesheetWeekEntity = createTimesheetWeekEntity(currentWeekNumber,
+				TimesheetWeekEntity timesheetWeekEntity = createTimesheetWeekEntity(currentWeekNumber,
 						weekAndDayDataBean, mondayDatee);
 				weekEntityList.add(timesheetWeekEntity);
 				timesheetWeekRepo.save(timesheetWeekEntity);
@@ -215,9 +216,9 @@ public class TimesheetDataServiceImpl implements TimeSheetDataService {
 			String date = formatter.format(dateValue);
 			if (existingDates.containsKey(date)) {
 				TimesheetDayEntity data = existingDates.get(date);
-			
+
 				data.setNumberOfHours(num);
-		
+
 				TimesheetDayEntity dayEntity = timesheetDayRepo.save(data);
 			}
 
@@ -233,13 +234,13 @@ public class TimesheetDataServiceImpl implements TimeSheetDataService {
 			Date weekEndDate = timesheetWeekEntity.getWeekEndDate();
 			List<String> dateList = getDatesBetweenWeekStartAndEnd(weekStartDate, weekEndDate);
 			if (num != 0) {
-				
+
 				String string = dateList.get(count);
 				Date convertDateStringToDate = convertUserSpecificFormateDate(string);
-		
+
 				TimesheetDayEntity createTimesheetDayEntity1 = createTimesheetDayEntity1(timesheetWeekEntity,
 						weekAndDayDto, convertDateStringToDate, num);
-			
+
 				timesheetDayRepo.save(createTimesheetDayEntity1);
 
 			}
@@ -329,7 +330,7 @@ public class TimesheetDataServiceImpl implements TimeSheetDataService {
 
 		return employeeBean;
 	}
-	
+
 	public ReferenceDetailsBean getDetailsById(Integer detailsId) {
 		log.info("Connecting to Employee server...");
 		String url = "http://localhost:8089/api/referencedetails/getbyid/" + detailsId;
@@ -395,48 +396,50 @@ public class TimesheetDataServiceImpl implements TimeSheetDataService {
 //	    }
 //	}
 //
-	
+
 	public AccountProjectsBean getAccountIdFromProjectId(Integer accountId) {
-	    try {
-	        log.info("Connecting to AccountProject server...");
-	        String url = "http://localhost:8083/api/accountProjects/getAccountProject/" + accountId;
-	        
-	        HttpHeaders headers = new HttpHeaders();
-	        headers.setContentType(MediaType.APPLICATION_JSON);
+		try {
+			log.info("Connecting to AccountProject server...");
+			String url = "http://localhost:8083/api/accountProjects/getAccountProject/" + accountId;
 
-	        HttpEntity<String> httpEntity = new HttpEntity<>(headers);
-	        ResponseEntity<AccountProjectsBean> responseEntity = restTemplate.exchange(url, HttpMethod.GET, httpEntity,
-	                AccountProjectsBean.class);
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_JSON);
 
-	        AccountProjectsBean accountProjectsBean = responseEntity.getBody();
+			HttpEntity<String> httpEntity = new HttpEntity<>(headers);
+			ResponseEntity<AccountProjectsBean> responseEntity = restTemplate.exchange(url, HttpMethod.GET, httpEntity,
+					AccountProjectsBean.class);
 
-	        if (accountProjectsBean != null) {
-	            log.info("Received AccountProjectsBean from AccountProject server: {}", accountProjectsBean);
-	            return accountProjectsBean;
-	        } else {
-	            log.error("Received null response from AccountProject server");
-	            // Handle the case where the response is null, e.g., throw custom exception or return default value
-	            return null;
-	        }
-	    } catch (HttpClientErrorException e) {
-	        log.error("HttpClientErrorException occurred while connecting to AccountProject server: {}", e.getMessage());
-	        // Handle HttpClientErrorException, e.g., log or throw custom exception
-	        return null;
-	    } catch (HttpServerErrorException e) {
-	        log.error("HttpServerErrorException occurred while connecting to AccountProject server: {}", e.getMessage());
-	        // Handle HttpServerErrorException, e.g., log or throw custom exception
-	        return null;
-	    } catch (RestClientException e) {
-	        log.error("RestClientException occurred while connecting to AccountProject server: {}", e.getMessage());
-	        // Handle RestClientException, e.g., log or throw custom exception
-	        return null;
-	    } catch (Exception e) {
-	        log.error("An unexpected error occurred while connecting to AccountProject server: {}", e.getMessage());
-	        // Handle any other unexpected exception, e.g., log or throw custom exception
-	        return null;
-	    }
+			AccountProjectsBean accountProjectsBean = responseEntity.getBody();
+
+			if (accountProjectsBean != null) {
+				log.info("Received AccountProjectsBean from AccountProject server: {}", accountProjectsBean);
+				return accountProjectsBean;
+			} else {
+				log.error("Received null response from AccountProject server");
+				// Handle the case where the response is null, e.g., throw custom exception or
+				// return default value
+				return null;
+			}
+		} catch (HttpClientErrorException e) {
+			log.error("HttpClientErrorException occurred while connecting to AccountProject server: {}",
+					e.getMessage());
+			// Handle HttpClientErrorException, e.g., log or throw custom exception
+			return null;
+		} catch (HttpServerErrorException e) {
+			log.error("HttpServerErrorException occurred while connecting to AccountProject server: {}",
+					e.getMessage());
+			// Handle HttpServerErrorException, e.g., log or throw custom exception
+			return null;
+		} catch (RestClientException e) {
+			log.error("RestClientException occurred while connecting to AccountProject server: {}", e.getMessage());
+			// Handle RestClientException, e.g., log or throw custom exception
+			return null;
+		} catch (Exception e) {
+			log.error("An unexpected error occurred while connecting to AccountProject server: {}", e.getMessage());
+			// Handle any other unexpected exception, e.g., log or throw custom exception
+			return null;
+		}
 	}
-
 
 	public AccountProjectTaskTypeBean getAccountTaskType(Integer taskTypeId) {
 		log.info("Connecting to other server...");
@@ -560,8 +563,10 @@ public class TimesheetDataServiceImpl implements TimeSheetDataService {
 							.attendanceTypeName(getAttendanceType(timesheetWeekDayDetailDto.getAttendanceType())
 									.getReferenceDetailValue())
 							.attendanceType(timesheetWeekDayDetailDto.getAttendanceType())
-							.timesheetStatus(getDetailsById(timesheetWeekDayDetailDto.getTimesheetStatus()).getReferenceDetailId())
-							.timesheetStatusname(getDetailsById(timesheetWeekDayDetailDto.getTimesheetStatus()).getReferenceDetailValue())
+							.timesheetStatus(getDetailsById(timesheetWeekDayDetailDto.getTimesheetStatus())
+									.getReferenceDetailId())
+							.timesheetStatusname(getDetailsById(timesheetWeekDayDetailDto.getTimesheetStatus())
+									.getReferenceDetailValue())
 							.weekStartDate(timesheetWeekDayDetailDto.getWeekStartDate()).build();
 					if (dayOfWeek.equalsIgnoreCase("MONDAY")) {
 						timesheetWeekDayDto.setHoursMon(timesheetWeekDayDetailDto.getNumberOfHours());
@@ -590,7 +595,6 @@ public class TimesheetDataServiceImpl implements TimeSheetDataService {
 				}
 
 			}
-			
 
 			return weekAndDayDtoList;
 
@@ -646,11 +650,10 @@ public class TimesheetDataServiceImpl implements TimeSheetDataService {
 
 			if (weekAndDayDto.getTaskId().equals(timesheetDayEntity.getTaskId())
 					&& weekAndDayDto.getAttendanceType().equals(timesheetDayEntity.getAttendanceType())) {
-			
+
 				timesheetDayEntity.setIsDeleted((byte) 1);
 
 				timesheetDayRepo.save(timesheetDayEntity);
-				
 
 			}
 			List<TimesheetDayEntity> listOfTimesheetDayEntity2 = timesheetDayRepo
@@ -663,22 +666,22 @@ public class TimesheetDataServiceImpl implements TimeSheetDataService {
 
 			}
 
-		} 
+		}
 
 		return listOfTimesheetDayEntity;
 	}
 
-	
 	@Override
-	public List<TimesheetWeekEntity> submittingTimesheet(String weekStartDate, Integer timesheetStatus,Integer accountId,Integer employeeId) {
+	public List<TimesheetWeekEntity> submittingTimesheet(String weekStartDate, Integer timesheetStatus,
+			Integer accountId, Integer employeeId) {
 
 		try {
-		
+
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date convertedWeekStartDate = dateFormat.parse(weekStartDate);
 
 			List<TimesheetWeekEntity> findByWeekStartDate = timesheetWeekRepo
-					.findByWeekStartDateAndAccountIdAndEmployeeId(convertedWeekStartDate,accountId,employeeId);
+					.findByWeekStartDateAndAccountIdAndEmployeeId(convertedWeekStartDate, accountId, employeeId);
 
 			for (TimesheetWeekEntity timesheetWeekEntity : findByWeekStartDate) {
 				timesheetWeekEntity.setTimesheetStatus(timesheetStatus);
@@ -704,7 +707,6 @@ public class TimesheetDataServiceImpl implements TimeSheetDataService {
 
 		} catch (DateTimeParseException e) {
 
-		
 			return null;
 		}
 
@@ -725,7 +727,6 @@ public class TimesheetDataServiceImpl implements TimeSheetDataService {
 
 			d = outputFormat.parse(formattedDate);
 
-			
 		} catch (ParseException e) {
 			// Handle parse exception
 			e.printStackTrace();
@@ -758,9 +759,6 @@ public class TimesheetDataServiceImpl implements TimeSheetDataService {
 		return new java.text.SimpleDateFormat("dd-MMM-yyyy").format(date);
 	}
 
-
-
-
 	public List<EmployeeDataDto> getEmployeeDetailsByIdAndAccountId(Integer accountId, Integer employeeId) {
 
 		List<Object[]> list = employeeDetailsRepo.getAccountManagerDetails(accountId, employeeId);
@@ -782,7 +780,7 @@ public class TimesheetDataServiceImpl implements TimeSheetDataService {
 		List<Object[]> list = employeeDetailsRepo.getReportingManagerDetails(accountId, employeeId);
 		List<EmployeeDataDto> empList = new ArrayList<>();
 		for (Object[] o : list) {
-			 
+
 			EmployeeDataDto emp = new EmployeeDataDto();
 			emp.setFirstName((String) o[0]);
 			emp.setLastName((String) o[1]);
@@ -793,11 +791,10 @@ public class TimesheetDataServiceImpl implements TimeSheetDataService {
 	}
 
 	public void processPendingTimesheetsBySubmittedStatus() throws Exception {
-		 
+
 		List<TimesheetWeekEntity> weekList = timesheetWeekRepo
 				.findByTimesheetStatus(Constants.TIME_SHEET_STATUS_SUBMITTED);
 
-	 
 		LocalDate currentDate = LocalDate.now();
 		for (TimesheetWeekEntity entity : weekList) {
 
@@ -807,9 +804,9 @@ public class TimesheetDataServiceImpl implements TimeSheetDataService {
 			LocalDate modifiedDate = instant.atZone(zoneId).toLocalDate();
 			modifiedDate = modifiedDate.plusDays(Constants.TIME_SHEET_GRACE_NUMBER_OF_DAYS);
 			if (modifiedDate.compareTo(currentDate) < 0) {
-			 
-				List<EmployeeDataDto> empList = this.getReportingManagerByIdAndAccountId(
-						entity.getAccountId(),entity.getEmployeeId());
+
+				List<EmployeeDataDto> empList = this.getReportingManagerByIdAndAccountId(entity.getAccountId(),
+						entity.getEmployeeId());
 				if (!empList.isEmpty()) {
 					for (EmployeeDataDto emp : empList) {
 
@@ -817,7 +814,7 @@ public class TimesheetDataServiceImpl implements TimeSheetDataService {
 								"Request for Timesheet Approval from Reporting Manager",
 								this.composeBody(emp, entity.getWeekStartDate(), entity.getWeekEndDate()));
 					}
-				} 
+				}
 			}
 		}
 
@@ -837,6 +834,3 @@ public class TimesheetDataServiceImpl implements TimeSheetDataService {
 	}
 
 }
-
-
-

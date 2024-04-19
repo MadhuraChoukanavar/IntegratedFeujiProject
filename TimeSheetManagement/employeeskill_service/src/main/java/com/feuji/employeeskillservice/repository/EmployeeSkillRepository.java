@@ -14,16 +14,13 @@ import jakarta.transaction.Transactional;
 
 @Transactional
 public interface EmployeeSkillRepository extends JpaRepository<EmployeeSkillEntity, Long> {
-	
+
 	Optional<EmployeeSkillEntity> findByUuid(String uuid);
 
 	List<EmployeeSkillEntity> findBySkillId(int skillId);
 
-	@Query(value="SELECT es.* FROM employee_skills es "
-			+ "INNER JOIN skills s on s.skill_id = es.skill_id  "
-			+ " WHERE es.employee_id = :employee_id "
-			+ " AND es.is_deleted = 0 "
-			+ " AND s.is_deleted = 0 "
+	@Query(value = "SELECT es.* FROM employee_skills es " + "INNER JOIN skills s on s.skill_id = es.skill_id  "
+			+ " WHERE es.employee_id = :employee_id " + " AND es.is_deleted = 0 " + " AND s.is_deleted = 0 "
 			+ " AND s.status = 1", nativeQuery = true)
 	public List<EmployeeSkillEntity> findByEmployeeId(@Param("employee_id") Integer employee_id);
 

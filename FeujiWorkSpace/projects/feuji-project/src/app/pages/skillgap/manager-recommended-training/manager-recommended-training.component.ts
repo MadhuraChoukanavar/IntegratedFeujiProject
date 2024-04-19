@@ -28,12 +28,11 @@ export class ManagerRecommendedTrainingComponent {
   updatedEmployees: TrainigRecommendedEmployeesDto[] = [];
   size: number = 0;
   selectedSubItem: any;
-  // Define displayedColumns in your component
   displayedColumns: string[] = ['employeeName', 'designation', 'email', 'skillName', 'actualCompetency', 'expectedCompetency', 'result']; // Add more column names as needed
 
 
 
-  constructor(private employeeSkillService: EmployeeSkillService, 
+  constructor(private employeeSkillService: EmployeeSkillService,
     public dialog: MatDialog, private subSkillDataSevice: SubSkillData) {
 
   }
@@ -52,9 +51,7 @@ export class ManagerRecommendedTrainingComponent {
     this.employeeSkillService.getTechnicalCategory(selectedSkillCategory).subscribe((subSkills: any[]) => {
       this.accordionSubData = subSkills;
       this.subSkillDataSevice.updateAccordionSubData(subSkills);
-      console.log(" sub categories --",this.accordionSubData)
     });
-    console.log(this.accordionSubData);
   }
   onSelectTechCat(techCat: any) {
     this.employees = [];
@@ -65,14 +62,11 @@ export class ManagerRecommendedTrainingComponent {
     this.selectedSubItem = this.accordionSubData.find(item => item.referenceDetailId === techCat);
     this.calculateSize();
     this['selectedSubTechCat'] = this.selectedSubItem ? this.selectedSubItem.referenceDetailValue : 'N/A';
-    console.log(techCat);
-    
+
     this.employeeSkillService.getSkills(techCat).subscribe((skills: any[]) => {
       this.allSkills = skills;
-      console.log(this.allSkills);
       this.getAllSkillIds(this.allSkills);
       this.getEmployees(this.allSkillIds);
-      console.log(this.allSkillIds);
     },
       (error) => {
         console.error(error);
@@ -167,7 +161,7 @@ export class ManagerRecommendedTrainingComponent {
       return '../assets/img/moreGap.jpg';
     }
   }
- 
+
   downloadExcel() {
     const selectedSkillCategory = this['selectedSkillCategory'] || 'N/A';
     const selectedSubTechCat = this['selectedSubTechCat'] || 'N/A';
@@ -176,16 +170,16 @@ export class ManagerRecommendedTrainingComponent {
     const categoryData = [
       ['Skill Category', 'SubSkill Category'],
       [selectedSkillCategory, selectedSubTechCat],
-      [], 
+      [],
       ['EmployeeName', 'Designation', 'Email', 'SkillName', 'ActualCompetency', 'ExpectedCompetency']
     ];
     categoryData.forEach((row, index) => {
       const sheetRow = worksheet.addRow(row);
-      if (index < 1) { 
+      if (index < 1) {
         sheetRow.eachCell(cell => {
           cell.font = { bold: true };
         });
-      } else if (index === 3) { 
+      } else if (index === 3) {
         sheetRow.font = { bold: true };
       }
     });
@@ -204,8 +198,8 @@ export class ManagerRecommendedTrainingComponent {
         const fileName = 'recommended_training.xlsx';
         const blob = new Blob([buffer], { type: 'application/octet-stream' });
         saveAs(blob, fileName);
-      });
-  }
-  
-  
+      });
+  }
+
+
 }

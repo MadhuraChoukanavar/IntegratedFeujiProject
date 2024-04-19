@@ -3,7 +3,6 @@ package com.feuji.employeeservice.serviceimpl;
 import java.util.List;
 import java.util.Optional;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,9 +31,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public EmployeeRepository employeeRepository;
 
 	@Autowired
-	private ModelMapper modelMapper;
-
-	@Autowired
 	private EmailSender emailSender;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -58,6 +54,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		employeeEntity.setReportingManagerId(employeeUserDTO.getReportingManagerId());
 		employeeEntity.setEmploymentType(employeeUserDTO.getEmploymentType());
 		employeeEntity.setStatus(employeeUserDTO.getStatus());
+		employeeEntity.setIsDeleted(false);
 		employeeEntity.setDeliveryUnitId(employeeUserDTO.getDeliveryUnitId());
 		employeeEntity.setBusinessUnitId(employeeUserDTO.getBusinessUnitId());
 
@@ -72,16 +69,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 		userLoginEntity.setDesignation(employeeUserDTO.getDesignation());
 		userLoginEntity.setEmployeeStatus(employeeUserDTO.getStatus());
 
-		// Save user login entity
 		userLoginEntity = userLoginRepo.save(userLoginEntity);
 
-		// Update flag to 1
 		userLoginEntity.setFlag(true);
-		userLoginRepo.save(userLoginEntity); // Update user login entity
+		userLoginRepo.save(userLoginEntity);
 
 		try {
 			log.info("Sending email to: " + employeeUserDTO.getEmail());
-			// Use the autowired EmailSender bean to send the email
 			emailSender.sendSimpleEmail(employeeUserDTO.getEmail(), "Your Password",
 					"Your password is: " + password + "You can also click on forgot password to change your password");
 			log.info("Email sent successfully to: " + employeeUserDTO.getEmail());
@@ -101,19 +95,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 		Optional<EmployeeEntity> employee = employeeRepository.findByEmail(email);
 		return employee.isEmpty();
 	}
-	// SAVE
-	// @Override
-
-//	public EmployeeEntity saveEmployee(EmployeeBean employeeBean) {
-//		// Convert EmployeeBean to EmployeeEntity
-//		
-//		EmployeeEntity employeeEntity = beanToEntity(employeeBean);
-//
-//		// Save the EmployeeEntity
-//		employeeEntity = employeeRepository.save(employeeEntity);
-//
-//		return employeeEntity;
-//	}
 
 	@Override
 	public List<EmployeeEntity> getAllEmployees() {
@@ -126,13 +107,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return employeeRepository.getByReferenceTypeId(referenceTypeId);
 	}
 
-	// GET BY ID
 	@Override
 	public EmployeeEntity getById(Integer id) {
 		return employeeRepository.findById(id).orElse(null);
 	}
 
-	// GET EMPLOYEE BY UUID
 	@Override
 	public EmployeeEntity getByUuid(String uuid) {
 		return employeeRepository.findByUuid(uuid);

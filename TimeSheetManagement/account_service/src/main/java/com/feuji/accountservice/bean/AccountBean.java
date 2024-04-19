@@ -33,7 +33,7 @@ public class AccountBean {
 	private String zipcode;
 	private String country;
 	private Boolean isRed;
-	private Long accountStatus;
+	private Integer accountStatus;
 	private String comments;
 	private Boolean isDeleted;
 //	private Character uuId;  

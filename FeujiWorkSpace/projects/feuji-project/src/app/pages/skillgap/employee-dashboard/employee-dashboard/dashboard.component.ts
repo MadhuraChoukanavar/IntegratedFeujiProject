@@ -15,8 +15,6 @@ export class DashboardComponent implements OnInit{
     if (user) {
       this.user = JSON.parse(user);
       this.empName=this.user.userName
-      console.log(this.empName);
-      console.log(user);
       
       
     }

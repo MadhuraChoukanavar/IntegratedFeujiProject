@@ -16,12 +16,9 @@ import com.feuji.referenceservice.exception.ReferenceNotFoundException;
 import com.feuji.referenceservice.repository.CommonReferenceTypeRepo;
 import com.feuji.referenceservice.service.CommonReferenceType;
 
-import lombok.extern.slf4j.Slf4j;
-@Slf4j
 @Service
-public class CommonReferenceTypeImpl  implements CommonReferenceType{
-	
-	
+public class CommonReferenceTypeImpl implements CommonReferenceType {
+
 	private static Logger log = LoggerFactory.getLogger(CommonReferenceTypeImpl.class);
 
 	@Autowired
@@ -31,60 +28,59 @@ public class CommonReferenceTypeImpl  implements CommonReferenceType{
 
 	@Override
 	public CommonReferenceTypeEntity getByTypeName(String typeName) {
-		log.info(typeName);
+		log.info("getByTypeName() started in CommonReferenceTypeImpl");
 		CommonReferenceTypeEntity byTypeName = commonReferenceTypeRepo.getByTypeName(typeName);
-		log.info("getting reference",byTypeName);
+		log.info("getByTypeName() end in CommonReferenceTypeImpl");
 		return byTypeName;
 	}
 
 	@Override
 	public CommonReferenceTypeEntity save(CommonReferenceTypeBean commonReferenceTypeBean) {
-		CommonReferenceTypeEntity commonReferenceTypeEntity = modelMapper.map(commonReferenceTypeBean, CommonReferenceTypeEntity.class);
+		CommonReferenceTypeEntity commonReferenceTypeEntity = modelMapper.map(commonReferenceTypeBean,
+				CommonReferenceTypeEntity.class);
 		log.info("saving timesheet entity " + commonReferenceTypeEntity);
 		commonReferenceTypeEntity = commonReferenceTypeRepo.save(commonReferenceTypeEntity);
 		return commonReferenceTypeEntity;
 	}
-	
-	 @Override
-	    public List<ReferenceDto> getAllReferences() {
-	        return commonReferenceTypeRepo.findAllReferences();
-	    }
-	 
-	 public CommonReferenceTypeBean convertEntityToBean(CommonReferenceTypeEntity entity) {
-			CommonReferenceTypeBean bean = new CommonReferenceTypeBean();
-			bean.setReferenceTypeId(entity.getReferenceTypeId());
-			bean.setReferenceTypeName(entity.getReferenceTypeName());
-			bean.setCreatedBy(entity.getCreatedBy());
-			bean.setCreatedOn(entity.getCreatedOn());
-			bean.setModifiedBy(entity.getModifiedBy());
-			bean.setModifiedOn(entity.getModifiedOn());
-			bean.setIsDeleted(CommonConstants.FALSE);
-			return bean;
-		}
-	 
-	 @Override
-		public String getNameById(int id) {
-			log.info("getByid() started");
-			log.info("---");
-			String nameById = commonReferenceTypeRepo.getNameById(id);
-			if (nameById != null) {
-				log.info("getByid() ended");
-				return nameById;
-			} else {
-				throw new ReferenceNotFoundException("no suitable name found for this id: "+id);
-			}
-		}
-	 
-	 public CommonReferenceTypeBean getRefByTypeName(String typeName) throws ReferenceNotFoundException {
-			log.info("getByTypeName Start:Fetching reference type names");
-			CommonReferenceTypeEntity byTypeName = commonReferenceTypeRepo.getRefByTypeName(typeName);
-			log.info("getting reference names", byTypeName);
-			if (byTypeName == null) {
-				throw new ReferenceNotFoundException("Entity not found for type name: " + typeName);
-			}
-			log.info("getByTypeName End:Fetched reference type names");
-			return convertEntityToBean(byTypeName);
 
+	@Override
+	public List<ReferenceDto> getAllReferences() {
+		return commonReferenceTypeRepo.findAllReferences();
+	}
+
+	public CommonReferenceTypeBean convertEntityToBean(CommonReferenceTypeEntity entity) {
+		CommonReferenceTypeBean bean = new CommonReferenceTypeBean();
+		bean.setReferenceTypeId(entity.getReferenceTypeId());
+		bean.setReferenceTypeName(entity.getReferenceTypeName());
+		bean.setCreatedBy(entity.getCreatedBy());
+		bean.setCreatedOn(entity.getCreatedOn());
+		bean.setModifiedBy(entity.getModifiedBy());
+		bean.setModifiedOn(entity.getModifiedOn());
+		bean.setIsDeleted(CommonConstants.FALSE);
+		return bean;
+	}
+
+	@Override
+	public String getNameById(int id) {
+		log.info("getByid() started");
+		String nameById = commonReferenceTypeRepo.getNameById(id);
+		if (nameById != null) {
+			log.info("getByid() ended");
+			return nameById;
+		} else {
+			throw new ReferenceNotFoundException("no suitable name found for this id: " + id);
 		}
+	}
+
+	public CommonReferenceTypeBean getRefByTypeName(String typeName) throws ReferenceNotFoundException {
+		log.info("getByTypeName Start:Fetching reference type names");
+		CommonReferenceTypeEntity byTypeName = commonReferenceTypeRepo.getRefByTypeName(typeName);
+		if (byTypeName == null) {
+			throw new ReferenceNotFoundException("Entity not found for type name: " + typeName);
+		}
+		log.info("getByTypeName End:Fetched reference type names");
+		return convertEntityToBean(byTypeName);
+
+	}
 
 }

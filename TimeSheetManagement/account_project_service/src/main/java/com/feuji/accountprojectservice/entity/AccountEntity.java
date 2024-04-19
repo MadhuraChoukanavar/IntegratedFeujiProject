@@ -72,7 +72,7 @@ public class AccountEntity {
 	@Column(name="is_red")
 	private Boolean isRed;
 	@Column(name="account_status")
-	private Long accountStatus;
+	private Integer accountStatus;
 	@Column(name="comments")
 	private String comments;
 	@Column(name="is_deleted")
