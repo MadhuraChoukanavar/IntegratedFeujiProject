@@ -58,10 +58,13 @@ export class TimesheetHomeComponent implements OnInit, AfterViewChecked {
   Submit: boolean = false;
   addTaskRow() {
     this.addDataToAllarows();
+    if((this.fetchedDetails.length>0)&&!((this.fetchedDetails[0].timesheetStatusname==='Submitted')||(this.fetchedDetails[0].timesheetStatusname==='Approved')))
+      {
     this.saveAndSubmit = true;
+      }
  
     
-    if((this.fetchedDetails.length>0)&&(this.fetchedDetails[0].timesheetStatusname==='Submitted'))
+    if((this.fetchedDetails.length>0)&&((this.fetchedDetails[0].timesheetStatusname==='Submitted')||(this.fetchedDetails[0].timesheetStatusname==='Approved')))
     {
      
       Swal.fire({
@@ -420,6 +423,8 @@ export class TimesheetHomeComponent implements OnInit, AfterViewChecked {
   allRows: TimesheetWeekDayBean[] = [];
   saveAndSubmit: boolean = false;
   saveWeekTableData() {
+    
+    
     if(!this.selectedAccount||!this.selectedProjectId||!this.selectedAttendanceType||!this.selectedTaskId)
     {
       Swal.fire({
@@ -1060,5 +1065,7 @@ export class TimesheetHomeComponent implements OnInit, AfterViewChecked {
 
   }
 
-  
+  isSubmitted(): boolean {
+    return this.fetchedDetails[0].timesheetStatusname === 'Submitted'|| this.fetchedDetails[0].timesheetStatusname === 'Approved';
+  }
 }
